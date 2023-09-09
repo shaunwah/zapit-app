@@ -1,0 +1,32 @@
+<div class="container">
+  <div>
+    <h1>Enrolment</h1>
+    <p>
+      Before you can generate receipts and accept payments, you will need to enrol as a merchant.
+    </p>
+  </div>
+  <form [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Company Name*</label>
+      <input type="text" class="form-control border border-light-subtle shadow-sm" id="name" formControlName="name">
+    </div>
+    <div class="mb-3">
+      <label for="website" class="form-label">Website</label>
+      <input type="url" class="form-control border border-light-subtle shadow-sm" id="website"
+             formControlName="website">
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Address*</label>
+      <textarea class="form-control border border-light-subtle shadow-sm" id="address" rows="3"
+                formControlName="address"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="postCode" class="form-label">Postal Code*</label>
+      <input type="text" class="form-control border border-light-subtle shadow-sm" id="postCode"
+             formControlName="postCode">
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-secondary border-0" style="--bs-btn-bg: var(--bs-black); --bs-btn-color: var(--bs-gray-100);" [disabled]="merchantForm.invalid">Enrol</button>
+    </div>
+  </form>
+</div>

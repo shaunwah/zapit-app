@@ -1,0 +1,33 @@
+<div class="d-flex flex-wrap align-items-center justify-content-center h-100">
+  <div class="container flex-md-grow-0 flex-fill w-25">
+    <h1 class="display-5 text-dark">Welcome</h1>
+    <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control border border-light-subtle shadow-sm" id="emailAddress" placeholder="user@example.com" [class.is-invalid]="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors" formControlName="emailAddress">
+        <ng-container *ngIf="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors; else emailAddressLabel">
+          <label for="emailAddress" *ngIf="emailAddress.getError('required')">Email required</label>
+          <label for="emailAddress" *ngIf="emailAddress.getError('email')">Email format invalid</label>
+        </ng-container>
+        <ng-template #emailAddressLabel>
+          <label for="emailAddress">Email</label>
+        </ng-template>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password" placeholder="password" [class.is-invalid]="(password.dirty || password.touched) && password.errors" formControlName="password">
+        <ng-container *ngIf="(password.dirty || password.touched) && password.errors; else passwordLabel">
+          <label for="password" *ngIf="password.getError('required')">Password required</label>
+        </ng-container>
+        <ng-template #passwordLabel>
+          <label for="password">Password</label>
+        </ng-template>
+      </div>
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-dark btn-lg shadow-sm" [disabled]="loginForm.invalid">Login</button>
+      </div>
+      <div>
+        <span class="text-dark">New here? <a class="link-primary link-underline link-underline-opacity-0 link-underline-opacity-75-hover" routerLink="/register">Create an account</a></span>
+      </div>
+    </form>
+  </div>
+</div>

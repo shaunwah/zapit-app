@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  font-family: "Bricolage Grotesque", sans-serif !important;
+  height: 100%;
+}
+
+pre, .mono {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.zapit-primary-colour-bg {
+  background-color: #DBFE87 !important;
+}
+
+.zapit-secondary-colour-bg {
+  background-color: #C8A7F1 !important;
+}
+
+.zapit-tertiary-colour-bg {
+  background-color: #C8C6D7 !important;
+}
+
+.zapit-primary-colour {
+  color: #DBFE87 !important;
+}
+
+.zapit-secondary-colour {
+  color: #C8A7F1 !important;
+}
+
+.zapit-tertiary-colour {
+  color: #C8C6D7 !important;
+}

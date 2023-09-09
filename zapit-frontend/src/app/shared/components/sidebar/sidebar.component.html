@@ -1,0 +1,58 @@
+<nav class="d-none d-md-flex flex-column flex-shrink-0 position-fixed p-2 bg-black h-100 rounded-end-4"
+     data-bs-theme="dark">
+  <a routerLink="/" class="d-flex align-items-center mb-3 mb-md-0 p-3 me-md-auto text-light text-decoration-none">
+    <i class="bi-lightning-charge-fill fs-3 pe-none me-2"></i>
+    <span class="fs-3">Zapit</span>
+  </a>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a routerLink="//" routerLinkActive="bg-dark" [routerLinkActiveOptions]="{ exact: true }"
+         class="nav-link text-light">
+        <i class="bi-house-fill pe-none me-2"></i>
+        Home
+      </a>
+    </li>
+    <li>
+      <a routerLink="/invoices" routerLinkActive="bg-dark" class="nav-link text-light">
+        <i class="bi-receipt pe-none me-2"></i>
+        Receipts
+      </a>
+    </li>
+    <li>
+      <a routerLink="/rewards" routerLinkActive="bg-dark" class="nav-link text-light">
+        <i class="bi-star-fill pe-none me-2"></i>
+        Rewards
+      </a>
+    </li>
+    <li>
+      <hr class="border border-light mx-3">
+    </li>
+    <li>
+      <a routerLink="/merchant" routerLinkActive="bg-dark" class="nav-link text-light">
+        <i class="bi-tools pe-none me-2"></i>
+        Merchant Tools
+      </a>
+    </li>
+  </ul>
+  <div class="dropdown p-3">
+    <a href="#" class="d-flex align-items-center text-light text-decoration-none"
+       data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="https://github.com/shaunwah.png" alt="" width="32" height="32" class="rounded-circle me-2">
+      <span>{{ username }}</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark text-small shadow-sm">
+      <li>
+        <a class="dropdown-item" routerLink="/settings" routerLinkActive="bg-dark">
+          <i class="bi-gear-wide-connected pe-none me-2"></i>
+          Settings
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" routerLink="/logout" routerLinkActive="bg-dark">
+          <i class="bi-box-arrow-right pe-none me-2"></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

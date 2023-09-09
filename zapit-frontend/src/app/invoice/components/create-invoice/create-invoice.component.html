@@ -1,0 +1,77 @@
+<div class="container">
+  <h1>New Invoice</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Details</h2>
+      <form class="mb-3" [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="identifier" class="form-label">Identifier*</label>
+          <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier"
+                 formControlName="identifier">
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="salesTax" class="form-label">Sales Tax*</label>
+            <input type="number" class="form-control border border-light-subtle shadow-sm" id="salesTax"
+                   formControlName="salesTax">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="additionalCharges" class="form-label">Additional Charges</label>
+            <input type="number" class="form-control border border-light-subtle shadow-sm" id="additionalCharges"
+                   formControlName="additionalCharges">
+          </div>
+        </div>
+        <div class="vstack" formArrayName="invoiceItems">
+          <ng-container *ngFor="let item of invoiceItems.controls; let i = index">
+            <ng-container [formGroupName]="i">
+              <h3 [class.mt-2]="i > 0" >{{ item.value.name || "Item " + (i + 1) }}</h3>
+              <div class="mb-3">
+                <label for="identifier-{{ i }}" class="form-label">Identifier*</label>
+                <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier-{{ i }}"
+                       formControlName="identifier">
+              </div>
+              <div class="mb-3">
+                <label for="name-{{ i }}" class="form-label">Name*</label>
+                <input type="text" class="form-control border border-light-subtle shadow-sm" id="name-{{ i }}"
+                       formControlName="name">
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="quantity-{{ i }}" class="form-label">Quantity*</label>
+                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="quantity-{{ i }}"
+                         formControlName="quantity">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="unitPrice-{{ i }}" class="form-label">Unit Price*</label>
+                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="unitPrice-{{ i }}"
+                         formControlName="unitPrice">
+                </div>
+              </div>
+              <div class="d-grid mb-1" *ngIf="invoiceItems.controls.length > 1">
+                <button type="button" class="btn btn-danger btn-sm" (click)="onRemoveInvoiceItem(i)">Remove Item</button>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="d-grid mb-3">
+          <button type="button" class="btn btn-success btn-sm" (click)="onAddInvoiceItem()">Add Item</button>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-secondary border-0" style="--bs-btn-bg: var(--bs-black); --bs-btn-color: var(--bs-gray-100);" [disabled]="invoiceForm.invalid">Create</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h2>Preview</h2>
+      <h3>Receipt</h3>
+      <s-app-receipt [invoice]="invoice"></s-app-receipt>
+      <h3>Payload</h3>
+      <p>It is recommended to use our Payments API.</p>
+      <div class="card text-bg-secondary mb-3 border-0">
+        <div class="card-body">
+          <pre class="mb-0 user-select-all">{{ invoice | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

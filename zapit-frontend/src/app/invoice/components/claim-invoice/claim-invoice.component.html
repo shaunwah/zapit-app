@@ -1,0 +1,11 @@
+<div class="container">
+    <h1>Save Receipt</h1>
+    <s-app-receipt [invoice]="invoice"></s-app-receipt>
+    <div class="d-grid mb-1">
+        {{ locationData | json }}
+        <button type="button" class="btn btn-success btn-lg shadow-sm" (click)="onClaim()">Claim</button>
+    </div>
+    <small class="text-muted">
+        Your location data is kept private and will not shared with the merchant.
+    </small>
+</div>

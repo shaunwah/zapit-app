@@ -1,0 +1,23 @@
+<div class="container">
+  <h1 class="fw-bold">Summary</h1>
+  <div class="d-flex gap-3 mb-3">
+    <div class="card w-50 border-0 zapit-primary-colour-bg">
+      <div class="card-body text-dark">
+        <h2 class="card-title fs-3">Spent</h2>
+        <p class="card-text">
+          <span class="fs-1">$700</span>
+        </p>
+      </div>
+    </div>
+    <div class="card w-50 border-0 zapit-secondary-colour-bg">
+      <div class="card-body text-dark">
+        <h2 class="card-title fs-3">Rewards</h2>
+        <p class="card-text">
+          <span class="fs-1">5</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <h2>Receipts</h2>
+  <s-app-invoice-list-group [invoices]="invoices" [displaySeeAll]="true"></s-app-invoice-list-group>
+</div>

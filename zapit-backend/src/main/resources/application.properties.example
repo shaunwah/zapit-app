@@ -1,0 +1,15 @@
+spring.data.redis.host=
+spring.data.redis.port=
+spring.data.redis.username=
+spring.data.redis.password=
+
+spring.data.mongodb.uri=
+spring.data.mongodb.username=
+spring.datasource.password=
+
+spring.datasource.url=
+spring.datasource.hikari.username=
+spring.datasource.hikari.password=
+
+rsa.key.public=classpath:certs/public.pem
+rsa.key.private=classpath:certs/private.pem

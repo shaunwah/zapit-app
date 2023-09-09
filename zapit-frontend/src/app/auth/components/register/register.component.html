@@ -1,0 +1,50 @@
+<div class="d-flex align-items-center justify-content-center h-100">
+  <div class="container flex-md-grow-0 flex-fill w-25">
+    <h1 class="text-dark">Create an Account</h1>
+    <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control border border-light-subtle shadow-sm" id="emailAddress" placeholder="user@example.com" [class.is-invalid]="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors" formControlName="emailAddress">
+        <ng-container *ngIf="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors; else emailAddressLabel">
+          <label for="emailAddress" *ngIf="emailAddress.getError('required')">Email required</label>
+          <label for="emailAddress" *ngIf="emailAddress.getError('email')">Email format invalid</label>
+        </ng-container>
+        <ng-template #emailAddressLabel>
+          <label for="emailAddress">Email</label>
+        </ng-template>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control border border-light-subtle shadow-sm" id="username" placeholder="user" [class.is-invalid]="(username.dirty || username.touched) && username.errors" formControlName="username">
+        <ng-container *ngIf="(username.dirty || username.touched) && username.errors; else usernameLabel">
+          <label for="username" *ngIf="username.getError('required')">Username required</label>
+        </ng-container>
+        <ng-template #usernameLabel>
+          <label for="username">Username</label>
+        </ng-template>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password" placeholder="password" [class.is-invalid]="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch')))" formControlName="password">
+        <ng-container *ngIf="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch'))); else passwordLabel">
+          <label for="password" *ngIf="password.getError('required')">Password required</label>
+          <label for="passwordConfirm" *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && registerForm.getError('passwordsDoNotMatch')">Passwords do not match</label>
+        </ng-container>
+        <ng-template #passwordLabel>
+          <label for="password">Password</label>
+        </ng-template>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="passwordConfirm" placeholder="password" [class.is-invalid]="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch'))" formControlName="passwordConfirm">
+        <ng-container *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch')); else passwordConfirmLabel">
+          <label for="passwordConfirm" *ngIf="passwordConfirm.getError('required')">Password required</label>
+          <label for="passwordConfirm" *ngIf="registerForm.getError('passwordsDoNotMatch')">Passwords do not match</label>
+        </ng-container>
+        <ng-template #passwordConfirmLabel>
+          <label for="passwordConfirm">Password confirm</label>
+        </ng-template>
+      </div>
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-dark btn-lg shadow-sm" [disabled]="registerForm.invalid">Register</button>
+      </div>
+    </form>
+  </div>
+</div>

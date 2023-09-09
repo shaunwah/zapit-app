@@ -1,0 +1,19 @@
+:host {
+    display: block;
+    height: 100%;
+    background: linear-gradient(-45deg, #C8A7F1, #C8C6D7, #DBFE87);
+    background-size: 400% 400%;
+    animation: gradient-flow 15s ease infinite;
+}
+
+@keyframes gradient-flow {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}

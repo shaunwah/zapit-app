@@ -1,0 +1,17 @@
+:host, #wrapper {
+  display: block;
+  overflow: auto;
+  height: 100%;
+}
+
+.main-with-sidebar {
+  overflow: auto;
+  margin-bottom: 70px;
+}
+
+@media (min-width: 768px) {
+  .main-with-sidebar {
+    margin-bottom: 0;
+    margin-left: 280px;
+  }
+}

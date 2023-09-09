@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Receipt</h1>
+    <h2>Details</h2>
+    <s-app-receipt [invoice]="invoice"></s-app-receipt>
+    <div id="mapbox" class="rounded mb-3" style="height: 350px; width: 100%;"></div>
+    <ng-container *ngIf="invoice && invoice.claimedBy && relatedInvoices && relatedInvoices.length">
+        <h2>Related</h2>
+        <s-app-invoice-list-group [invoices]="relatedInvoices"></s-app-invoice-list-group>
+    </ng-container>
+    <div class="d-grid" *ngIf="invoice && !invoice.claimedBy">
+        <button type="button" class="btn btn-info border-0 mb-1" [routerLink]="['/invoice', invoice.id, 'scan']"
+                [queryParams]="{ t: invoice.createdOn }">Scan
+        </button>
+        <button type="button" class="btn btn-success border-0" [routerLink]="['/invoice', invoice.id, 'claim']"
+                [queryParams]="{ t: invoice.createdOn }">Claim
+        </button>
+    </div>
+
+</div>
