@@ -48,14 +48,9 @@ public class SecurityConfig {
     @Value("${jwt.key.secret}")
     private String secretKey;
 
-    private SecretKey convertStringToSecretKey(String str) {
-        byte[] bytes = Base64.getDecoder().decode(str);
-        return new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
-    }
-
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withSecretKey(convertStringToSecretKey(secretKey)).build();
+        return NimbusJwtDecoder.withSecretKey(new SecretKeySpec(secretKey.getBytes(), "HmacSHA256")).build();
     }
 
     @Bean
