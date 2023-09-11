@@ -6,15 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     private Long id;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String emailAddress;
+    private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String username;
+    private String displayName;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -26,9 +28,9 @@ public class User {
     @JsonIgnore
     private Boolean isDeleted;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Long createdOn;
+    private Timestamp createdOn;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Long updatedOn;
+    private Timestamp updatedOn;
 
     public User(Long userId) {
         this.id = userId;

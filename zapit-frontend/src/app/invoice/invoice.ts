@@ -9,11 +9,11 @@ export interface Invoice {
     invoiceItems?: InvoiceItem[];
     salesTax: number;
     additionalCharges: number;
-    total?: number;
+    total: number;
+    eligiblePoints?: number;
     status?: string;
     issuedBy?: Merchant;
     claimedBy?: User;
-    claimedAt?: LocationData;
-    createdOn?: number;
-    updatedOn?: number;
+    createdOn?: string;
+    updatedOn?: string;
 }

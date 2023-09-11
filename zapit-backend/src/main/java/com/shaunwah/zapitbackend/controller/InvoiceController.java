@@ -33,6 +33,12 @@ public class InvoiceController {
         return ResponseEntity.of(invoiceService.getInvoiceById(invoiceId, timestamp, JWT_USER_ID));
     }
 
+    @GetMapping("/invoices/total")
+    public ResponseEntity<Double> getInvoicesTotalByUserId(HttpServletRequest request) {
+        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
+        return ResponseEntity.ofNullable(invoiceService.getInvoicesTotalByUserId(JWT_USER_ID));
+    }
+
     @GetMapping("/invoices")
     public ResponseEntity<List<Invoice>> getInvoicesByUserId(HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
@@ -63,7 +69,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/invoice/{invoiceId}")
-    public ResponseEntity<String> claimInvoice(@PathVariable String invoiceId, @RequestParam(name = "t") Long timestamp, @RequestBody(required = false) LocationData locationData, HttpServletRequest request) {
+    public ResponseEntity<String> claimInvoice(@PathVariable String invoiceId, @RequestParam(name = "t") Long timestamp, @RequestBody(required = false) LocationData locationData, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
         Boolean result = invoiceService.claimInvoice(invoiceId, timestamp, locationData, JWT_USER_ID);
         if (result) {

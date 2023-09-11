@@ -1,12 +1,13 @@
-import {Invoice} from "../invoice/invoice";
 import {User} from "../user/user";
-import {TransactionPayment} from "./transaction-payment";
+import {Card} from "../card/card";
+import {LocationData} from "../shared/interfaces/location-data";
 
 export interface Transaction {
-    id: number;
-    invoice: Invoice;
-    paymentDetails: TransactionPayment;
-    createdBy: User;
-    createdOn: number;
-    updatedOn: number;
+  id: number;
+  card: Card;
+  amount: number;
+  status: boolean;
+  location: LocationData;
+  createdOn: number;
+  updatedOn: number;
 }

@@ -26,8 +26,8 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.fb.group(
       {
-        emailAddress: this.fb.control<string>('', [Validators.required, Validators.email]),
-        username: this.fb.control<string>('', [Validators.required]),
+        email: this.fb.control<string>('', [Validators.required, Validators.email]),
+        displayName: this.fb.control<string>('', [Validators.required]),
         password: this.fb.control<string>('', [Validators.required]),
         passwordConfirm: this.fb.control<string>('', [Validators.required]),
       },
@@ -61,12 +61,12 @@ export class RegisterComponent implements OnInit {
       : ({ passwordsDoNotMatch: { value: 'error' } } as ValidationErrors);
   }
 
-  get emailAddress() {
-    return this.registerForm.get('emailAddress')!;
+  get email() {
+    return this.registerForm.get('email')!;
   }
 
-  get username() {
-    return this.registerForm.get('username')!;
+  get displayName() {
+    return this.registerForm.get('displayName')!;
   }
 
   get password() {

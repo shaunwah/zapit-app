@@ -1,8 +1,13 @@
 package com.shaunwah.zapitbackend.controller;
 
 import com.shaunwah.zapitbackend.model.Transaction;
+import com.shaunwah.zapitbackend.service.StripeService;
 import com.shaunwah.zapitbackend.service.TransactionService;
 import com.shaunwah.zapitbackend.utility.Utilities;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +30,15 @@ public class TransactionController {
     private final JwtDecoder jwtDecoder;
 
     @GetMapping("/transactions")
-    public ResponseEntity<List<Transaction>> getTransactionsByUserId(HttpServletRequest request) {
+    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@RequestParam(defaultValue = "5") Integer limit, @RequestParam(defaultValue = "0") Integer offset, HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.ok(transactionService.getTransactionsByUserId(JWT_USER_ID));
+        return ResponseEntity.ok(transactionService.getTransactionsByUserId(JWT_USER_ID, limit, offset));
+    }
+
+    @GetMapping("/card/{cardId}/transactions")
+    public ResponseEntity<List<Transaction>> getTransactionsByCardId(@PathVariable String cardId, @RequestParam(defaultValue = "5") Integer limit, @RequestParam Integer offset, HttpServletRequest request) {
+        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
+        return ResponseEntity.ok(transactionService.getTransactionsByCardId(cardId, JWT_USER_ID, limit, offset));
     }
 
     @GetMapping("/transaction/{transactionId}")
@@ -36,20 +47,15 @@ public class TransactionController {
         return ResponseEntity.of(transactionService.getTransactionById(transactionId, JWT_USER_ID));
     }
 
-    @PostMapping("/transactions")
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, HttpServletRequest request) {
+    @GetMapping("/transactions/total")
+    public ResponseEntity<Double> getTransactionsTotalByUserId(HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.of(transactionService.createTransaction(transaction, JWT_USER_ID));
+        return ResponseEntity.ofNullable(transactionService.getTransactionsTotalByUserId(JWT_USER_ID));
     }
 
-    @PutMapping("/transactions")
-    public ResponseEntity<String> updateTransaction(@RequestBody Transaction transaction, HttpServletRequest request) {
+    @PostMapping("/transactions")
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        Boolean result = transactionService.updateTransaction(transaction, JWT_USER_ID);
-        if (result) {
-            return ResponseEntity.ok("success");
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("error");
+        return ResponseEntity.of(transactionService.createTransaction(transaction));
     }
 }

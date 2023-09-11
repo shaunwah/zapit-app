@@ -17,8 +17,14 @@ export class InvoiceService {
     });
   }
 
-  getInvoicesByUserId(): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`);
+  getInvoicesTotalByUserId(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/invoices/total`);
+  }
+
+  getInvoicesByUserId(limit: number, offset?: number): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`, {
+      params: { limit, offset: offset ?? 0 }
+    });
   }
 
   getInvoicesByMerchantId(): Observable<Invoice[]> {

@@ -13,7 +13,9 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,8 +23,8 @@ import java.sql.Statement;
 public class MerchantRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    private final String SQL_GET_MERCHANT_BY_ID = "select * from merchants where id = ? and is_deleted = false";
-    private final String SQL_GET_MERCHANT_BY_USER_ID = "select * from merchants where created_by = ? and is_deleted = false";
+    private final String SQL_GET_MERCHANT_BY_ID = "select * from merchants where id = ? and is_deleted = false limit 1";
+    private final String SQL_GET_MERCHANT_BY_USER_ID = "select * from merchants where created_by = ? and is_deleted = false limit 1";
     private final String SQL_CREATE_MERCHANT = "insert into merchants (name, website, address, post_code, created_by) values (?, ?, ?, ?, ?)";
     private final String SQL_UPDATE_MERCHANT = "update merchants set name = ?, website = ?, address = ?, post_code = ? where id = ? and is_deleted = false";
     private final String SQL_DELETE_MERCHANT = "update merchants set is_deleted = true where id = ? and is_deleted = false";
@@ -30,18 +32,20 @@ public class MerchantRepository {
     public Merchant getMerchantById(Long merchantId) {
         try {
             return jdbcTemplate.query(SQL_GET_MERCHANT_BY_ID, (rs) -> {
-                rs.first(); // TODO optimise
-                Merchant merchant = new Merchant();
-                merchant.setId(rs.getLong("id"));
-                merchant.setName(rs.getString("name"));
-                merchant.setWebsite(rs.getString("website"));
-                merchant.setAddress(rs.getString("address"));
-                merchant.setPostCode(rs.getString("post_code"));
-                merchant.setIsDeleted(rs.getBoolean("is_deleted"));
-                merchant.setCreatedBy(new User(rs.getLong("created_by")));
-                merchant.setCreatedOn(rs.getLong("created_on"));
-                merchant.setUpdatedOn(rs.getLong("updated_on"));
-                return merchant;
+                if (rs.next()) {
+                    Merchant merchant = new Merchant();
+                    merchant.setId(rs.getLong("id"));
+                    merchant.setName(rs.getString("name"));
+                    merchant.setWebsite(rs.getString("website"));
+                    merchant.setAddress(rs.getString("address"));
+                    merchant.setPostCode(rs.getString("post_code"));
+                    merchant.setIsDeleted(rs.getBoolean("is_deleted"));
+                    merchant.setCreatedBy(new User(rs.getLong("created_by")));
+                    merchant.setCreatedOn(rs.getTimestamp("created_on"));
+                    merchant.setUpdatedOn(rs.getTimestamp("updated_on"));
+                    return merchant;
+                }
+                return null;
             }, merchantId);
         } catch (Exception e) {
             log.severe(e.getMessage());
@@ -52,18 +56,20 @@ public class MerchantRepository {
     public Merchant getMerchantByUserId(Long userId) {
         try {
             return jdbcTemplate.query(SQL_GET_MERCHANT_BY_USER_ID, (rs) -> {
-                rs.first(); // TODO optimise
-                Merchant merchant = new Merchant();
-                merchant.setId(rs.getLong("id"));
-                merchant.setName(rs.getString("name"));
-                merchant.setWebsite(rs.getString("website"));
-                merchant.setAddress(rs.getString("address"));
-                merchant.setPostCode(rs.getString("post_code"));
-                merchant.setIsDeleted(rs.getBoolean("is_deleted"));
-                merchant.setCreatedBy(new User(rs.getLong("created_by")));
-                merchant.setCreatedOn(rs.getLong("created_on"));
-                merchant.setUpdatedOn(rs.getLong("updated_on"));
-                return merchant;
+                if (rs.next()) {
+                    Merchant merchant = new Merchant();
+                    merchant.setId(rs.getLong("id"));
+                    merchant.setName(rs.getString("name"));
+                    merchant.setWebsite(rs.getString("website"));
+                    merchant.setAddress(rs.getString("address"));
+                    merchant.setPostCode(rs.getString("post_code"));
+                    merchant.setIsDeleted(rs.getBoolean("is_deleted"));
+                    merchant.setCreatedBy(new User(rs.getLong("created_by")));
+                    merchant.setCreatedOn(rs.getTimestamp("created_on"));
+                    merchant.setUpdatedOn(rs.getTimestamp("updated_on"));
+                    return merchant;
+                }
+                return null;
             }, userId);
         } catch (Exception e) {
             log.severe(e.getMessage());

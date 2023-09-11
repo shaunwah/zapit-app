@@ -18,8 +18,8 @@ public class UserService {
         return Optional.ofNullable(userRepository.getUserById(userId));
     }
 
-    public Optional<User> getUserByEmailAddress(String emailAddress) {
-        return Optional.ofNullable(userRepository.getUserByEmailAddress(emailAddress));
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.getUserByEmail(email));
     }
 
     public Optional<User> createUser(User user) {

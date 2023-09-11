@@ -33,6 +33,7 @@ export class CreateInvoiceComponent implements OnInit, DoCheck {
       invoiceItems: this.fb.array([]),
       salesTax: this.fb.control<number>(0.08),
       additionalCharges: this.fb.control<number>(0),
+      eligiblePoints: this.fb.control<number>(0),
     });
     this.onAddInvoiceItem();
   }

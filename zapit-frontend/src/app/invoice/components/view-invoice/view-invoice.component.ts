@@ -3,8 +3,7 @@ import { InvoiceService } from '../../services/invoice.service';
 import { ActivatedRoute } from '@angular/router';
 import { Invoice } from '../../invoice';
 import { first } from 'rxjs';
-import {AttributionControl, FullscreenControl, GeolocateControl, Map, NavigationControl} from "mapbox-gl";
-import * as mapboxgl from "mapbox-gl";
+
 @Component({
   selector: 'app-view-invoice',
   templateUrl: './view-invoice.component.html',
@@ -15,8 +14,6 @@ export class ViewInvoiceComponent implements OnInit {
   private route = inject(ActivatedRoute);
   invoice!: Invoice;
   relatedInvoices!: Invoice[];
-  mapbox!: Map;
-  mapboxCenter!: { lat: number, lng: number };
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
@@ -34,18 +31,6 @@ export class ViewInvoiceComponent implements OnInit {
       .subscribe({
         next: (invoice) => {
           this.invoice = invoice;
-          this.mapboxCenter = { lat: invoice.claimedAt?.latitude || 0, lng: invoice.claimedAt?.longitude || 0 }
-          const MAPBOX_DATA = new Map({
-            accessToken: 'pk.eyJ1Ijoic2hhdW53YWgiLCJhIjoiY2ptd2FtcG50MDdxbjNxdG54emhlbzMyYSJ9.fjngawrwN76rk4TRJETvDw',
-            container: 'mapbox',
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: this.mapboxCenter,
-            zoom: 15,
-          });
-          const MAPBOX_MARKER = new mapboxgl.Marker()
-              .setLngLat(this.mapboxCenter)
-              .addTo(MAPBOX_DATA);
-          MAPBOX_DATA.addControl(new FullscreenControl());
           this.invoiceService
             .getInvoicesByMerchantIdAndUserId(invoice.issuedBy!.id, invoiceId)
             .pipe(first())

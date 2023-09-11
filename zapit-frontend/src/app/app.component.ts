@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   private themeService = inject(ThemeService);
   private router = inject(Router);
   title = 'Zapit';
-  navClass = 'main-with-sidebar mt-3 mt-md-4';
+  navClass = 'main-with-sidebar pt-3 pt-md-4';
 
   ngOnInit() {
     this.themeService.modifyHtmlElement();
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       this.router.url.trim().toLowerCase() == '/login' ||
       this.router.url.trim().toLowerCase() == '/logout' ||
       this.router.url.trim().toLowerCase() == '/register' ||
-      this.router.url.trim().toLowerCase().includes('/scan')
+      (this.router.url.trim().toLowerCase().includes('/invoice') && this.router.url.trim().toLowerCase().includes('/scan'))
     );
   }
 }

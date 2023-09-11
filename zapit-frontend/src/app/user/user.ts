@@ -1,12 +1,12 @@
 export interface User {
   id?: number;
-  emailAddress: string;
-  username?: string;
+  email: string;
+  displayName?: string;
   password?: string;
   firstName?: string;
   lastName?: string;
   roles?: string;
   isDeleted?: boolean;
-  createdOn?: number;
-  updatedOn?: number;
+  createdOn?: string;
+  updatedOn?: string;
 }

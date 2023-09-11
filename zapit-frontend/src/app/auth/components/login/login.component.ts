@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      emailAddress: this.fb.control<string>('', [
+      email: this.fb.control<string>('', [
         Validators.required,
         Validators.email,
       ]),
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         next: (data: any) => {
           this.authService.setDataInStorage({
             accessToken: data.token,
-            username: data.username,
+            displayName: data.displayName,
           });
           this.router.navigate(['/']).then(() => {}); // TODO
         },
@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  get emailAddress() {
-    return this.loginForm.get('emailAddress')!;
+  get email() {
+    return this.loginForm.get('email')!;
   }
 
   get password() {

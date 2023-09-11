@@ -8,9 +8,9 @@ import { AuthService } from '../../../auth/services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   private authService = inject(AuthService);
-  username!: string;
+  displayName!: string;
 
   ngOnInit() {
-    this.username = this.authService.getDataFromStorage().username || 'Account';
+    this.displayName = this.authService.getDataFromStorage().displayName || 'Account';
   }
 }

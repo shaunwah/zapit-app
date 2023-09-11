@@ -21,10 +21,15 @@
                    formControlName="additionalCharges">
           </div>
         </div>
+        <div class="mb-3">
+          <label for="eligiblePoints" class="form-label">Eligible Points*</label>
+          <input type="number" class="form-control border border-light-subtle shadow-sm" id="eligiblePoints"
+                 formControlName="eligiblePoints">
+        </div>
         <div class="vstack" formArrayName="invoiceItems">
           <ng-container *ngFor="let item of invoiceItems.controls; let i = index">
             <ng-container [formGroupName]="i">
-              <h3 [class.mt-2]="i > 0" >{{ item.value.name || "Item " + (i + 1) }}</h3>
+              <h3 [class.mt-2]="i > 0" >{{ item.value.name ?? "Item " + (i + 1) }}</h3>
               <div class="mb-3">
                 <label for="identifier-{{ i }}" class="form-label">Identifier*</label>
                 <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier-{{ i }}"

@@ -19,15 +19,15 @@ import java.util.List;
 public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public User getUserByEmailAddress(String emailAddress) {
-        return userRepository.getUserByEmailAddress(emailAddress);
+    public User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-        User user = getUserByEmailAddress(emailAddress);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = getUserByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("%s does not exist".formatted(emailAddress));
+            throw new UsernameNotFoundException("%s does not exist".formatted(email));
         }
         return new UserPrincipal(user);
     }

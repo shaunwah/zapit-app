@@ -8,6 +8,6 @@ export interface Merchant {
     postCode: string;
     isDeleted: boolean;
     createdBy: User;
-    createdOn: number;
-    updatedOn: number;
+    createdOn: string;
+    updatedOn: string;
 }

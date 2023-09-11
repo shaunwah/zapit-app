@@ -3,12 +3,14 @@
     <div class="text-center">
       <span class="d-block"><strong>{{ invoice.issuedBy?.name || "MERCHANT NAME" | uppercase }}</strong></span>
       <span class="d-block">{{ invoice.issuedBy?.address || "Address" }}</span>
-      <span class="d-block">{{ invoice.issuedBy?.postCode || "Post Code" }}</span>
+      <span class="d-block">{{ invoice.issuedBy?.postCode || "Post Code" }}</span> <!-- TODO REPLACE ALL ||s -->
     </div>
     <hr class="border border-dark-subtle">
     <div>
       <span class="d-block">Receipt No.: {{ invoice.identifier || "Identifier" }}</span>
       <span class="d-block">Date: {{ invoice.createdOn || 0 | date: "medium" }}</span>
+      <span class="d-block">Points Awarded: {{ invoice.eligiblePoints || 0 | number }} pts</span>
+
     </div>
     <hr class="border border-dark-subtle">
     <div *ngIf="invoice.invoiceItems && invoice.invoiceItems.length > 0; else noInvoiceItems">

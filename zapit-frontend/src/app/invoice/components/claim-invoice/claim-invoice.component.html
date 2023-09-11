@@ -1,11 +1,29 @@
-<div class="container">
-    <h1>Save Receipt</h1>
-    <s-app-receipt [invoice]="invoice"></s-app-receipt>
-    <div class="d-grid mb-1">
-        {{ locationData | json }}
-        <button type="button" class="btn btn-success btn-lg shadow-sm" (click)="onClaim()">Claim</button>
+<div class="container h-100 d-flex flex-column justify-content-between justify-content-md-start">
+    <div>
+        <h1>Claim Receipt</h1>
+        <p>
+            Click on the Claim button to claim your receipt.
+        </p>
     </div>
-    <small class="text-muted">
-        Your location data is kept private and will not shared with the merchant.
-    </small>
+    <div>
+        <s-app-receipt [invoice]="invoice"></s-app-receipt>
+        <p>
+            You will earn <strong>{{ invoice.eligiblePoints | number }} pts</strong> from claiming this receipt.
+        </p>
+    </div>
+    <div class="mb-3 text-center">
+        <div class="d-grid mb-1">
+            <button type="button" class="btn btn-success border-0" (click)="onClaim()" [disabled]="!locationData">
+                <ng-container *ngIf="locationData; else noLocationData">
+                    Claim
+                </ng-container>
+                <ng-template #noLocationData>
+                    Processing...
+                </ng-template>
+            </button>
+        </div>
+        <small class="text-muted">
+            Your location data is kept private and will not shared.
+        </small>
+    </div>
 </div>

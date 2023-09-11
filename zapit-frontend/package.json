@@ -21,6 +21,7 @@
     "@angular/service-worker": "^16.2.0",
     "@auth0/angular-jwt": "^5.1.2",
     "@stomp/rx-stomp": "^2.0.0",
+    "@stripe/stripe-js": "^2.1.2",
     "@types/mapbox-gl": "^2.7.13",
     "angularx-qrcode": "^16.0.1",
     "bootstrap": "^5.3.1",
@@ -41,6 +42,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "3.0.3",
     "typescript": "~5.1.3"
   }
 }

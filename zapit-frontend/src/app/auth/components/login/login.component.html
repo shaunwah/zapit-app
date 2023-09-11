@@ -4,13 +4,13 @@
     <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="form-floating mb-3">
-        <input type="email" class="form-control border border-light-subtle shadow-sm" id="emailAddress" placeholder="user@example.com" [class.is-invalid]="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors" formControlName="emailAddress">
-        <ng-container *ngIf="(emailAddress.dirty || emailAddress.touched) && emailAddress.errors; else emailAddressLabel">
-          <label for="emailAddress" *ngIf="emailAddress.getError('required')">Email required</label>
-          <label for="emailAddress" *ngIf="emailAddress.getError('email')">Email format invalid</label>
+        <input type="email" class="form-control border border-light-subtle shadow-sm" id="email" placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors" formControlName="email">
+        <ng-container *ngIf="(email.dirty || email.touched) && email.errors; else emailLabel">
+          <label for="email" *ngIf="email.getError('required')">Email required</label>
+          <label for="email" *ngIf="email.getError('email')">Email format invalid</label>
         </ng-container>
-        <ng-template #emailAddressLabel>
-          <label for="emailAddress">Email</label>
+        <ng-template #emailLabel>
+          <label for="email">Email</label>
         </ng-template>
       </div>
       <div class="form-floating mb-3">

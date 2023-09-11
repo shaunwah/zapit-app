@@ -1,11 +1,11 @@
 package com.shaunwah.zapitbackend.controller;
 
 import com.shaunwah.zapitbackend.model.User;
+import com.shaunwah.zapitbackend.model.UserPrincipal;
 import com.shaunwah.zapitbackend.service.SecurityTokenService;
 import com.shaunwah.zapitbackend.service.UserService;
 import com.shaunwah.zapitbackend.utility.Utilities;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

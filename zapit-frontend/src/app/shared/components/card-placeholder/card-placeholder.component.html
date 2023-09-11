@@ -1,0 +1,10 @@
+<div *ngIf="index == 0; else notFirstCard" class="card border border-3 border-light-subtle mb-3"
+     style="min-height: 175px; min-width: 280px;">
+    <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
+        <span class="d-block text-secondary">Collect more cards to display them here</span>
+    </div>
+</div>
+<ng-template #notFirstCard>
+    <div class="card border border-3 border-light-subtle mb-3" style="min-height: 175px; min-width: 280px;">
+    </div>
+</ng-template>

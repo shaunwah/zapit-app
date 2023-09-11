@@ -1,0 +1,7 @@
+<div class="container" *ngIf="transactions">
+  <h1>Transactions</h1>
+  <div class="mb-3">
+    <s-app-transaction-list-group [transactions]="transactions"></s-app-transaction-list-group>
+  </div>
+  <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit" (pageChanged)="fetchNewData($event)"></s-app-pagination>
+</div>

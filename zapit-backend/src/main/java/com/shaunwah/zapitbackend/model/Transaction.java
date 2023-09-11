@@ -2,15 +2,17 @@ package com.shaunwah.zapitbackend.model;
 
 import lombok.*;
 
-@Getter
-@Setter
+import java.sql.Timestamp;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
     private Long id;
-    private Invoice invoice;
-    private TransactionPayment paymentDetails;
-    private User createdBy;
-    private Long createdOn;
-    private Long updatedOn;
+    private Card card;
+    private Double amount;
+    private Boolean status;
+    private LocationData location;
+    private Timestamp createdOn;
+    private Timestamp updatedOn;
 }

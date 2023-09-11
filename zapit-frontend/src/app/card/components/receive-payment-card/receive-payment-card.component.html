@@ -1,0 +1,28 @@
+<div class="container h-100 d-flex flex-column justify-content-between justify-content-md-start">
+  <div>
+  <h1>Request Payment</h1>
+    <p>To receive a payment, click on the Request button.</p>
+  </div>
+  <div class="d-flex flex-column align-items-center">
+    <s-app-card [card]="card"></s-app-card>
+    <div class="d-flex flex-column align-items-center">
+      <span class="d-block text-muted">To Receive</span>
+      <span class="d-block fs-4">{{ amount.value | number }} pts</span>
+    </div>
+  </div>
+  <form class="mb-3" [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Amount</label>
+      <input type="number" class="form-control border border-light-subtle shadow-sm" id="name" min="0" [class.is-invalid]="(amount.dirty || amount.touched) && amount.errors" formControlName="amount">
+      <ng-container *ngIf="(amount.dirty || amount.touched) && amount.errors">
+        <div *ngIf="amount.getError('required')" class="invalid-feedback">Amount required</div>
+        <div *ngIf="amount.getError('min')" class="invalid-feedback">Amount has to be more than {{ 0 | number }}</div>
+      </ng-container>
+    </div>
+    <div class="d-grid text-center">
+      <button type="submit" class="btn btn-primary border-0" [disabled]="cardForm.invalid">Request</button>
+      <label *ngIf="isWaitingForApproval" class="mt-1 text-muted">Waiting for approval...</label>
+      <label *ngIf="message" class="mt-1 text-muted">{{ message }}</label>
+    </div>
+  </form>
+</div>

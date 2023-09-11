@@ -18,11 +18,11 @@ public final class Utilities {
         return null;
     }
 
-    public static JsonObject returnTokenMessageInJson(String message, String token, String username) {
+    public static JsonObject returnTokenMessageInJson(String message, String token, String displayName) {
         return Json.createObjectBuilder()
                 .add("message", message)
                 .add("token", token)
-                .add("username", username)
+                .add("displayName", displayName)
                 .add("timestamp", new Date().getTime())
                 .build();
     }

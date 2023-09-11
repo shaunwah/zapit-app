@@ -1,0 +1,14 @@
+<div class="container h-100 d-flex flex-column justify-content-between justify-content-md-start">
+  <div>
+  <h1>Scan Card</h1>
+  <p>Present this QR Code to {{ card.issuedBy.name }} to pay with points.</p>
+  </div>
+  <div class="text-center mb-3">
+    <qrcode [qrdata]="qrCodeData" [width]="256" cssClass="mb-3 text-center"></qrcode>
+    <span class="d-block fs-4">{{ card.balance | number }} pts</span>
+    <small class="d-block mono">{{ cardId }}</small>
+  </div>
+  <div class="d-grid mb-3">
+    <button type="button" class="btn btn-danger border-0" [routerLink]="['/card', cardId]">Cancel</button>
+  </div>
+</div>

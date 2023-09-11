@@ -2,6 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {InvoiceService} from "../../services/invoice.service";
 import {Invoice} from "../../invoice";
 import {first} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {Card} from "../../../card/card";
 
 @Component({
   selector: 'app-view-invoices',
@@ -10,15 +12,23 @@ import {first} from "rxjs";
 })
 export class ViewInvoicesComponent implements OnInit {
   private invoiceService = inject(InvoiceService);
+  private route = inject(ActivatedRoute);
   invoices!: Invoice[];
+  page!: number;
+  limit: number = 10;
 
   ngOnInit() {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page') ?? 1);
+    this.fetchNewData(this.page);
+  }
+
+  fetchNewData(page: number) {
     this.invoiceService
-      .getInvoicesByUserId()
-      .pipe(first())
-      .subscribe({
-        next: (invoices) => (this.invoices = invoices),
-        error: (err) => console.log(err.message),
-      });
+        .getInvoicesByUserId(this.limit, (page - 1) * this.limit)
+        .pipe(first())
+        .subscribe({
+          next: (invoices) => (this.invoices = invoices),
+          error: (err) => console.log(err.message),
+        });
   }
 }

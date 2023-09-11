@@ -1,13 +1,51 @@
-<div class="container">
+<div class="container" *ngIf="invoice">
     <h1>Receipt</h1>
-    <h2>Details</h2>
+    <div class="mb-3">
+            <span class="d-block fs-2 fw-bold">{{ invoice.total | currency }}</span>
+        <span class="d-block text-muted">{{ invoice.createdOn | date: "mediumDate" }}</span>
+    </div>
     <s-app-receipt [invoice]="invoice"></s-app-receipt>
-    <div id="mapbox" class="rounded mb-3" style="height: 350px; width: 100%;"></div>
+    <ul class="list-group border-0 mb-3">
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+            <div class="ms-2 me-auto text-muted">
+                Name
+            </div>
+            <span>{{ invoice.issuedBy?.name }}</span>
+        </li>
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+            <div class="ms-2 me-auto text-muted">
+                Website
+            </div>
+            <a class="link-underline link-underline-opacity-0" [href]="invoice.issuedBy?.website">{{ invoice.issuedBy?.website }}</a>
+        </li>
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+            <div class="ms-2 me-auto text-muted">
+                Address
+            </div>
+            <span>{{ invoice.issuedBy?.address }} {{ invoice.issuedBy?.postCode }}</span>
+        </li>
+    </ul>
+    <ul class="list-group border-0 mb-3">
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+            <div class="ms-2 me-auto text-muted">
+                Eligible Points
+            </div>
+            <span>
+                {{ invoice.eligiblePoints | number }} pts
+            </span>
+        </li>
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+            <div class="ms-2 me-auto text-muted">
+                Date
+            </div>
+            <span>{{ invoice.createdOn | date: "medium" }}</span>
+        </li>
+    </ul>
     <ng-container *ngIf="invoice && invoice.claimedBy && relatedInvoices && relatedInvoices.length">
         <h2>Related</h2>
         <s-app-invoice-list-group [invoices]="relatedInvoices"></s-app-invoice-list-group>
     </ng-container>
-    <div class="d-grid" *ngIf="invoice && !invoice.claimedBy">
+    <div class="d-grid mb-3" *ngIf="invoice && !invoice.claimedBy">
         <button type="button" class="btn btn-info border-0 mb-1" [routerLink]="['/invoice', invoice.id, 'scan']"
                 [queryParams]="{ t: invoice.createdOn }">Scan
         </button>

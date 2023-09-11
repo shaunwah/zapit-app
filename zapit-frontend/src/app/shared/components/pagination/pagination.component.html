@@ -1,0 +1,11 @@
+<div class="list-group list-group-horizontal border-0 gap-2 mb-3">
+    <a class="list-group-item list-group-item-secondary list-group-item-action border-0 rounded-2 text-center" (click)="onPreviousPage()" [class.disabled]="page <= 1">
+        <i class="bi-caret-left-fill"></i>
+    </a>
+    <a class="list-group-item list-group-item-secondary border-0 rounded-2 text-center">
+        <input type="number" class="border-0 text-center" style="width: 35px; background-color: rgba(0,0,0,0)" id="page" min="1" [value]="page" (change)="onPageChange($event)">
+    </a>
+    <a class="list-group-item list-group-item-secondary list-group-item-action border-0 rounded-2 text-center" (click)="onNextPage()" [class.disabled]="dataLength == 0 || dataLength < dataLimit">
+        <i class="bi-caret-right-fill"></i>
+    </a>
+</div>

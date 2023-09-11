@@ -8,12 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QRCodeComponent } from 'angularx-qrcode';
 import { InvoiceService } from '../../services/invoice.service';
-import { Invoice } from '../../invoice';
 import { first, Subscription } from 'rxjs';
 import { RxStompService } from '../../../shared/services/rx-stomp.service';
-import { Message } from 'postcss';
 import { IMessage } from '@stomp/rx-stomp';
 
 @Component({

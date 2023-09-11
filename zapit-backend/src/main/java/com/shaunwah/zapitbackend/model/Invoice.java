@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -16,10 +17,10 @@ public class Invoice {
     private Double salesTax;
     private Double additionalCharges;
     private Double total;
+    private Double eligiblePoints;
     private String status;
     private Merchant issuedBy;
     private User claimedBy;
-    private LocationData claimedAt;
     private Long createdOn;
     private Long updatedOn;
 }

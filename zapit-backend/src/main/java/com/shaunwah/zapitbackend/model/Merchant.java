@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +20,10 @@ public class Merchant {
     @JsonIgnore
     private Boolean isDeleted;
     private User createdBy;
-    private Long createdOn;
-    private Long updatedOn;
+    private Timestamp createdOn;
+    private Timestamp updatedOn;
+
+    public Merchant(Long merchantId) {
+        this.id = merchantId;
+    }
 }
