@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
@@ -15,4 +15,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag registry.digitalocean.com/shaunwah/zapit-app::$(date +%s)
+      
+  push:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2.4.1
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Login to DCR
+      run: doctl registry login --expiry-seconds 900
+    - name: Push image to DCR
+      run: docker push registry.digitalocean.com/shaunwah/zapit-app::$(date +%s)
