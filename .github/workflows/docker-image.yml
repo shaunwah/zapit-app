@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag registry.digitalocean.com/shaunwah/zapit-app::$(date +%s)
+      run: docker build . --file Dockerfile --tag registry.digitalocean.com/shaunwah/zapit-app:$(date +%s)
       
   push:
 
@@ -30,4 +30,4 @@ jobs:
     - name: Login to DCR
       run: doctl registry login --expiry-seconds 900
     - name: Push image to DCR
-      run: docker push registry.digitalocean.com/shaunwah/zapit-app::$(date +%s)
+      run: docker push registry.digitalocean.com/shaunwah/zapit-app:$(date +%s)
