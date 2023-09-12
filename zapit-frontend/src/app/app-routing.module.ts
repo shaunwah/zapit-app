@@ -70,25 +70,25 @@ const routes: Routes = [
   {
     path: 'invoice/:invoiceId/scan',
     component: ScanInvoiceComponent,
-    title: 'Invoice Scan',
+    title: 'Receipt Scan',
     canActivate: [merchantUserGuard],
   },
   {
     path: 'invoice/:invoiceId/claim',
     component: ClaimInvoiceComponent,
-    title: 'Invoice Claim',
+    title: 'Receipt Claim',
     canActivate: [authGuard],
   },
   {
     path: 'invoice/:invoiceId',
     component: ViewInvoiceComponent,
-    title: 'Invoice',
+    title: 'Receipt',
     canActivate: [authGuard],
   },
   {
     path: 'invoices',
     component: ViewInvoicesComponent,
-    title: 'Invoices',
+    title: 'Receipts',
     canActivate: [authGuard],
   },
   {

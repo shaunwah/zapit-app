@@ -2,15 +2,12 @@ package com.shaunwah.zapitbackend.service;
 
 import com.shaunwah.zapitbackend.model.*;
 import com.shaunwah.zapitbackend.repository.InvoiceRepository;
-import com.shaunwah.zapitbackend.repository.MerchantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +78,7 @@ public class InvoiceService {
                 newCard.setUser(new User(userId));
                 newCard.setBalance(invoice.getEligiblePoints());
                 newCard.setIssuedBy(invoice.getIssuedBy());
-                if (cardService.createCard(newCard, userId).isEmpty()) {
+                if (cardService.createCard(newCard, userId, locationData).isEmpty()) {
                     throw new Exception("2");
                 }
             } else {
@@ -94,7 +91,7 @@ public class InvoiceService {
             }
             if (!invoiceRepository.claimInvoice(invoiceId, timestamp, userId)) {
                 throw new Exception("4");
-            };
+            }
             return true;
         }
         catch (Exception e) {

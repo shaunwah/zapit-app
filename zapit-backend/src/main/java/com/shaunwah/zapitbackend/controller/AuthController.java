@@ -30,7 +30,8 @@ public class AuthController {
         String token = securityTokenService.generateToken(auth);
         if (token != null) {
             log.info("Token generated: %s".formatted(token));
-            return ResponseEntity.ok(new UserAuthData(token, auth.getName(), ((UserPrincipal) auth.getPrincipal()).getUser().getRoles()));
+            final User user = ((UserPrincipal) auth.getPrincipal()).getUser();
+            return ResponseEntity.ok(new UserAuthData(token, auth.getName(), userService.getAvatarHash(user.getEmail()), user.getRoles()));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .build();

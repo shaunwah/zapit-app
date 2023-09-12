@@ -1,25 +1,35 @@
 <nav class="navbar navbar-expand d-block d-md-none fixed-bottom bg-black rounded-top-4" data-bs-theme="dark">
   <div class="container-fluid">
     <div class="mx-auto">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav d-flex gap-1">
         <li class="nav-item">
           <a routerLink="/" routerLinkActive="bg-dark" [routerLinkActiveOptions]="{ exact: true }"
-             class="nav-link mx-2 rounded text-light">
+             class="nav-link rounded text-light">
             <i class="bi-house fs-1 px-2"></i>
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/invoices" routerLinkActive="bg-dark" class="nav-link mx-2 rounded text-light">
+          <a routerLink="/invoices" routerLinkActive="bg-dark" class="nav-link rounded text-light">
             <i class="bi-receipt fs-1 px-2"></i>
+            <span class="d-none" routerLink="/invoice"></span>
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/wallet" routerLinkActive="bg-dark" class="nav-link mx-2 rounded text-light">
+          <a routerLink="/wallet" routerLinkActive="bg-dark" class="nav-link rounded text-light">
             <i class="bi-wallet2 fs-1 px-2"></i>
+            <span class="d-none" routerLink="/cards"></span>
+            <span class="d-none" routerLink="/card"></span>
+            <span class="d-none" routerLink="/transactions"></span>
+            <span class="d-none" routerLink="/transaction"></span>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isMerchantUser()">
+          <a routerLink="/merchant" routerLinkActive="bg-dark" class="nav-link rounded text-light">
+            <i class="bi-shop fs-1 px-2"></i>
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/settings" routerLinkActive="bg-dark" class="nav-link mx-2 rounded text-light">
+          <a routerLink="/settings" routerLinkActive="bg-dark" class="nav-link rounded text-light">
             <i class="bi-gear fs-1 px-2"></i>
           </a>
         </li>

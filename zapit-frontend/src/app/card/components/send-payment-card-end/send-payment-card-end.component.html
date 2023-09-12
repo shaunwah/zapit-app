@@ -20,7 +20,7 @@
   <div>
     <ul class="list-group border-0 mb-3 w-100">
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-        <div class="ms-2 me-auto text-muted">
+        <div class="me-auto text-muted">
           Card
         </div>
         <a class="link-underline link-underline-opacity-0 mono" [routerLink]="['/card', transaction.card.id]"><i
@@ -29,14 +29,14 @@
     </ul>
     <ul class="list-group border-0 mb-3 w-100">
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-        <div class="ms-2 me-auto text-muted">
+        <div class="me-auto text-muted">
           <ng-container *ngIf="isPositive(transaction.amount); else notPositive">Paid from</ng-container>
           <ng-template #notPositive>Paid to</ng-template>
         </div>
         <span>{{ transaction.card.issuedBy.name }}</span>
       </li>
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-        <div class="ms-2 me-auto text-muted">
+        <div class="me-auto text-muted">
           Amount
         </div>
         <span [class.text-success]="isPositive(transaction.amount)"
@@ -44,7 +44,7 @@
           pts</span>
       </li>
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-        <div class="ms-2 me-auto text-muted">
+        <div class="me-auto text-muted">
           Status
         </div>
         <span>
@@ -53,7 +53,7 @@
                 </span>
       </li>
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-        <div class="ms-2 me-auto text-muted">
+        <div class="me-auto text-muted">
           Date
         </div>
         <span>{{ transaction.createdOn | date: "medium" }}</span>

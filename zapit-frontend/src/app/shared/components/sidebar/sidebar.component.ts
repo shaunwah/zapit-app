@@ -9,10 +9,12 @@ import { AuthService } from '../../../auth/services/auth.service';
 export class SidebarComponent implements OnInit {
   private authService = inject(AuthService);
   displayName!: string;
+  avatarUrl!: string;
 
   ngOnInit() {
-    this.displayName =
-      this.authService.getDataFromStorage().displayName ?? 'Account';
+    const userAuthData = this.authService.getDataFromStorage();
+    this.displayName = userAuthData.displayName ?? 'Account';
+    this.avatarUrl = `https://www.gravatar.com/avatar/${userAuthData.avatarHash}`;
   }
 
   isMerchantUser() {

@@ -2,16 +2,11 @@ package com.shaunwah.zapitbackend.service;
 
 import com.shaunwah.zapitbackend.model.*;
 import com.shaunwah.zapitbackend.repository.CardRepository;
-import com.shaunwah.zapitbackend.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +31,7 @@ public class CardService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Optional<Card> createCard(Card card, Long userId) throws Exception {
+    public Optional<Card> createCard(Card card, Long userId, LocationData locationData) throws Exception {
         try {
             card.setUser(new User(userId));
             card.setId(UUID.randomUUID().toString());
@@ -44,13 +39,13 @@ public class CardService {
                 throw new Exception();
             }
             try {
-                addToCard(card.getId(), card.getBalance(), card.getUser().getId(), null);
+                addToCard(card.getId(), card.getBalance(), card.getUser().getId(), locationData);
             } catch (Exception e) {
                 throw new Exception();
             }
             return Optional.of(card);
         } catch (Exception e) {
-            log.severe("a " + e.getMessage());
+            log.severe(e.getMessage());
             throw new Exception();
         }
     }
@@ -79,7 +74,7 @@ public class CardService {
             }
             return newTransaction;
         } catch (Exception e) {
-            log.severe("b " + e.getMessage());
+            log.severe(e.getMessage());
             throw new Exception();
         }
     }
@@ -108,7 +103,7 @@ public class CardService {
             }
             return newTransaction;
         } catch (Exception e) {
-            log.severe("c " + e.getMessage());
+            log.severe(e.getMessage());
             throw new Exception();
         }
     }

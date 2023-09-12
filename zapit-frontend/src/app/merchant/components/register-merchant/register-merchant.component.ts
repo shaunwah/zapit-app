@@ -38,7 +38,9 @@ export class RegisterMerchantComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          this.setDataInStorage(this.getDataFromStorage());
+          const data = this.getDataFromStorage();
+          data.roles = 'ROLE_MERCHANT';
+          this.setDataInStorage(data);
           return this.router.navigate(['/']);
         },
         error: (err) => console.error(err.message),
@@ -46,8 +48,10 @@ export class RegisterMerchantComponent implements OnInit {
   }
 
   setDataInStorage(data: UserAuthData) {
+    this.authService.setDataInStorage(data);
     localStorage.setItem('access_token', data.accessToken);
     localStorage.setItem('display_name', data.displayName);
+    localStorage.setItem('avatarHash', data.avatarHash);
     localStorage.setItem('roles', 'ROLE_MERCHANT');
   }
 

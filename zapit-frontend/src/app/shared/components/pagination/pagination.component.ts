@@ -13,7 +13,9 @@ export class PaginationComponent {
 
   onPageChange(event: any) {
     this.page = Number(event.target.value);
-    this.pageChanged.emit(this.page);
+    if (this.page >= 1) {
+      this.pageChanged.emit(this.page);
+    }
   }
 
   onNextPage() {

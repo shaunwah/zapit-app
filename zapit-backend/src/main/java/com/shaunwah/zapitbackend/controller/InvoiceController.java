@@ -6,17 +6,12 @@ import com.shaunwah.zapitbackend.service.InvoiceService;
 import com.shaunwah.zapitbackend.utility.Utilities;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +66,7 @@ public class InvoiceController {
     @PostMapping("/invoice/{invoiceId}")
     public ResponseEntity<String> claimInvoice(@PathVariable String invoiceId, @RequestParam(name = "t") Long timestamp, @RequestBody(required = false) LocationData locationData, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
+        System.out.println("cont" + locationData);
         Boolean result = invoiceService.claimInvoice(invoiceId, timestamp, locationData, JWT_USER_ID);
         if (result) {
             return ResponseEntity.ok(Utilities.returnClaimInvoiceMessageInJson("successfully claimed %s".formatted(invoiceId), JWT_USER_ID).toString());

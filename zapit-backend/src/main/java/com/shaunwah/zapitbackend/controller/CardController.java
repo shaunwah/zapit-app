@@ -36,7 +36,7 @@ public class CardController {
     @PostMapping("/cards")
     public ResponseEntity<String> createCard(@RequestBody Card card, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        Optional<Card> createdCard = cardService.createCard(card, JWT_USER_ID);
+        Optional<Card> createdCard = cardService.createCard(card, JWT_USER_ID, null);
         if (createdCard.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Utilities.returnMessageInJson("successfully generated card").toString());
