@@ -26,4 +26,4 @@ ENV PORT=80
 
 EXPOSE ${PORT}
 
-ENTRYPOINT ["java", "-jar", "/zapit/app.jar", "-Dserver.port=${PORT}"]
+ENTRYPOINT SERVER_PORT=${PORT} java -jar /zapit/app.jar -Dserver.port=${PORT}
