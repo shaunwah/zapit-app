@@ -29,7 +29,7 @@ public class MerchantController {
     }
 
     @PostMapping("/merchants")
-    public ResponseEntity<Merchant> createMerchant(@RequestBody Merchant merchant, HttpServletRequest request) {
+    public ResponseEntity<Merchant> createMerchant(@RequestBody Merchant merchant, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
         return ResponseEntity.of(merchantService.createMerchant(merchant, JWT_USER_ID));
     }

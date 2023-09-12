@@ -35,6 +35,12 @@ export class AuthService {
     );
   }
 
+  isMerchantUser(): boolean {
+    return (
+      (this.getDataFromStorage() as UserAuthData).roles === 'ROLE_MERCHANT'
+    );
+  }
+
   setDataInStorage(data: UserAuthData): void {
     localStorage.setItem('access_token', data.accessToken);
     localStorage.setItem('display_name', data.displayName);

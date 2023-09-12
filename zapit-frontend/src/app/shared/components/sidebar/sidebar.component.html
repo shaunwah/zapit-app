@@ -30,15 +30,17 @@
         Cards
       </a>
     </li>
-    <li>
-      <hr class="border border-light mx-3">
-    </li>
-    <li>
-      <a routerLink="/merchant" routerLinkActive="bg-dark" class="nav-link text-light">
-        <i class="bi-tools pe-none me-2"></i>
-        Merchant Tools
-      </a>
-    </li>
+    <ng-container *ngIf="isMerchantUser()">
+      <li>
+        <hr class="border border-light mx-3">
+      </li>
+      <li>
+        <a routerLink="/merchant" routerLinkActive="bg-dark" class="nav-link text-light">
+          <i class="bi-tools pe-none me-2"></i>
+          Merchant Tools
+        </a>
+      </li>
+    </ng-container>
   </ul>
   <div class="dropdown p-3">
     <a href="#" class="d-flex align-items-center text-light text-decoration-none"

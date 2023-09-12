@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from './auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeService } from './shared/services/theme.service';
 
@@ -9,8 +8,8 @@ import { ThemeService } from './shared/services/theme.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  private authService = inject(AuthService);
   private themeService = inject(ThemeService);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   title = 'Zapit';
   navClass = 'main-with-sidebar pt-3 pt-md-4';
@@ -20,12 +19,14 @@ export class AppComponent implements OnInit {
   }
 
   displayNavs() {
-    return !(
-      this.router.url.trim().toLowerCase() == '/login' ||
-      this.router.url.trim().toLowerCase() == '/logout' ||
-      this.router.url.trim().toLowerCase() == '/register' ||
-      (this.router.url.trim().toLowerCase().includes('/invoice') &&
-        this.router.url.trim().toLowerCase().includes('/scan'))
+    return (
+      !(
+        this.router.url.trim().toLowerCase() == '/login' ||
+        this.router.url.trim().toLowerCase() == '/logout' ||
+        this.router.url.trim().toLowerCase() == '/register' ||
+        (this.router.url.trim().toLowerCase().includes('/invoice') &&
+          this.router.url.trim().toLowerCase().includes('/scan'))
+      ) && !this.route.snapshot.queryParamMap.has('next')
     );
   }
 }

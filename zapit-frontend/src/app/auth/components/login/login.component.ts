@@ -78,15 +78,18 @@ export class LoginComponent implements OnInit, AfterContentChecked {
     const regex = /\?.+/g;
     const route = decodeURIComponent(next).split('/');
     const queryParams: any = {}; // TODO to optimise
-    route[route.length - 1]
-      .match(regex)![0]
-      .substring(1)
-      .split('&')
-      .forEach((queryParam) => {
-        const splitQueryParam = queryParam.split('=');
-        queryParams[splitQueryParam[0]] = splitQueryParam[1];
-      });
-    route[route.length - 1] = route[route.length - 1].replace(regex, '');
+    console.log(route[route.length - 1]);
+    if (route[route.length - 1]) {
+      route[route.length - 1]
+        .match(regex)![0]
+        .substring(1)
+        .split('&')
+        .forEach((queryParam) => {
+          const splitQueryParam = queryParam.split('=');
+          queryParams[splitQueryParam[0]] = splitQueryParam[1];
+        });
+      route[route.length - 1] = route[route.length - 1].replace(regex, '');
+    }
     return {
       route: ['/', ...route],
       queryParams,

@@ -36,6 +36,11 @@ public class UserService {
         return userRepository.updateUser(user) > 0;
     }
 
+    public Boolean updateUserRolesById(String roles, Long userId) {
+        return userRepository.updateUserRolesById(roles, userId) > 0;
+    }
+
+
     public Boolean deleteUser(Long userId) {
         return userRepository.deleteUser(userId) > 0;
     }

@@ -14,4 +14,8 @@ export class SidebarComponent implements OnInit {
     this.displayName =
       this.authService.getDataFromStorage().displayName ?? 'Account';
   }
+
+  isMerchantUser() {
+    return this.authService.isMerchantUser();
+  }
 }

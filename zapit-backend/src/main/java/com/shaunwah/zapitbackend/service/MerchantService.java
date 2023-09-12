@@ -4,14 +4,18 @@ import com.shaunwah.zapitbackend.model.Merchant;
 import com.shaunwah.zapitbackend.model.User;
 import com.shaunwah.zapitbackend.repository.MerchantRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class MerchantService {
     private final MerchantRepository merchantRepository;
+    private final UserService userService;
 
     public Optional<Merchant> getMerchantById(Long merchantId) {
         return Optional.ofNullable(merchantRepository.getMerchantById(merchantId));
@@ -21,12 +25,21 @@ public class MerchantService {
         return Optional.ofNullable(merchantRepository.getMerchantByUserId(userId));
     }
 
-    public Optional<Merchant> createMerchant(Merchant merchant, Long userId) {
-        merchant.setCreatedBy(new User(userId));
-        Long merchantId = merchantRepository.createMerchant(merchant);
-        if (merchantId != null) {
-            merchant.setId(merchantId);
-            return Optional.of(merchant);
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<Merchant> createMerchant(Merchant merchant, Long userId) throws Exception {
+        try {
+            merchant.setCreatedBy(new User(userId));
+            Long merchantId = merchantRepository.createMerchant(merchant);
+            if (merchantId != null) {
+                merchant.setId(merchantId);
+                if (!userService.updateUserRolesById("ROLE_MERCHANT", userId)) {
+                    throw new Exception();
+                }
+                return Optional.of(merchant);
+            }
+        } catch (Exception e) {
+            log.severe(e.getMessage());
+            throw new Exception();
         }
         return Optional.empty();
     }

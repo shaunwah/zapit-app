@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { Router } from '@angular/router';
 import { Merchant } from '../../merchant';
+import { AuthService } from '../../../auth/services/auth.service';
+import { UserAuthData } from '../../../shared/interfaces/user-auth-data';
 
 @Component({
   selector: 'app-register-merchant',
@@ -12,6 +14,7 @@ import { Merchant } from '../../merchant';
 })
 export class RegisterMerchantComponent implements OnInit {
   private merchantService = inject(MerchantService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   merchantForm!: FormGroup;
@@ -34,8 +37,21 @@ export class RegisterMerchantComponent implements OnInit {
       .createMerchant(merchant)
       .pipe(first())
       .subscribe({
-        next: () => this.router.navigate(['/']),
+        next: () => {
+          this.setDataInStorage(this.getDataFromStorage());
+          return this.router.navigate(['/']);
+        },
         error: (err) => console.error(err.message),
       });
+  }
+
+  setDataInStorage(data: UserAuthData) {
+    localStorage.setItem('access_token', data.accessToken);
+    localStorage.setItem('display_name', data.displayName);
+    localStorage.setItem('roles', 'ROLE_MERCHANT');
+  }
+
+  getDataFromStorage() {
+    return this.authService.getDataFromStorage();
   }
 }
