@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import {
   AbstractControl,
@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { first } from 'rxjs';
-import {Router} from "@angular/router";
-import {AlertComponent} from "../../../shared/components/alert/alert.component";
+import { Router } from '@angular/router';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-register',
@@ -26,10 +26,26 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.fb.group(
       {
-        email: this.fb.control<string>('', [Validators.required, Validators.email]),
-        displayName: this.fb.control<string>('', [Validators.required]),
-        password: this.fb.control<string>('', [Validators.required]),
-        passwordConfirm: this.fb.control<string>('', [Validators.required]),
+        email: this.fb.control<string>('', [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(128),
+        ]),
+        displayName: this.fb.control<string>('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(32),
+        ]),
+        password: this.fb.control<string>('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(64),
+        ]),
+        passwordConfirm: this.fb.control<string>('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(64),
+        ]),
       },
       {
         validators: this.passwordConfirmValidator,

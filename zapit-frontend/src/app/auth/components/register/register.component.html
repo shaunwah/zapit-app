@@ -4,39 +4,69 @@
     <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
     <form [formGroup]="registerForm" (ngSubmit)="register()">
       <div class="form-floating mb-3">
-        <input type="email" class="form-control border border-light-subtle shadow-sm" id="email" placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors" formControlName="email">
+        <input type="email" class="form-control border border-light-subtle shadow-sm" id="email"
+               placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors"
+               formControlName="email">
         <ng-container *ngIf="(email.dirty || email.touched) && email.errors; else emailLabel">
           <label for="email" *ngIf="email.getError('required')">Email required</label>
           <label for="email" *ngIf="email.getError('email')">Email format invalid</label>
+          <label for="email" *ngIf="email.getError('maxlength')">Email cannot
+            exceed {{ email.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #emailLabel>
           <label for="email">Email</label>
         </ng-template>
       </div>
       <div class="form-floating mb-3">
-        <input type="text" class="form-control border border-light-subtle shadow-sm" id="displayName" placeholder="user" [class.is-invalid]="(displayName.dirty || displayName.touched) && displayName.errors" formControlName="displayName">
+        <input type="text" class="form-control border border-light-subtle shadow-sm" id="displayName" placeholder="user"
+               [class.is-invalid]="(displayName.dirty || displayName.touched) && displayName.errors"
+               formControlName="displayName">
         <ng-container *ngIf="(displayName.dirty || displayName.touched) && displayName.errors; else displayNameLabel">
-          <label for="displayName" *ngIf="displayName.getError('required')">Display name required</label>
+          <label for="displayName" *ngIf="displayName.getError('required')">Display Name required</label>
+          <label for="email" *ngIf="displayName.getError('minlength')">Display Name requires at
+            least {{ displayName.getError('minlength').requiredLength }} characters</label>
+          <label for="email" *ngIf="displayName.getError('maxlength')">Display Name cannot
+            exceed {{ displayName.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #displayNameLabel>
           <label for="displayName">Display Name</label>
         </ng-template>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password" placeholder="password" [class.is-invalid]="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch')))" formControlName="password">
-        <ng-container *ngIf="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch'))); else passwordLabel">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password"
+               placeholder="password"
+               [class.is-invalid]="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch')))"
+               formControlName="password">
+        <ng-container
+          *ngIf="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch'))); else passwordLabel">
           <label for="password" *ngIf="password.getError('required')">Password required</label>
-          <label for="passwordConfirm" *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && registerForm.getError('passwordsDoNotMatch')">Passwords do not match</label>
+          <label for="passwordConfirm"
+                 *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && registerForm.getError('passwordsDoNotMatch')">Passwords
+            do not match</label> <label for="email" *ngIf="email.getError('maxlength')">Email cannot
+          exceed {{ email.getError('maxlength').requiredLength }} characters</label>
+          <label for="email" *ngIf="password.getError('minlength')">Password requires at
+            least {{ password.getError('minlength').requiredLength }} characters</label>
+          <label for="email" *ngIf="password.getError('maxlength')">Password cannot
+            exceed {{ password.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #passwordLabel>
           <label for="password">Password</label>
         </ng-template>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control border border-light-subtle shadow-sm" id="passwordConfirm" placeholder="password" [class.is-invalid]="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch'))" formControlName="passwordConfirm">
-        <ng-container *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch')); else passwordConfirmLabel">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="passwordConfirm"
+               placeholder="password"
+               [class.is-invalid]="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch'))"
+               formControlName="passwordConfirm">
+        <ng-container
+          *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || registerForm.hasError('passwordsDoNotMatch')); else passwordConfirmLabel">
           <label for="passwordConfirm" *ngIf="passwordConfirm.getError('required')">Password required</label>
-          <label for="passwordConfirm" *ngIf="registerForm.getError('passwordsDoNotMatch')">Passwords do not match</label>
+          <label for="passwordConfirm" *ngIf="registerForm.getError('passwordsDoNotMatch')">Passwords do not
+            match</label>
+          <label for="email" *ngIf="passwordConfirm.getError('minlength')">Password requires at
+            least {{ passwordConfirm.getError('minlength').requiredLength }} characters</label>
+          <label for="email" *ngIf="passwordConfirm.getError('maxlength')">Password cannot
+            exceed {{ email.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #passwordConfirmLabel>
           <label for="passwordConfirm">Password confirm</label>

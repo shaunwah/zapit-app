@@ -1,8 +1,14 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 @Component({
@@ -10,12 +16,14 @@ import { AlertComponent } from '../../../shared/components/alert/alert.component
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterContentChecked {
   @ViewChild('alertComponent') alertComponent!: AlertComponent;
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   loginForm!: FormGroup;
+  redirectToRouteOnLogin?: string;
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -27,7 +35,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login() {
+  ngAfterContentChecked() {
+    this.redirectToRouteOnLogin = String(
+      this.route.snapshot.queryParamMap.get('next'),
+    );
+  }
+
+  onLogin() {
     if (this.authService.isAuthenticated()) {
       this.authService.logout();
     }
@@ -40,7 +54,26 @@ export class LoginComponent implements OnInit {
             accessToken: data.token,
             displayName: data.displayName,
           });
-          this.router.navigate(['/']).then(() => {}); // TODO
+          if (this.redirectToRouteOnLogin) {
+            const route = decodeURIComponent(this.redirectToRouteOnLogin).split(
+              '/',
+            );
+            const queryParams: any = {}; // TODO to optimise
+            route[route.length - 1]
+              .match(/\?.+/g)![0]
+              .substring(1)
+              .split('&')
+              .forEach((queryParam) => {
+                const splitQueryParam = queryParam.split('=');
+                queryParams[splitQueryParam[0]] = splitQueryParam[1];
+              });
+            route[route.length - 1] = route[route.length - 1].replace(
+              /\?.+/g,
+              '',
+            );
+            return this.router.navigate(['/', ...route], { queryParams });
+          }
+          return this.router.navigate(['/']);
         },
         error: () => {
           this.alertComponent.visible = true;

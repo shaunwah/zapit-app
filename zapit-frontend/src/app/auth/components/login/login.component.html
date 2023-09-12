@@ -2,9 +2,11 @@
   <div class="container flex-md-grow-0 flex-fill w-25">
     <h1 class="display-5 text-dark">Welcome</h1>
     <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-floating mb-3">
-        <input type="email" class="form-control border border-light-subtle shadow-sm" id="email" placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors" formControlName="email">
+        <input type="email" class="form-control border border-light-subtle shadow-sm" id="email"
+               placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors"
+               formControlName="email">
         <ng-container *ngIf="(email.dirty || email.touched) && email.errors; else emailLabel">
           <label for="email" *ngIf="email.getError('required')">Email required</label>
           <label for="email" *ngIf="email.getError('email')">Email format invalid</label>
@@ -14,7 +16,9 @@
         </ng-template>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password" placeholder="password" [class.is-invalid]="(password.dirty || password.touched) && password.errors" formControlName="password">
+        <input type="password" class="form-control border border-light-subtle shadow-sm" id="password"
+               placeholder="password" [class.is-invalid]="(password.dirty || password.touched) && password.errors"
+               formControlName="password">
         <ng-container *ngIf="(password.dirty || password.touched) && password.errors; else passwordLabel">
           <label for="password" *ngIf="password.getError('required')">Password required</label>
         </ng-container>
@@ -26,7 +30,9 @@
         <button type="submit" class="btn btn-dark btn-lg shadow-sm" [disabled]="loginForm.invalid">Login</button>
       </div>
       <div>
-        <span class="text-dark">New here? <a class="link-primary link-underline link-underline-opacity-0 link-underline-opacity-75-hover" routerLink="/register">Create an account</a></span>
+        <span class="text-dark">New here? <a
+          class="link-primary link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+          routerLink="/register">Create an account</a></span>
       </div>
     </form>
   </div>

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../user/user';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ export class AuthService {
   private readonly apiUrl = '/api/auth';
 
   login(user: User): Observable<User> {
-    const authData = btoa(`${user.email}:${user.password}`)
+    const authData = btoa(`${user.email}:${user.password}`);
     const headers = new HttpHeaders().set('Authorization', `Basic ${authData}`);
     return this.http.post<User>(`${this.apiUrl}/login`, null, { headers });
   }
@@ -29,7 +29,7 @@ export class AuthService {
     return data != null && data.accessToken != null && data.displayName != null;
   }
 
-  setDataInStorage(data: {accessToken: string, displayName: string}) {
+  setDataInStorage(data: { accessToken: string; displayName: string }) {
     localStorage.setItem('access_token', data.accessToken);
     localStorage.setItem('display_name', data.displayName);
   }
