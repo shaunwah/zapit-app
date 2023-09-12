@@ -22,7 +22,7 @@ FROM eclipse-temurin:17
 
 COPY --from=builder2 /app/target/*.jar zapit/app.jar
 
-ENV PORT=8080
+ENV PORT=80
 
 EXPOSE ${PORT}
 
