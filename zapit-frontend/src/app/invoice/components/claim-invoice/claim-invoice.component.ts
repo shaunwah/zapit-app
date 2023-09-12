@@ -3,7 +3,6 @@ import { InvoiceService } from '../../services/invoice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Invoice } from '../../invoice';
 import { first } from 'rxjs';
-import { MerchantService } from '../../../merchant/services/merchant.service';
 import { LocationData } from '../../../shared/interfaces/location-data';
 import { RxStompService } from '../../../shared/services/rx-stomp.service';
 
@@ -37,7 +36,7 @@ export class ClaimInvoiceComponent implements OnInit {
         },
         error: (err) => console.error(err.message),
       });
-    this.getLocationData();
+    this.getCurrentPosition();
   }
 
   onClaim() {
@@ -64,15 +63,20 @@ export class ClaimInvoiceComponent implements OnInit {
     });
   }
 
-  getLocationData() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.locationData = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      console.log(
-        `Location obtained: ${this.locationData.latitude}, ${this.locationData.longitude}`,
-      );
-    });
+  getCurrentPosition() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.locationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        console.info(
+          `Location data obtained (${this.locationData.latitude}, ${this.locationData.longitude})`,
+        );
+      },
+      () => {
+        console.info(`Failed to obtain location data`);
+      },
+    );
   }
 }

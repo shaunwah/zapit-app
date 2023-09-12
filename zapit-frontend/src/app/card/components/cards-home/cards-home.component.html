@@ -1,14 +1,14 @@
-<div class="container">
+<div class="container" *ngIf="cards && transactions">
   <h1>Wallet</h1>
   <div id="loyalty-cards" class="d-flex gap-3 overflow-scroll">
-    <ng-container *ngIf="cards && cards.length > 0">
+    <ng-container *ngIf="cards.length > 0">
       <s-app-card *ngFor="let card of cards" [card]="card" [cardLink]="true"></s-app-card>
     </ng-container>
-    <ng-container *ngIf="cards && cards.length < maxCardCount">
-      <s-app-card-placeholder *ngFor="let n of placeholderCards" [index]="n"></s-app-card-placeholder>
+    <ng-container *ngIf="cards.length < maxCardCount">
+      <s-app-card-placeholder *ngFor="let n of placeholderCards; let i = index" [index]="i"></s-app-card-placeholder>
     </ng-container>
   </div>
-  <div class="list-group border-0 mb-3" *ngIf="cards && cards.length > 0">
+  <div class="list-group border-0 mb-3" *ngIf="cards.length > 0">
     <a class="list-group-item list-group-item-secondary list-group-item-action border-0 text-center"
        routerLink="/cards">
       <span><strong>See All</strong></span>

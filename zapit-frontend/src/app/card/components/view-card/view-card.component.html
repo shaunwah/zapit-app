@@ -19,9 +19,9 @@
       Points
     </button>
   </div>
-  <div class="mb-3">
+  <div *ngIf="transactions">
     <s-app-transaction-list-group [transactions]="transactions"></s-app-transaction-list-group>
+    <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit"
+                      (pageChanged)="getTransactionsByCardId($event)"></s-app-pagination>
   </div>
-  <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit"
-                    (pageChanged)="getTransactionsByCardId($event)"></s-app-pagination>
 </div>

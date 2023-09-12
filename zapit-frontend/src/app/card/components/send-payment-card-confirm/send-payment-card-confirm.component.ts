@@ -8,7 +8,6 @@ import { RxStompService } from '../../../shared/services/rx-stomp.service';
 import { CardMessage } from '../../../shared/interfaces/card-message';
 import { LocationData } from '../../../shared/interfaces/location-data';
 import { CardMessageType } from '../../../shared/interfaces/card-message-type';
-import { Utilities } from '../../../shared/utilities/utilities';
 
 @Component({
   selector: 'app-send-payment-card-confirm',
@@ -33,7 +32,7 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
     this.amount = Number(this.route.snapshot.queryParamMap.get('amt'));
     this.messageInPath = `/card/${this.cardId}/send`;
     this.messageOutPath = `/card/${this.cardId}/receive`;
-    this.locationData = Utilities.getLocationData();
+    this.getCurrentPosition();
     this.getCardById(this.cardId);
     this.receiveData();
   }
@@ -91,6 +90,23 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
             amount: this.amount,
           }),
       });
+  }
+
+  getCurrentPosition() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.locationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        console.info(
+          `Location data obtained (${this.locationData.latitude}, ${this.locationData.longitude})`,
+        );
+      },
+      () => {
+        console.info(`Failed to obtain location data`);
+      },
+    );
   }
 
   publishData(body: CardMessage) {
