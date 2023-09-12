@@ -1,51 +1,53 @@
 <div class="container">
-    <h1>Transaction</h1>
-    <div *ngIf="transaction">
-        <div class="mb-3">
+  <h1>Transaction</h1>
+  <div *ngIf="transaction">
+    <div class="mb-3">
             <span class="d-block fs-2 fw-bold" [class.text-success]="isPositive(transaction.amount)"
-                  [class.text-danger]="!isPositive(transaction.amount)">{{ addPlusSign(transaction.amount) }}{{ transaction.amount | number }} pts</span>
-            <span class="d-block text-muted">{{ transaction.createdOn | date: "mediumDate" }}</span>
-        </div>
-        <ul class="list-group border-0 mb-3">
-            <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-                <div class="ms-2 me-auto text-muted">
-                    Card
-                </div>
-                <a class="link-underline link-underline-opacity-0 mono" [routerLink]="['/card', transaction.card.id]"><i
-                        class="bi-credit-card-fill"></i> {{ transaction.card.id.substring(0, 8) }}</a>
-            </li>
-        </ul>
-        <ul class="list-group border-0 mb-3">
-            <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-                <div class="ms-2 me-auto text-muted">
-                    <ng-container *ngIf="isPositive(transaction.amount); else notPositive">Paid from</ng-container>
-                    <ng-template #notPositive>Paid to</ng-template>
-                </div>
-                <span>{{ transaction.card.issuedBy.name }}</span>
-            </li>
-            <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-                <div class="ms-2 me-auto text-muted">
-                    Amount
-                </div>
-                <span [class.text-success]="isPositive(transaction.amount)"
-                      [class.text-danger]="!isPositive(transaction.amount)">{{ addPlusSign(transaction.amount) }}{{ transaction.amount | number }} pts</span>
-            </li>
-            <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-                <div class="ms-2 me-auto text-muted">
-                    Status
-                </div>
-                <span>
-                    <ng-container *ngIf="transaction.status; else notPositive">Completed</ng-container>
-                    <ng-template #notPositive>Incomplete</ng-template>
-                </span>
-            </li>
-            <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
-                <div class="ms-2 me-auto text-muted">
-                    Date
-                </div>
-                <span>{{ transaction.createdOn | date: "medium" }}</span>
-            </li>
-        </ul>
+                  [class.text-danger]="!isPositive(transaction.amount)">{{ addPlusSign(transaction.amount) }}{{ transaction.amount | number }}
+              pts</span>
+      <span class="d-block text-muted">{{ transaction.createdOn | date: "mediumDate" }}</span>
     </div>
-    <div id="mapbox" class="rounded mb-3" style="height: 350px; width: 100%;"></div>
+    <ul class="list-group border-0 mb-3">
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="ms-2 me-auto text-muted">
+          Card
+        </div>
+        <a class="link-underline link-underline-opacity-0 mono" [routerLink]="['/card', transaction.card.id]"><i
+          class="bi-credit-card-fill"></i> {{ transaction.card.id!.substring(0, 8) }}</a>
+      </li>
+    </ul>
+    <ul class="list-group border-0 mb-3">
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="ms-2 me-auto text-muted">
+          <ng-container *ngIf="isPositive(transaction.amount); else notPositive">Paid from</ng-container>
+          <ng-template #notPositive>Paid to</ng-template>
+        </div>
+        <span>{{ transaction.card.issuedBy.name }}</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="ms-2 me-auto text-muted">
+          Amount
+        </div>
+        <span [class.text-success]="isPositive(transaction.amount)"
+              [class.text-danger]="!isPositive(transaction.amount)">{{ addPlusSign(transaction.amount) }}{{ transaction.amount | number }}
+          pts</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="ms-2 me-auto text-muted">
+          Status
+        </div>
+        <span>
+          <ng-container *ngIf="transaction.status; else notPositive">Completed</ng-container>
+          <ng-template #notPositive>Incomplete</ng-template>
+        </span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="ms-2 me-auto text-muted">
+          Date
+        </div>
+        <span>{{ transaction.createdOn | date: "medium" }}</span>
+      </li>
+    </ul>
+  </div>
+  <div id="mapbox" class="rounded mb-3" style="height: 350px; width: 100%;"></div>
 </div>

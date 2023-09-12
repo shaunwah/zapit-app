@@ -1,20 +1,20 @@
-<div class="container">
+<div class="container" *ngIf="invoices">
   <h1 class="fw-bold">Summary</h1>
   <div class="d-flex gap-3 mb-3">
     <div class="card w-50 border-0 zapit-primary-colour-bg">
-      <div class="card-body text-dark">
+      <div class="card-body text-dark d-flex flex-column justify-content-between">
         <h2 class="card-title fs-3">Receipts</h2>
         <p class="card-text">
-          <span class="d-block fs-1">{{ invoicesTotal | currency:'':'symbol':'1.0-2' }}</span>
+          <span class="d-block fs-1">{{ invoicesTotal || 0 | currency:'':'symbol':'1.0-2' }}</span>
           <small class="d-block">claimed this month</small>
         </p>
       </div>
     </div>
     <div class="card w-50 border-0 zapit-secondary-colour-bg">
-      <div class="card-body text-dark">
-        <h2 class="card-title fs-3">Transactions</h2>
+      <div class="card-body text-dark d-flex flex-column justify-content-between">
+        <h2 class="card-title fs-3">Points</h2>
         <p class="card-text">
-          <span class="d-block fs-1">{{ transactionsTotal | number }} pts</span>
+          <span class="d-block fs-1">{{ transactionsTotal || 0 | number }} pts</span>
           <small class="d-block">earned to date</small>
         </p>
       </div>

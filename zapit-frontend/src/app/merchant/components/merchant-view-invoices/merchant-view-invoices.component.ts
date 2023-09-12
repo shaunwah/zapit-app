@@ -1,18 +1,22 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {InvoiceService} from "../../../invoice/services/invoice.service";
-import {Invoice} from "../../../invoice/invoice";
-import {first} from "rxjs";
+import { Component, inject, OnInit } from '@angular/core';
+import { InvoiceService } from '../../../invoice/services/invoice.service';
+import { Invoice } from '../../../invoice/invoice';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-merchant-view-invoices',
   templateUrl: './merchant-view-invoices.component.html',
-  styleUrls: ['./merchant-view-invoices.component.css']
+  styleUrls: ['./merchant-view-invoices.component.css'],
 })
 export class MerchantViewInvoicesComponent implements OnInit {
   private invoiceService = inject(InvoiceService);
   invoices!: Invoice[];
 
   ngOnInit() {
+    this.getInvoicesByMerchantId();
+  }
+
+  getInvoicesByMerchantId() {
     this.invoiceService
       .getInvoicesByMerchantId()
       .pipe(first())

@@ -1,22 +1,8 @@
-<div class="list-group mb-3" style="height: 175px; width: 280px;" *ngIf="cardLink; else noCardLink">
-  <a class="list-group-item list-group-item-action border-0 d-flex flex-column"
-     style="height: 175px; width: 280px;" [style.background-color]="stringToColour(card.id)" [style.color]="stringToOppositeColour(card.id)" [routerLink]="['/card', card.id ]">
-    <div class="d-flex justify-content-between">
-      <i class="bi-lightning-charge fs-3"></i>
-      <span class="d-block fs-4"><strong>{{ card.balance | number }}</strong></span>
-    </div>
-    <div
-      class="mt-auto mb-2 flex-end overflow-hidden">
-      <span class="d-block"><strong>{{ card.issuedBy.name }}</strong></span>
-      <span class="d-block mono">{{ card.id.substring(0, 8) }}</span>
-    </div>
-  </a>
-</div>
-
-<ng-template #noCardLink>
-  <ul class="list-group mb-3" style="height: 175px; width: 280px;">
-    <li class="list-group-item border-0 d-flex flex-column"
-        style="height: 175px; width: 280px;" [style.background-color]="stringToColour(card.id)" [style.color]="stringToOppositeColour(card.id)">
+<ng-container *ngIf="card">
+  <div class="list-group mb-3" style="height: 175px; width: 280px;" *ngIf="cardLink; else noCardLink">
+    <a class="list-group-item list-group-item-action border-0 d-flex flex-column"
+       style="height: 175px; width: 280px;" [style.background-color]="stringToColour(card.id!)"
+       [style.color]="stringToOppositeColour(card.id!)" [routerLink]="['/card', card.id ]">
       <div class="d-flex justify-content-between">
         <i class="bi-lightning-charge fs-3"></i>
         <span class="d-block fs-4"><strong>{{ card.balance | number }}</strong></span>
@@ -24,8 +10,26 @@
       <div
         class="mt-auto mb-2 flex-end overflow-hidden">
         <span class="d-block"><strong>{{ card.issuedBy.name }}</strong></span>
-        <span class="d-block mono">{{ card.id.substring(0, 8) }}</span>
+        <span class="d-block mono">{{ card.id!.substring(0, 8) }}</span>
       </div>
-    </li>
-  </ul>
-</ng-template>
+    </a>
+  </div>
+
+  <ng-template #noCardLink>
+    <ul class="list-group mb-3" style="height: 175px; width: 280px;">
+      <li class="list-group-item border-0 d-flex flex-column"
+          style="height: 175px; width: 280px;" [style.background-color]="stringToColour(card.id!)"
+          [style.color]="stringToOppositeColour(card.id!)">
+        <div class="d-flex justify-content-between">
+          <i class="bi-lightning-charge fs-3"></i>
+          <span class="d-block fs-4"><strong>{{ card.balance | number }}</strong></span>
+        </div>
+        <div
+          class="mt-auto mb-2 flex-end overflow-hidden">
+          <span class="d-block"><strong>{{ card.issuedBy.name }}</strong></span>
+          <span class="d-block mono">{{ card.id!.substring(0, 8) }}</span>
+        </div>
+      </li>
+    </ul>
+  </ng-template>
+</ng-container>

@@ -3,6 +3,7 @@ import { MerchantService } from '../../services/merchant.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { Router } from '@angular/router';
+import { Merchant } from '../../merchant';
 
 @Component({
   selector: 'app-register-merchant',
@@ -25,12 +26,15 @@ export class RegisterMerchantComponent implements OnInit {
   }
 
   onSubmit() {
+    this.createMerchant(this.merchantForm.value);
+  }
+
+  createMerchant(merchant: Merchant) {
     this.merchantService
-      .createMerchant(this.merchantForm.value)
+      .createMerchant(merchant)
       .pipe(first())
       .subscribe({
-        next: (merchant) =>
-          this.router.navigate(['/']).then(() => console.log(merchant)),
+        next: () => this.router.navigate(['/']),
         error: (err) => console.error(err.message),
       });
   }

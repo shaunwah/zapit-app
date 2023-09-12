@@ -7,7 +7,8 @@
           Scan this QR code to save your receipt to Zapit.
         </p>
         <div>
-        <qrcode *ngIf="!isClaimed; else successfullyClaimed" [qrdata]="qrCodeData" [width]="256" cssClass="mb-3 text-center"></qrcode>
+          <qrcode *ngIf="!isClaimed; else successfullyClaimed" [qrdata]="qrCodeData" [width]="256"
+                  cssClass="mb-3 text-center"></qrcode>
         </div>
         <p class="mb-0">
           Don't have Zapit? You will be directed to create an account.
@@ -19,7 +20,8 @@
 </div>
 
 <ng-template #successfullyClaimed>
-  <div class="rounded text-bg-light d-flex flex-column align-items-center justify-content-center mx-auto mb-3" style="height: 256px; width: 256px;">
+  <div class="rounded text-bg-light d-flex flex-column align-items-center justify-content-center mx-auto mb-3"
+       style="height: 256px; width: 256px;">
     <i class="bi-check-circle text-success fs-1"></i>
     <span>Claimed</span>
   </div>

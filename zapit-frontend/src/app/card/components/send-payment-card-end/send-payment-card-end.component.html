@@ -24,7 +24,7 @@
           Card
         </div>
         <a class="link-underline link-underline-opacity-0 mono" [routerLink]="['/card', transaction.card.id]"><i
-          class="bi-credit-card-fill"></i> {{ transaction.card.id.substring(0, 8) }}</a>
+          class="bi-credit-card-fill"></i> {{ transaction.card.id!.substring(0, 8) }}</a>
       </li>
     </ul>
     <ul class="list-group border-0 mb-3 w-100">

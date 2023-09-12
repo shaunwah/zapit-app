@@ -17,50 +17,55 @@ export class ClaimInvoiceComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   invoice!: Invoice;
-  locationData!: LocationData;
+  invoiceId!: string;
+  timestamp!: number;
+  messageOutPath!: string;
+  locationData?: LocationData;
 
   ngOnInit() {
-    const INVOICE_ID = String(this.route.snapshot.paramMap.get('invoiceId'));
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get('t'));
+    this.invoiceId = String(this.route.snapshot.paramMap.get('invoiceId'));
+    this.timestamp = Number(this.route.snapshot.queryParamMap.get('t'));
+    this.messageOutPath = `/invoice/${this.invoiceId}-${this.timestamp}/scan`;
+    this.getCurrentPosition();
+    this.getInvoiceById(this.invoiceId, this.timestamp);
+  }
+
+  onSubmit() {
+    this.claimInvoice(this.invoiceId, this.timestamp, this.locationData);
+  }
+
+  getInvoiceById(invoiceId: string, timestamp: number) {
     this.invoiceService
-      .getInvoiceById(INVOICE_ID, TIMESTAMP)
+      .getInvoiceById(invoiceId, timestamp)
       .pipe(first())
       .subscribe({
         next: (invoice) => {
           if (invoice.claimedBy) {
-            this.router
-              .navigate(['/'])
-              .then(() => console.log('claimed already'));
+            void this.router.navigate(['/invoices'], {
+              queryParams: { claimed: true },
+            });
           }
           this.invoice = invoice;
         },
         error: (err) => console.error(err.message),
       });
-    this.getCurrentPosition();
   }
 
-  onClaim() {
-    const INVOICE_ID = String(this.route.snapshot.paramMap.get('invoiceId'));
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get('t'));
+  claimInvoice(
+    invoiceId: string,
+    timestamp: number,
+    locationData?: LocationData,
+  ) {
     this.invoiceService
-      .claimInvoice(INVOICE_ID, TIMESTAMP, this.locationData)
+      .claimInvoice(invoiceId, timestamp, locationData)
       .pipe(first())
       .subscribe({
         next: (invoice) => {
-          this.publishData((invoice as any).userId);
-          this.router.navigate(['/']).then(() => console.log('claimed!'));
+          this.publishData((invoice as any).userId); // TODO check
+          return this.router.navigate(['/']);
         },
         error: (err) => console.error(err.message),
       });
-  }
-
-  publishData(body: string) {
-    const INVOICE_ID = String(this.route.snapshot.paramMap.get('invoiceId'));
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get('t'));
-    this.rxStompService.publish({
-      destination: `/invoice/${INVOICE_ID}-${TIMESTAMP}`,
-      body,
-    });
   }
 
   getCurrentPosition() {
@@ -78,5 +83,12 @@ export class ClaimInvoiceComponent implements OnInit {
         console.info(`Failed to obtain location data`);
       },
     );
+  }
+
+  publishData(body: string) {
+    this.rxStompService.publish({
+      destination: this.messageOutPath,
+      body,
+    });
   }
 }

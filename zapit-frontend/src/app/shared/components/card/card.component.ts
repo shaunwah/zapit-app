@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
-import {Card} from "../../../card/card";
+import { Component, Input } from '@angular/core';
+import { Card } from '../../../card/card';
 
 @Component({
   selector: 's-app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
 })
 export class CardComponent {
   @Input() card!: Card;
@@ -16,9 +16,9 @@ export class CardComponent {
       hash = input.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    const r = (hash & 0xff) % 200 + 55;
-    const g = ((hash >> 8) & 0xff) % 200 + 55;
-    const b = ((hash >> 16) & 0xff) % 200 + 55;
+    const r = ((hash & 0xff) % 200) + 55;
+    const g = (((hash >> 8) & 0xff) % 200) + 55;
+    const b = (((hash >> 16) & 0xff) % 200) + 55;
     return hover ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},0.8)`;
   }
 
@@ -28,9 +28,9 @@ export class CardComponent {
       hash = input.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    const r = 255 - (hash & 0xff) % 200 + 55;
-    const g = 255 - ((hash >> 8) & 0xff) % 200 + 55;
-    const b = 255 - ((hash >> 16) & 0xff) % 200 + 55;
+    const r = 255 - ((hash & 0xff) % 200) + 55;
+    const g = 255 - (((hash >> 8) & 0xff) % 200) + 55;
+    const b = 255 - (((hash >> 16) & 0xff) % 200) + 55;
     return `rgb(${r},${g},${b})`;
   }
 }

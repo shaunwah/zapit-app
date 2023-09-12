@@ -12,13 +12,13 @@ export class TransactionService {
 
   getTransactionsByCardId(
     cardId: string,
-    limit: number,
-    offset?: number,
+    limit: number = 5,
+    offset: number = 0,
   ): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
       `${this.apiUrl}/card/${cardId}/transactions`,
       {
-        params: { limit, offset: offset ?? 0 },
+        params: { limit, offset },
       },
     );
   }

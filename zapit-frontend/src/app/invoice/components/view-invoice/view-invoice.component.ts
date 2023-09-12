@@ -13,32 +13,43 @@ export class ViewInvoiceComponent implements OnInit {
   private invoiceService = inject(InvoiceService);
   private route = inject(ActivatedRoute);
   invoice!: Invoice;
+  timestamp!: number;
   relatedInvoices!: Invoice[];
 
   ngOnInit() {
+    this.timestamp = Number(this.route.snapshot.queryParamMap.get('t'));
+    this.checkForUpdates();
+  }
+
+  checkForUpdates() {
     this.route.paramMap.subscribe((paramMap) => {
       const invoiceId = paramMap.get('invoiceId')!;
-      this.renderData(invoiceId);
+      this.getInvoiceById(invoiceId);
     });
   }
 
-  renderData(invoiceId: string) {
-    // TODO remove nested sub
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get("t"));
+  getInvoiceById(invoiceId: string) {
     this.invoiceService
-      .getInvoiceById(invoiceId, TIMESTAMP)
+      .getInvoiceById(invoiceId, this.timestamp)
       .pipe(first())
       .subscribe({
         next: (invoice) => {
           this.invoice = invoice;
-          this.invoiceService
-            .getInvoicesByMerchantIdAndUserId(invoice.issuedBy!.id, invoiceId)
-            .pipe(first())
-            .subscribe({
-              next: (invoices) => (this.relatedInvoices = invoices),
-              error: (err) => console.error(err.message),
-            });
+          this.getInvoicesByMerchantIdAndUserId(
+            invoice.issuedBy!.id!,
+            invoiceId,
+          );
         },
+        error: (err) => console.error(err.message),
+      });
+  }
+
+  getInvoicesByMerchantIdAndUserId(merchantId: number, invoiceId: string) {
+    this.invoiceService
+      .getInvoicesByMerchantIdAndUserId(merchantId, invoiceId)
+      .pipe(first())
+      .subscribe({
+        next: (invoices) => (this.relatedInvoices = invoices),
         error: (err) => console.error(err.message),
       });
   }

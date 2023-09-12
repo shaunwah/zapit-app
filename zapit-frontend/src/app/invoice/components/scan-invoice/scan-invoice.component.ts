@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceService } from '../../services/invoice.service';
 import { first, Subscription } from 'rxjs';
@@ -23,50 +15,58 @@ export class ScanInvoiceComponent implements OnInit, OnDestroy {
   private rxStompService = inject(RxStompService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  invoiceId!: string;
+  timestamp!: number;
   qrCodeData!: string;
+  messageInPath!: string;
   messageSubscription?: Subscription;
   isClaimed = false;
 
   ngOnInit() {
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    this.invoiceId = String(this.route.snapshot.paramMap.get('invoiceId'));
+    this.timestamp = Number(this.route.snapshot.queryParamMap.get('t'));
+    this.messageInPath = `/invoice/${this.invoiceId}-${this.timestamp}/scan`;
+    this.qrCodeData = `${baseUrl}/#/invoice/${this.invoiceId}/claim?t=`;
+    this.getInvoiceById(this.invoiceId, this.timestamp);
     this.receiveData();
-    const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-    const INVOICE_ID = String(this.route.snapshot.paramMap.get('invoiceId'));
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get('t'));
-    this.qrCodeData = `${BASE_URL}/#/invoice/${INVOICE_ID}/claim?t=`;
-    this.invoiceService
-      .getInvoiceById(INVOICE_ID, TIMESTAMP)
-      .pipe(first())
-      .subscribe({
-        next: (invoice) => {
-          this.qrCodeData += invoice.createdOn;
-        },
-        error: (err) =>
-          this.router.navigate(['/']).then(() => console.error(err.message)),
-      });
   }
 
   ngOnDestroy() {
     this.messageSubscription?.unsubscribe();
   }
 
+  getInvoiceById(invoiceId: string, timestamp: number) {
+    this.invoiceService
+      .getInvoiceById(invoiceId, timestamp)
+      .pipe(first())
+      .subscribe({
+        next: (invoice) => {
+          this.qrCodeData += invoice.createdOn;
+        },
+        error: (err) => {
+          console.error(err.message);
+          return this.router.navigate(['/']);
+        },
+      });
+  }
+
   receiveData() {
-    const INVOICE_ID = String(this.route.snapshot.paramMap.get('invoiceId'));
-    const TIMESTAMP = Number(this.route.snapshot.queryParamMap.get('t'));
     this.messageSubscription = this.rxStompService
-      .watch(`/invoice/${INVOICE_ID}-${TIMESTAMP}`)
+      .watch(this.messageInPath)
       .subscribe((message: IMessage) => {
-        console.log(message.body) // TODO remove
         if (message.body) {
-          this.invoiceService.getInvoiceById(INVOICE_ID, TIMESTAMP)
-              .pipe(first())
-              .subscribe({
-                next: invoice => {
-                  if (Number(message.body) == invoice.claimedBy?.id) {
-                    this.isClaimed = true;
-                  }
-                },
-                error: err => console.error(err.message)
-              })
+          this.invoiceService
+            .getInvoiceById(this.invoiceId, this.timestamp)
+            .pipe(first())
+            .subscribe({
+              next: (invoice) => {
+                if (Number(message.body) == invoice.claimedBy?.id) {
+                  this.isClaimed = true;
+                }
+              },
+              error: (err) => console.error(err.message),
+            });
         }
       });
   }

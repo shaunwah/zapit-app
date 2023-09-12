@@ -21,9 +21,12 @@ export class InvoiceService {
     return this.http.get<number>(`${this.apiUrl}/invoices/total`);
   }
 
-  getInvoicesByUserId(limit: number, offset?: number): Observable<Invoice[]> {
+  getInvoicesByUserId(
+    limit: number = 5,
+    offset: number = 0,
+  ): Observable<Invoice[]> {
     return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`, {
-      params: { limit, offset: offset ?? 0 },
+      params: { limit, offset },
     });
   }
 
@@ -50,7 +53,7 @@ export class InvoiceService {
   claimInvoice(
     invoiceId: string,
     timestamp: number,
-    locationData: LocationData,
+    locationData?: LocationData,
   ): Observable<Invoice> {
     return this.http.post<Invoice>(
       `${this.apiUrl}/invoice/${invoiceId}`,

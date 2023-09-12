@@ -18,11 +18,12 @@ export class ViewCardComponent implements OnInit {
   card!: Card;
   cardId!: string;
   transactions!: Transaction[];
-  page = 1;
+  page!: number;
   limit = 10;
 
   ngOnInit() {
     this.cardId = String(this.route.snapshot.paramMap.get('cardId'));
+    this.page = Number(this.route.snapshot.queryParamMap.get('page') ?? 1);
     this.getCardById(this.cardId);
   }
 

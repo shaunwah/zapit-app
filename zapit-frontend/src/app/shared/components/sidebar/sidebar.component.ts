@@ -11,6 +11,7 @@ export class SidebarComponent implements OnInit {
   displayName!: string;
 
   ngOnInit() {
-    this.displayName = this.authService.getDataFromStorage().displayName || 'Account';
+    this.displayName =
+      this.authService.getDataFromStorage().displayName ?? 'Account';
   }
 }

@@ -3,5 +3,5 @@
     <div class="mb-3">
         <s-app-card-list-group [cards]="cards"></s-app-card-list-group>
     </div>
-    <s-app-pagination [page]="page" [dataLength]="cards.length" [dataLimit]="limit" (pageChanged)="fetchNewData($event)"></s-app-pagination>
+    <s-app-pagination [page]="page" [dataLength]="cards.length" [dataLimit]="limit" (pageChanged)="getCardsByUserId($event)"></s-app-pagination>
 </div>

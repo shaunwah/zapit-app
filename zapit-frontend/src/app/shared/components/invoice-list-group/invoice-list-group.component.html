@@ -1,22 +1,27 @@
-<div class="list-group border-0 mb-3" *ngIf="invoices && invoices.length > 0; else noInvoices">
-  <a class="list-group-item list-group-item-secondary list-group-item-action border-0" *ngFor="let invoice of invoices" [routerLink]="['/invoice', invoice.id]">
-    <div class="d-flex justify-content-between w-100">
-      <h5 class="mb-1">{{ invoice.issuedBy?.name }}
-        <ng-container *ngIf="!invoice.claimedBy?.id">(Unclaimed)</ng-container></h5> <!-- TODO -->
-      <span>{{ invoice.total | currency }}</span>
-    </div>
-    <small class="text-body-secondary">{{ invoice.createdOn | date: "MMM dd, yyyy '–' h:mm a" }}</small>
-  </a>
-  <a class="list-group-item list-group-item-secondary list-group-item-action border-0 text-center" routerLink="/invoices" *ngIf="displaySeeAll">
-    <span><strong>See All</strong></span>
-  </a>
-</div>
-
-<ng-template #noInvoices>
-  <div class="card border border-3 border-light-subtle mb-3">
-    <div class="card-body text-center">
-      <img src="assets/images/receipt.svg" class="h-25 w-25 m-3" alt="No Data">
-      <span class="d-block text-secondary mb-3">No receipts here</span>
-    </div>
+<ng-container *ngIf="invoices">
+  <div class="list-group border-0 mb-3" *ngIf="invoices.length > 0; else noInvoices">
+    <a class="list-group-item list-group-item-secondary list-group-item-action border-0"
+       *ngFor="let invoice of invoices" [routerLink]="['/invoice', invoice.id]">
+      <div class="d-flex justify-content-between w-100">
+        <h5 class="mb-1">{{ invoice.issuedBy?.name }}
+          <ng-container *ngIf="!invoice.claimedBy?.id">(Unclaimed)</ng-container>
+        </h5> <!-- TODO -->
+        <span>{{ invoice.total | currency }}</span>
+      </div>
+      <small class="text-body-secondary">{{ invoice.createdOn | date: "MMM dd, yyyy '–' h:mm a" }}</small>
+    </a>
+    <a class="list-group-item list-group-item-secondary list-group-item-action border-0 text-center"
+       routerLink="/invoices" *ngIf="displaySeeAll">
+      <span><strong>See All</strong></span>
+    </a>
   </div>
-</ng-template>
+
+  <ng-template #noInvoices>
+    <div class="card border border-3 border-light-subtle mb-3">
+      <div class="card-body text-center">
+        <img src="assets/images/receipt.svg" class="h-25 w-25 m-3" alt="No Data">
+        <span class="d-block text-secondary mb-3">No receipts here</span>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

@@ -17,13 +17,22 @@ export class HomeComponent implements OnInit {
   transactionsTotal!: number;
 
   ngOnInit() {
+    this.getInvoicesByUserId();
+    this.getInvoicesTotalByUserId();
+    this.getTransactionsTotalByUserId();
+  }
+
+  getInvoicesByUserId() {
     this.invoiceService
-      .getInvoicesByUserId(5)
+      .getInvoicesByUserId()
       .pipe(first())
       .subscribe({
         next: (invoices) => (this.invoices = invoices),
         error: (err) => console.error(err.message),
       });
+  }
+
+  getInvoicesTotalByUserId() {
     this.invoiceService
       .getInvoicesTotalByUserId()
       .pipe(first())
@@ -31,6 +40,9 @@ export class HomeComponent implements OnInit {
         next: (invoicesTotal) => (this.invoicesTotal = invoicesTotal),
         error: (err) => console.error(err.message),
       });
+  }
+
+  getTransactionsTotalByUserId() {
     this.transactionService
       .getTransactionsTotalByUserId()
       .pipe(first())

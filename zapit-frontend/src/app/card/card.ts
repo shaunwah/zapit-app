@@ -2,11 +2,11 @@ import { User } from '../user/user';
 import { Merchant } from '../merchant/merchant';
 
 export interface Card {
-  id: string;
+  id?: string;
   user: User;
   balance: number;
-  isDeleted: boolean;
+  isDeleted?: boolean;
   issuedBy: Merchant;
-  createdOn: string;
-  updatedOn: string;
+  createdOn?: string;
+  updatedOn?: string;
 }

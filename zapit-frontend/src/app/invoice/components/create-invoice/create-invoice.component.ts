@@ -4,8 +4,8 @@ import { Invoice } from '../../invoice';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { first } from 'rxjs';
 import { Router } from '@angular/router';
-import {MerchantService} from "../../../merchant/services/merchant.service";
-import {Merchant} from "../../../merchant/merchant";
+import { MerchantService } from '../../../merchant/services/merchant.service';
+import { Merchant } from '../../../merchant/merchant';
 
 @Component({
   selector: 'app-create-invoice',
@@ -22,12 +22,6 @@ export class CreateInvoiceComponent implements OnInit, DoCheck {
   invoiceForm!: FormGroup;
 
   ngOnInit() {
-    this.merchantService.getMerchantByUserId()
-      .pipe(first())
-      .subscribe({
-        next: merchant => this.merchant = merchant,
-        error: err => console.error(err.message)
-      })
     this.invoiceForm = this.fb.group({
       identifier: this.fb.control<string>(''),
       invoiceItems: this.fb.array([]),
@@ -35,6 +29,7 @@ export class CreateInvoiceComponent implements OnInit, DoCheck {
       additionalCharges: this.fb.control<number>(0),
       eligiblePoints: this.fb.control<number>(0),
     });
+    this.getMerchantByUserId();
     this.onAddInvoiceItem();
   }
 
@@ -47,21 +42,23 @@ export class CreateInvoiceComponent implements OnInit, DoCheck {
     };
   }
 
-  calculateTotal(invoice: Invoice) {
-    const itemsTotal = invoice.invoiceItems!.reduce(
-      (acc, current) => acc + current.quantity * current.unitPrice,
-      0,
-    );
-    return itemsTotal + invoice.additionalCharges;
-  }
-
   onSubmit() {
     this.invoiceService
       .createInvoice(this.invoice)
       .pipe(first())
       .subscribe({
         next: (invoice) =>
-          this.router.navigate(['/invoice', (invoice as any).invoice]).then(() => console.log(invoice)),
+          this.router.navigate(['/invoice', (invoice as any).invoice]),
+        error: (err) => console.error(err.message),
+      });
+  }
+
+  getMerchantByUserId() {
+    this.merchantService
+      .getMerchantByUserId()
+      .pipe(first())
+      .subscribe({
+        next: (merchant) => (this.merchant = merchant),
         error: (err) => console.error(err.message),
       });
   }
@@ -78,6 +75,14 @@ export class CreateInvoiceComponent implements OnInit, DoCheck {
 
   onRemoveInvoiceItem(index: number) {
     this.invoiceItems.removeAt(index);
+  }
+
+  calculateTotal(invoice: Invoice) {
+    const itemsTotal = invoice.invoiceItems!.reduce(
+      (acc, current) => acc + current.quantity * current.unitPrice,
+      0,
+    );
+    return itemsTotal + invoice.additionalCharges;
   }
 
   get invoiceItems() {

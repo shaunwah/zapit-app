@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   readonly bootstrapThemeAttribute = 'data-bs-theme';
@@ -21,7 +21,9 @@ export class ThemeService {
   modifyHtmlElement() {
     const THEME = localStorage.getItem('theme');
     if (THEME) {
-      document.querySelector('html')?.setAttribute(this.bootstrapThemeAttribute, THEME);
+      document
+        .querySelector('html')
+        ?.setAttribute(this.bootstrapThemeAttribute, THEME);
     }
   }
 }
