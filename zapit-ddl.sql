@@ -69,4 +69,3 @@ create table transactions
     foreign key (card) references cards (id),
     foreign key (location_data) references location_data (id)
 );
-select t.*, ld.*, m.* from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on ld.id = t.location_data where c.user = 1 and c.is_deleted = false order by t.created_on desc
