@@ -70,7 +70,9 @@ public class CardService {
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
             transaction.setAmount(amount);
-            transaction.setLocation(locationData);
+            if (locationData != null) {
+                transaction.setLocation(locationData);
+            }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
                 throw new Exception();
@@ -97,7 +99,9 @@ public class CardService {
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
             transaction.setAmount(amount * -1);
-            transaction.setLocation(locationData);
+            if (locationData != null) {
+                transaction.setLocation(locationData);
+            }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
                 throw new Exception();

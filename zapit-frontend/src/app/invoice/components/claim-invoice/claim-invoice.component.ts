@@ -49,7 +49,7 @@ export class ClaimInvoiceComponent implements OnInit {
       .subscribe({
         next: (invoice) => {
           this.publishData((invoice as any).userId);
-          this.router.navigate(['/']).then(() => console.log("claimed!"));
+          this.router.navigate(['/']).then(() => console.log('claimed!'));
         },
         error: (err) => console.error(err.message),
       });
@@ -70,7 +70,9 @@ export class ClaimInvoiceComponent implements OnInit {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      console.log("Location obtained")
+      console.log(
+        `Location obtained: ${this.locationData.latitude}, ${this.locationData.longitude}`,
+      );
     });
   }
 }

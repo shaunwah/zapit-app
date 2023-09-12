@@ -1,11 +1,11 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Invoice} from "../invoice";
-import {LocationData} from "../../shared/interfaces/location-data";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Invoice } from '../invoice';
+import { LocationData } from '../../shared/interfaces/location-data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InvoiceService {
   private http = inject(HttpClient);
@@ -13,7 +13,7 @@ export class InvoiceService {
 
   getInvoiceById(invoiceId: string, timestamp?: number): Observable<Invoice> {
     return this.http.get<Invoice>(`${this.apiUrl}/invoice/${invoiceId}`, {
-      params: { t: timestamp! }
+      params: { t: timestamp! },
     });
   }
 
@@ -23,7 +23,7 @@ export class InvoiceService {
 
   getInvoicesByUserId(limit: number, offset?: number): Observable<Invoice[]> {
     return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`, {
-      params: { limit, offset: offset ?? 0 }
+      params: { limit, offset: offset ?? 0 },
     });
   }
 
@@ -31,19 +31,33 @@ export class InvoiceService {
     return this.http.get<Invoice[]>(`${this.apiUrl}/merchant/invoices`);
   }
 
-  getInvoicesByMerchantIdAndUserId(merchantId: number, exclude: string): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.apiUrl}/merchant/${merchantId}/invoices`, {
-      params: { exclude }
-    });
+  getInvoicesByMerchantIdAndUserId(
+    merchantId: number,
+    exclude: string,
+  ): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(
+      `${this.apiUrl}/merchant/${merchantId}/invoices`,
+      {
+        params: { exclude },
+      },
+    );
   }
 
   createInvoice(invoice: Invoice): Observable<Invoice> {
     return this.http.post<Invoice>(`${this.apiUrl}/invoices`, invoice);
   }
 
-  claimInvoice(invoiceId: string, timestamp: number, locationData: LocationData): Observable<Invoice> {
-    return this.http.post<Invoice>(`${this.apiUrl}/invoice/${invoiceId}`, locationData, {
-      params: { t: timestamp }
-    });
+  claimInvoice(
+    invoiceId: string,
+    timestamp: number,
+    locationData: LocationData,
+  ): Observable<Invoice> {
+    return this.http.post<Invoice>(
+      `${this.apiUrl}/invoice/${invoiceId}`,
+      locationData,
+      {
+        params: { t: timestamp },
+      },
+    );
   }
 }

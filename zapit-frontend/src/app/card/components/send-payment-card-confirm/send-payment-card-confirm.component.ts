@@ -102,7 +102,9 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      console.log('Location obtained');
+      console.log(
+        `Location obtained: ${this.locationData.latitude}, ${this.locationData.longitude}`,
+      );
     });
   }
 
