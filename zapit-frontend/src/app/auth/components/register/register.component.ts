@@ -10,6 +10,7 @@ import {
 import { first } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { User } from '../../../user/user';
 
 @Component({
   selector: 'app-register',
@@ -53,12 +54,16 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  register() {
+  onSubmit() {
+    this.register(this.formatPayload(this.registerForm.value));
+  }
+
+  register(user: User) {
     this.authService
-      .register(this.formatPayload(this.registerForm.value))
+      .register(user)
       .pipe(first())
       .subscribe({
-        next: () => this.router.navigate(['/login']).then(() => {}),
+        next: () => this.router.navigate(['/login']),
         error: (err) => {
           this.alertComponent.visible = true;
           this.alertComponent.message = err.message;
@@ -68,7 +73,7 @@ export class RegisterComponent implements OnInit {
 
   private formatPayload(data: any) {
     delete data.passwordConfirm;
-    return data;
+    return data as User;
   }
 
   private passwordConfirmValidator(control: AbstractControl) {

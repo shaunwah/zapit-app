@@ -7,6 +7,8 @@ import { IMessage } from '@stomp/rx-stomp';
 import { RxStompService } from '../../../shared/services/rx-stomp.service';
 import { CardMessage } from '../../../shared/interfaces/card-message';
 import { LocationData } from '../../../shared/interfaces/location-data';
+import { CardMessageType } from '../../../shared/interfaces/card-message-type';
+import { Utilities } from '../../../shared/utilities/utilities';
 
 @Component({
   selector: 'app-send-payment-card-confirm',
@@ -19,19 +21,30 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   card!: Card;
-  locationData!: LocationData;
+  locationData?: LocationData;
+  messageInPath!: string;
+  messageOutPath!: string;
   cardId!: string;
   amount!: number;
-  timeLeftInSeconds: number = 30;
   messageSubscription?: Subscription;
 
   ngOnInit() {
     this.cardId = String(this.route.snapshot.paramMap.get('cardId'));
     this.amount = Number(this.route.snapshot.queryParamMap.get('amt'));
-    this.getLocationData();
+    this.messageInPath = `/card/${this.cardId}/send`;
+    this.messageOutPath = `/card/${this.cardId}/receive`;
+    this.locationData = Utilities.getLocationData();
+    this.getCardById(this.cardId);
     this.receiveData();
+  }
+
+  ngOnDestroy() {
+    this.messageSubscription?.unsubscribe();
+  }
+
+  getCardById(cardId: string) {
     this.cardService
-      .getCardById(this.cardId)
+      .getCardById(cardId)
       .pipe(first())
       .subscribe({
         next: (card) => (this.card = card),
@@ -39,79 +52,69 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.messageSubscription?.unsubscribe();
+  onApprovePayment() {
+    this.publishData({
+      type: CardMessageType.REQUEST_APPROVED,
+      amount: this.amount,
+    });
+    this.deductFromCard(this.cardId, this.amount, this.locationData);
   }
 
-  onApprovePayment() {
-    this.publishData({ type: 'APPROVED', amount: this.amount });
+  onRejectPayment() {
+    this.publishData({
+      type: CardMessageType.REQUEST_REJECTED,
+      amount: this.amount,
+    });
+  }
+
+  deductFromCard(cardId: string, amount: number, locationData?: LocationData) {
     this.cardService
-      .deductFromCard(this.cardId, this.amount, this.locationData)
+      .deductFromCard(cardId, amount, locationData)
       .pipe(first())
       .subscribe({
         next: (transaction) => {
           this.publishData({
-            type: 'CONFIRMED',
+            type: CardMessageType.PAYMENT_SUCCEEDED,
             amount: this.amount,
             transaction: transaction.id,
           });
-          this.router
-            .navigate(['/card', this.cardId, 'send', 'complete'], {
+          return this.router.navigate(
+            ['/card', this.cardId, 'send', 'complete'],
+            {
               queryParams: { txn: transaction.id },
-            })
-            .then(() => console.log(transaction));
+            },
+          );
         },
-        error: (err) => console.error(err.message),
+        error: () =>
+          this.publishData({
+            type: CardMessageType.PAYMENT_FAILED,
+            amount: this.amount,
+          }),
       });
-  }
-
-  onRejectPayment() {
-    this.publishData({ type: 'REJECTED', amount: this.amount });
   }
 
   publishData(body: CardMessage) {
     this.rxStompService.publish({
-      destination: `/card/${this.cardId}/receive`,
+      destination: this.messageOutPath,
       body: JSON.stringify(body),
     });
   }
 
   receiveData() {
     this.messageSubscription = this.rxStompService
-      .watch(`/card/${this.cardId}/send`)
+      .watch(this.messageInPath)
       .subscribe((message: IMessage) => {
-        console.log('>>>>>' + message);
         if (message.body) {
           const response: CardMessage = JSON.parse(message.body);
-          if (response.type == 'REQUEST_TO_CONFIRM') {
-            this.router
-              .navigate(['card', this.cardId, 'send', 'confirm'], {
+          if (response.type == CardMessageType.REQUEST_FOR_PAYMENT) {
+            void this.router.navigate(
+              ['card', this.cardId, 'send', 'confirm'],
+              {
                 queryParams: { amt: response.amount },
-              })
-              .then(() =>
-                console.log(new Date(), 'Request to confirm received.'),
-              );
+              },
+            );
           }
         }
       });
-  }
-
-  getLocationData() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.locationData = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      console.log(
-        `Location obtained: ${this.locationData.latitude}, ${this.locationData.longitude}`,
-      );
-    });
-  }
-
-  startCountdown() {
-    if (this.timeLeftInSeconds > 0) {
-      setTimeout(this.startCountdown, 1000);
-    }
-    this.timeLeftInSeconds -= 1;
   }
 }

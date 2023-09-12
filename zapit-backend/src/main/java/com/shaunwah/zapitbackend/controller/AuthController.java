@@ -1,6 +1,7 @@
 package com.shaunwah.zapitbackend.controller;
 
 import com.shaunwah.zapitbackend.model.User;
+import com.shaunwah.zapitbackend.model.UserAuthData;
 import com.shaunwah.zapitbackend.model.UserPrincipal;
 import com.shaunwah.zapitbackend.service.SecurityTokenService;
 import com.shaunwah.zapitbackend.service.UserService;
@@ -24,15 +25,15 @@ public class AuthController {
     private final SecurityTokenService securityTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(Authentication auth) {
+    public ResponseEntity<UserAuthData> login(Authentication auth) {
         log.info("Successful login for %s. Generating token...".formatted(auth.getName()));
         String token = securityTokenService.generateToken(auth);
         if (token != null) {
             log.info("Token generated: %s".formatted(token));
-            return ResponseEntity.ok(Utilities.returnTokenMessageInJson("successfully logged in", token, auth.getName()).toString());
+            return ResponseEntity.ok(new UserAuthData(token, auth.getName(), ((UserPrincipal) auth.getPrincipal()).getUser().getRoles()));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Utilities.returnMessageInJson("invalid email and/or password").toString());
+                .build();
     }
 
     @PostMapping("/logout")

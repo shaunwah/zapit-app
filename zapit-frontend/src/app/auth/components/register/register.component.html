@@ -2,7 +2,7 @@
   <div class="container flex-md-grow-0 flex-fill w-25">
     <h1 class="text-dark">Create an Account</h1>
     <s-app-alert alertType="danger" [visible]="false" #alertComponent></s-app-alert>
-    <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-floating mb-3">
         <input type="email" class="form-control border border-light-subtle shadow-sm" id="email"
                placeholder="user@example.com" [class.is-invalid]="(email.dirty || email.touched) && email.errors"

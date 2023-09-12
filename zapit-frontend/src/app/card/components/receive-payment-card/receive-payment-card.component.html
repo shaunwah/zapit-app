@@ -1,6 +1,6 @@
 <div class="container h-100 d-flex flex-column justify-content-between justify-content-md-start" *ngIf="card">
   <div>
-  <h1>Request Payment</h1>
+    <h1>Request Payment</h1>
     <p>To receive a payment, click on the Request button.</p>
   </div>
   <div class="d-flex flex-column align-items-center">
@@ -13,11 +13,17 @@
   <form class="mb-3" [formGroup]="cardForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="name" class="form-label">Amount</label>
-      <input type="number" class="form-control border border-light-subtle shadow-sm" id="name" min="0" [max]="card.balance" [class.is-invalid]="(amount.dirty || amount.touched) && amount.errors" formControlName="amount">
+      <input type="number" class="form-control border border-light-subtle shadow-sm" id="name" min="0"
+             [max]="card.balance" [class.is-invalid]="(amount.dirty || amount.touched) && amount.errors"
+             formControlName="amount">
       <ng-container *ngIf="(amount.dirty || amount.touched) && amount.errors">
         <div *ngIf="amount.getError('required')" class="invalid-feedback">Amount required</div>
-        <div *ngIf="amount.getError('min')" class="invalid-feedback">Amount cannot be under {{ 1 | number }} pts</div>
-        <div *ngIf="amount.getError('max')" class="invalid-feedback">Amount cannot exceed {{ card.balance | number }} pts</div>
+        <div *ngIf="amount.getError('min')" class="invalid-feedback">Amount cannot be
+          under {{ amount.getError('min').required | number }} pts
+        </div>
+        <div *ngIf="amount.getError('max')" class="invalid-feedback">Amount cannot
+          exceed {{ amount.getError('max').required | number }} pts
+        </div>
       </ng-container>
     </div>
     <div class="d-grid text-center">

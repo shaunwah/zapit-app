@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../user/user';
 import { Observable } from 'rxjs';
+import { UserAuthData } from '../../shared/interfaces/user-auth-data';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/login`, null, { headers });
   }
 
-  logout() {
+  logout(): void {
     this.clearDataInStorage();
   }
 
@@ -25,24 +26,32 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const data = this.getDataFromStorage();
-    return data != null && data.accessToken != null && data.displayName != null;
+    const data = this.getDataFromStorage() as UserAuthData;
+    return (
+      data != null &&
+      data.accessToken != null &&
+      data.displayName != null &&
+      data.roles != null
+    );
   }
 
-  setDataInStorage(data: { accessToken: string; displayName: string }) {
+  setDataInStorage(data: UserAuthData): void {
     localStorage.setItem('access_token', data.accessToken);
     localStorage.setItem('display_name', data.displayName);
+    localStorage.setItem('roles', data.roles);
   }
 
-  getDataFromStorage() {
+  getDataFromStorage(): UserAuthData {
     return {
       accessToken: localStorage.getItem('access_token'),
       displayName: localStorage.getItem('display_name'),
-    };
+      roles: localStorage.getItem('roles'),
+    } as UserAuthData;
   }
 
-  clearDataInStorage() {
+  clearDataInStorage(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('display_name');
+    localStorage.removeItem('roles');
   }
 }

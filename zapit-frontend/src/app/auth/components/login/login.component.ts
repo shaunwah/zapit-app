@@ -10,6 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { User } from '../../../user/user';
+import { UserAuthData } from '../../../shared/interfaces/user-auth-data';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit, AfterContentChecked {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   loginForm!: FormGroup;
-  redirectToRouteOnLogin?: string;
+  redirectToRouteOnLogin?: string | null;
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -36,42 +38,28 @@ export class LoginComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    this.redirectToRouteOnLogin = String(
-      this.route.snapshot.queryParamMap.get('next'),
-    );
+    this.redirectToRouteOnLogin = this.route.snapshot.queryParamMap.get('next');
   }
 
-  onLogin() {
-    if (this.authService.isAuthenticated()) {
-      this.authService.logout();
-    }
+  onSubmit() {
+    this.authService.logout();
+    return this.login(this.loginForm.value);
+  }
+
+  login(user: User) {
     this.authService
-      .login(this.loginForm.value)
+      .login(user)
       .pipe(first())
       .subscribe({
         next: (data: any) => {
-          this.authService.setDataInStorage({
-            accessToken: data.token,
-            displayName: data.displayName,
-          });
+          this.setDataInStorage(data);
           if (this.redirectToRouteOnLogin) {
-            const route = decodeURIComponent(this.redirectToRouteOnLogin).split(
-              '/',
+            const routeData = this.getRouteDataFromNext(
+              this.redirectToRouteOnLogin,
             );
-            const queryParams: any = {}; // TODO to optimise
-            route[route.length - 1]
-              .match(/\?.+/g)![0]
-              .substring(1)
-              .split('&')
-              .forEach((queryParam) => {
-                const splitQueryParam = queryParam.split('=');
-                queryParams[splitQueryParam[0]] = splitQueryParam[1];
-              });
-            route[route.length - 1] = route[route.length - 1].replace(
-              /\?.+/g,
-              '',
-            );
-            return this.router.navigate(['/', ...route], { queryParams });
+            return this.router.navigate(routeData.route, {
+              queryParams: routeData.queryParams,
+            });
           }
           return this.router.navigate(['/']);
         },
@@ -80,6 +68,29 @@ export class LoginComponent implements OnInit, AfterContentChecked {
           this.alertComponent.message = 'Invalid email and/or password';
         },
       });
+  }
+
+  setDataInStorage(data: UserAuthData) {
+    this.authService.setDataInStorage(data);
+  }
+
+  getRouteDataFromNext(next: string) {
+    const regex = /\?.+/g;
+    const route = decodeURIComponent(next).split('/');
+    const queryParams: any = {}; // TODO to optimise
+    route[route.length - 1]
+      .match(regex)![0]
+      .substring(1)
+      .split('&')
+      .forEach((queryParam) => {
+        const splitQueryParam = queryParam.split('=');
+        queryParams[splitQueryParam[0]] = splitQueryParam[1];
+      });
+    route[route.length - 1] = route[route.length - 1].replace(regex, '');
+    return {
+      route: ['/', ...route],
+      queryParams,
+    };
   }
 
   get email() {

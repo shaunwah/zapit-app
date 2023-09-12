@@ -7,6 +7,7 @@ import { first, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Card } from '../../card';
 import { CardMessage } from '../../../shared/interfaces/card-message';
+import { CardMessageType } from '../../../shared/interfaces/card-message-type';
 
 @Component({
   selector: 'app-receive-payment-card',
@@ -22,26 +23,24 @@ export class ReceivePaymentCardComponent implements OnInit, OnDestroy {
   card!: Card;
   cardId!: string;
   cardForm!: FormGroup;
+  messageInPath!: string;
+  messageOutPath!: string;
   isWaitingForApproval: boolean = false;
   message!: string;
   messageSubscription?: Subscription;
 
   ngOnInit() {
     this.cardId = String(this.route.snapshot.paramMap.get('cardId'));
-    this.cardService
-      .getCardById(this.cardId)
-      .pipe(first())
-      .subscribe({
-        next: (card) => (this.card = card),
-        error: (err) => console.error(err.message),
-      });
-    this.receiveData();
+    this.messageInPath = `/card/${this.cardId}/receive`;
+    this.messageOutPath = `/card/${this.cardId}/send`;
     this.cardForm = this.fb.group({
       amount: this.fb.control<number>(1, [
         Validators.required,
         Validators.min(1),
       ]),
     });
+    this.getCardById(this.cardId);
+    this.receiveData();
   }
 
   ngOnDestroy() {
@@ -51,45 +50,51 @@ export class ReceivePaymentCardComponent implements OnInit, OnDestroy {
   onSubmit() {
     try {
       this.publishData({
-        type: 'REQUEST_TO_CONFIRM',
+        type: CardMessageType.REQUEST_FOR_PAYMENT,
         amount: this.amount.value,
       });
       this.isWaitingForApproval = true;
-      this.publishData({
-        type: 'REQUEST_TO_CONFIRM',
-        amount: this.amount.value,
-      });
     } catch (e) {
       console.error(e);
     }
   }
 
+  getCardById(cardId: string) {
+    this.cardService
+      .getCardById(cardId)
+      .pipe(first())
+      .subscribe({
+        next: (card) => (this.card = card),
+        error: (err) => console.error(err.message),
+      });
+  }
+
   publishData(body: CardMessage) {
     this.rxStompService.publish({
-      destination: `/card/${this.cardId}/send`,
+      destination: this.messageOutPath,
       body: JSON.stringify(body),
     });
   }
 
   receiveData() {
     this.messageSubscription = this.rxStompService
-      .watch(`/card/${this.cardId}/receive`)
+      .watch(this.messageInPath)
       .subscribe((message: IMessage) => {
         if (message.body) {
           const response: CardMessage = JSON.parse(message.body);
           switch (response.type) {
-            case 'APPROVED':
+            case CardMessageType.REQUEST_APPROVED:
               this.message = `Approved payment of ${response.amount}.`;
               this.isWaitingForApproval = false;
               break;
-            case 'REJECTED':
+            case CardMessageType.REQUEST_REJECTED:
               this.message = `Rejected payment of ${response.amount}.`;
               this.isWaitingForApproval = false;
               break;
-            case 'CONFIRMED':
+            case CardMessageType.PAYMENT_SUCCEEDED:
               this.message = `Confirmed payment of ${response.amount}.`;
               this.isWaitingForApproval = false;
-              this.router.navigate(
+              void this.router.navigate(
                 ['/card', this.cardId, 'receive', 'complete'],
                 { queryParams: { txn: response.transaction } },
               );

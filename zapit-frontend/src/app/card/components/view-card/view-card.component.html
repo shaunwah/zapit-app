@@ -1,24 +1,27 @@
 <div class="container" *ngIf="card">
   <h1>Card</h1>
-      <div class="d-flex flex-column align-items-center">
-        <s-app-card [card]="card"></s-app-card>
-      </div>
-      <div class="d-flex gap-3 justify-content-center mb-3">
-        <div>
-          <span class="d-block text-muted">Balance</span>
-            <span class="d-block fs-4">{{ card.balance | number }} pts</span>
-        </div>
-        <span class="border border-light-subtle my-2"></span>
-        <div>
-        <span class="d-block text-muted">Member Since</span>
-        <span class="d-block fs-4">{{ card.createdOn | date }}</span>
-        </div>
-      </div>
-      <div class="d-grid mb-3">
-        <button type="submit" class="btn btn-primary border-0" routerLink="send" [disabled]="card.balance <= 0">Pay with Points</button>
-      </div>
+  <div class="d-flex flex-column align-items-center">
+    <s-app-card [card]="card"></s-app-card>
+  </div>
+  <div class="d-flex gap-3 justify-content-center mb-3">
+    <div>
+      <span class="d-block text-muted">Balance</span>
+      <span class="d-block fs-4">{{ card.balance | number }} pts</span>
+    </div>
+    <span class="border border-light-subtle my-2"></span>
+    <div>
+      <span class="d-block text-muted">Member Since</span>
+      <span class="d-block fs-4">{{ card.createdOn | date }}</span>
+    </div>
+  </div>
+  <div class="d-grid mb-3">
+    <button type="submit" class="btn btn-primary border-0" routerLink="send" [disabled]="card.balance <= 0">Pay with
+      Points
+    </button>
+  </div>
   <div class="mb-3">
     <s-app-transaction-list-group [transactions]="transactions"></s-app-transaction-list-group>
   </div>
-  <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit" (pageChanged)="fetchNewData($event)"></s-app-pagination>
+  <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit"
+                    (pageChanged)="getTransactionsByCardId($event)"></s-app-pagination>
 </div>

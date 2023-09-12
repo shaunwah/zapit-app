@@ -18,24 +18,28 @@ export class ViewCardComponent implements OnInit {
   card!: Card;
   cardId!: string;
   transactions!: Transaction[];
-  page: number = 1;
-  limit: number = 10;
+  page = 1;
+  limit = 10;
 
   ngOnInit() {
     this.cardId = String(this.route.snapshot.paramMap.get('cardId'));
+    this.getCardById(this.cardId);
+  }
+
+  getCardById(cardId: string) {
     this.cardService
-      .getCardById(this.cardId)
+      .getCardById(cardId)
       .pipe(first())
       .subscribe({
         next: (card) => {
           this.card = card;
-          this.fetchNewData(this.page);
+          this.getTransactionsByCardId(this.page);
         },
         error: (err) => console.error(err.message),
       });
   }
 
-  fetchNewData(page: number) {
+  getTransactionsByCardId(page: number) {
     this.transactionService
       .getTransactionsByCardId(this.cardId, this.limit, (page - 1) * this.limit)
       .pipe(first())
