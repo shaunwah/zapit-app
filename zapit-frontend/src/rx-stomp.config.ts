@@ -7,6 +7,8 @@ export const rxStompConfig: RxStompConfig = {
   heartbeatOutgoing: 20000,
   reconnectDelay: 200,
   debug: (message: string): void => {
-    console.log(message);
+    if (!environment.production) {
+      console.log(message);
+    }
   },
 };

@@ -39,21 +39,21 @@ public class InvoiceRepository {
         return mongoTemplate.aggregate(pipeline, "invoices", Invoice.class).getRawResults();
     }
 
-    public List<Invoice> getInvoicesByMerchantId(Long merchantId) {
-        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId)).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
+    public List<Invoice> getInvoicesByMerchantId(Long merchantId, Integer limit, Integer offset) {
+        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
     }
 
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId) {
-        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId).and("claimedBy._id").is(userId)).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
+    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, Integer limit, Integer offset) {
+        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId).and("claimedBy._id").is(userId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
     }
 
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId) {
-        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId).and("claimedBy._id").is(userId).and("_id").ne(excludeInvoiceId)).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
+    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId, Integer limit, Integer offset) {
+        return mongoTemplate.find(new Query(Criteria.where("issuedBy._id").is(merchantId).and("claimedBy._id").is(userId).and("_id").ne(excludeInvoiceId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "createdOn")), Invoice.class, "invoices");
     }
 
-    public List<Invoice> getInvoicesByUserId(Long userId) {
+    public List<Invoice> getInvoicesByUserId(Long userId, Integer limit, Integer offset) {
         return mongoTemplate.find(
-                new Query(Criteria.where("claimedBy._id").is(userId)).with(Sort.by(Sort.Direction.DESC, "createdOn"))
+                new Query(Criteria.where("claimedBy._id").is(userId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "createdOn"))
                 , Invoice.class, "invoices");
     }
 

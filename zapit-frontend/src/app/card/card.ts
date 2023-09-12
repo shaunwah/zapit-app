@@ -1,5 +1,5 @@
-import {User} from "../user/user";
-import {Merchant} from "../merchant/merchant";
+import { User } from '../user/user';
+import { Merchant } from '../merchant/merchant';
 
 export interface Card {
   id: string;

@@ -17,5 +17,8 @@
       <div class="d-grid mb-3">
         <button type="submit" class="btn btn-primary border-0" routerLink="send" [disabled]="card.balance <= 0">Pay with Points</button>
       </div>
-      <s-app-transaction-list-group [transactions]="transactions"></s-app-transaction-list-group>
+  <div class="mb-3">
+    <s-app-transaction-list-group [transactions]="transactions"></s-app-transaction-list-group>
+  </div>
+  <s-app-pagination [page]="page" [dataLength]="transactions.length" [dataLimit]="limit" (pageChanged)="fetchNewData($event)"></s-app-pagination>
 </div>

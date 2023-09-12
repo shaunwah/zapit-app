@@ -1,18 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Merchant} from "../merchant";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Merchant } from '../merchant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MerchantService {
   private http = inject(HttpClient);
-  readonly apiUrl = '/api'
-
-  getMerchantById(merchantId: number): Observable<Merchant> {
-    return this.http.get<Merchant>(`${this.apiUrl}/merchant/${merchantId}`);
-  }
+  readonly apiUrl = '/api';
 
   getMerchantByUserId(): Observable<Merchant> {
     return this.http.get<Merchant>(`${this.apiUrl}/merchant`);

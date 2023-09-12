@@ -23,7 +23,7 @@ import java.util.UUID;
 @Log
 public class CardRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final String SQL_GET_CARDS_BY_USER_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.user = ? and c.is_deleted = false and m.is_deleted = false limit ?";
+    private final String SQL_GET_CARDS_BY_USER_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.user = ? and c.is_deleted = false and m.is_deleted = false limit ? offset ?";
 
     private final String SQL_GET_CARD_BY_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.id = ? and (c.user = ? or c.issued_by = (select id from merchants m2 where m2.created_by = ? limit 1)) and c.is_deleted = false and m.is_deleted = false limit 1";
 
@@ -34,7 +34,7 @@ public class CardRepository {
 
     private final String SQL_DELETE_CARD = "update cards set is_deleted = true where id = ? and user = ? and is_deleted = false";
 
-    public List<Card> getCardsByUserId(Long userId, Integer limit) {
+    public List<Card> getCardsByUserId(Long userId, Integer limit, Integer offset) {
         try {
             return jdbcTemplate.query(SQL_GET_CARDS_BY_USER_ID, (rs) -> {
                 List<Card> cards = new ArrayList<>();
@@ -56,7 +56,7 @@ public class CardRepository {
                     cards.add(card);
                 }
                 return cards;
-            }, userId, limit);
+            }, userId, limit, offset);
         } catch (Exception e) {
             log.severe(e.getMessage());
             return null;

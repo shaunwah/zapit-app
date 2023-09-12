@@ -22,9 +22,9 @@ public class CardController {
     private final JwtDecoder jwtDecoder;
 
     @GetMapping("/cards")
-    public ResponseEntity<List<Card>> getCardsByUserId(@RequestParam(defaultValue = "5") Integer limit, HttpServletRequest request) {
+    public ResponseEntity<List<Card>> getCardsByUserId(@RequestParam(defaultValue = "5") Integer limit, @RequestParam(defaultValue = "0") Integer offset, HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.ok(cardService.getCardsByUserId(JWT_USER_ID, limit));
+        return ResponseEntity.ok(cardService.getCardsByUserId(JWT_USER_ID, limit, offset));
     }
 
     @GetMapping("/card/{cardId}")

@@ -42,24 +42,24 @@ public class InvoiceService {
 
     }
 
-    public List<Invoice> getInvoicesByMerchantId(Long userId) {
+    public List<Invoice> getInvoicesByMerchantId(Long userId, Integer limit, Integer offset) {
         Optional<Merchant> merchant = merchantService.getMerchantByUserId(userId);
         if (merchant.isPresent()) {
-            return invoiceRepository.getInvoicesByMerchantId(merchant.get().getId());
+            return invoiceRepository.getInvoicesByMerchantId(merchant.get().getId(), limit, offset);
         }
         return new ArrayList<>();
     }
 
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId) {
-        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId);
+    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, Integer limit, Integer offset) {
+        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, limit, offset);
     }
 
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId) {
-        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, excludeInvoiceId);
+    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId, Integer limit, Integer offset) {
+        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, excludeInvoiceId, limit, offset);
     }
 
-    public List<Invoice> getInvoicesByUserId(Long userId) {
-        return invoiceRepository.getInvoicesByUserId(userId);
+    public List<Invoice> getInvoicesByUserId(Long userId, Integer limit, Integer offset) {
+        return invoiceRepository.getInvoicesByUserId(userId, limit, offset);
     }
 
     public Optional<Invoice> createInvoice(Invoice invoice) {

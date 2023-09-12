@@ -23,8 +23,8 @@ public class CardService {
     private final CardRepository cardRepository;
     private final TransactionService transactionService;
 
-    public List<Card> getCardsByUserId(Long userId, Integer limit) {
-        return cardRepository.getCardsByUserId(userId, limit);
+    public List<Card> getCardsByUserId(Long userId, Integer limit, Integer offset) {
+        return cardRepository.getCardsByUserId(userId, limit, offset);
     }
 
     public Optional<Card> getCardById(String cardId, Long userId) {
