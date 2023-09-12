@@ -2,6 +2,8 @@ create database zapit;
 
 use zapit;
 
+## TODO fix lengths
+
 create table location_data
 (
     id        integer auto_increment,
