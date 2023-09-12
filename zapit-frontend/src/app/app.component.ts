@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AuthService} from "./auth/services/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ThemeService} from "./shared/services/theme.service";
+import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
       this.router.url.trim().toLowerCase() == '/login' ||
       this.router.url.trim().toLowerCase() == '/logout' ||
       this.router.url.trim().toLowerCase() == '/register' ||
-      (this.router.url.trim().toLowerCase().includes('/invoice') && this.router.url.trim().toLowerCase().includes('/scan'))
+      (this.router.url.trim().toLowerCase().includes('/invoice') &&
+        this.router.url.trim().toLowerCase().includes('/scan'))
     );
   }
 }

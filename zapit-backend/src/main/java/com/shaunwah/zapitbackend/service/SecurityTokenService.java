@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Log
 public class SecurityTokenService {
     @Value("${jwt.key.secret}")
     private String secretKey;

@@ -13,4 +13,9 @@ public class HealthController {
     public ResponseEntity<String> getHealthz() {
         return ResponseEntity.ok("pong!");
     }
+
+    @GetMapping("/api/z")
+    public ResponseEntity<String> getZ() {
+        return ResponseEntity.ok("pong!");
+    }
 }

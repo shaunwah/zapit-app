@@ -29,11 +29,17 @@ public class InvoiceService {
     }
 
     public Double getInvoicesTotalByUserId(Long userId) {
-        Double total = ((Document) invoiceRepository.getInvoicesTotalByUserId(userId).get("results", ArrayList.class).get(0)).getDouble("t");
-        if (total == null) {
+        try {
+            Double total = ((Document) invoiceRepository.getInvoicesTotalByUserId(userId).get("results", ArrayList.class).get(0)).getDouble("t");
+            if (total == null) {
+                return 0.0;
+            }
+            return total;
+        } catch (Exception e) {
+            log.severe(e.getMessage());
             return 0.0;
         }
-        return total;
+
     }
 
     public List<Invoice> getInvoicesByMerchantId(Long userId) {

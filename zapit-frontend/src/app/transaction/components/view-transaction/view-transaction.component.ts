@@ -48,8 +48,7 @@ export class ViewTransactionComponent implements OnInit {
       lng: transaction.location.longitude ?? 0,
     };
     const MAPBOX_DATA = new Map({
-      accessToken:
-        'pk.eyJ1Ijoic2hhdW53YWgiLCJhIjoiY2xtZXpuc3B1Mjd4djNubXg1Mml1dnRvOSJ9.wMSPXsXLVXR1PGKvzUA1og',
+      accessToken: environment.mapboxApiKey,
       container: 'mapbox',
       style: 'mapbox://styles/mapbox/streets-v12',
       center: this.mapboxCenter,
