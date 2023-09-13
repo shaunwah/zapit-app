@@ -103,7 +103,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ['example.com'],
+        allowedDomains: ['localhost:8080', 'zapit.shaunwah.dev'],
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {

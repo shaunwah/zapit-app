@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  domain: 'zapit.shaunwah.dev',
   apiUrl: 'https://zapit.shaunwah.dev/api',
   websocketUrl: 'wss://zapit.shaunwah.dev/websocket',
   mapboxApiKey:

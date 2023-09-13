@@ -15,7 +15,7 @@ export class AuthService {
   login(user: User): Observable<User> {
     const authData = btoa(`${user.email}:${user.password}`);
     const headers = new HttpHeaders().set('Authorization', `Basic ${authData}`);
-    return this.http.post<User>(`${this.apiUrl}/login`, null, { headers });
+    return this.http.post<User>(`${this.apiUrl}/auth/login`, null, { headers });
   }
 
   logout(): void {
@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   register(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/register`, user);
+    return this.http.post<User>(`${this.apiUrl}/auth/register`, user);
   }
 
   isAuthenticated(): boolean {
