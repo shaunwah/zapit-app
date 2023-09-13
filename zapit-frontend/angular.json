@@ -80,7 +80,6 @@
             },
             "development": {
               "browserTarget": "zapit-frontend:build:development",
-              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
