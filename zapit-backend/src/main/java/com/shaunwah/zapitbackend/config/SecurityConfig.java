@@ -37,12 +37,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/healthz").permitAll()
-                        .requestMatchers("/healthz").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/healthz/**").permitAll()
                         .requestMatchers("/websocket/**").permitAll()
+                        .requestMatchers("/healthz/**").permitAll()
+                        .requestMatchers("/#/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
-                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(authService)

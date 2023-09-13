@@ -1,6 +1,6 @@
 package com.shaunwah.zapitbackend.service;
 
-import com.shaunwah.zapitbackend.config.ZapitException;
+import com.shaunwah.zapitbackend.exception.ZapitException;
 import com.shaunwah.zapitbackend.model.LocationData;
 import com.shaunwah.zapitbackend.model.Transaction;
 import com.shaunwah.zapitbackend.repository.TransactionRepository;

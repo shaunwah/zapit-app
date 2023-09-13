@@ -47,6 +47,7 @@ import { PaginationComponent } from './shared/components/pagination/pagination.c
 import { SendPaymentCardEndComponent } from './card/components/send-payment-card-end/send-payment-card-end.component';
 import { ReceivePaymentCardEndComponent } from './card/components/receive-payment-card-end/receive-payment-card-end.component';
 import { UserAccountSettingsComponent } from './user/components/user-account-settings/user-account-settings.component';
+import { HealthzComponent } from './shared/components/healthz/healthz.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -91,6 +92,7 @@ export function tokenGetter() {
     SendPaymentCardEndComponent,
     ReceivePaymentCardEndComponent,
     UserAccountSettingsComponent,
+    HealthzComponent,
   ],
   imports: [
     BrowserModule,

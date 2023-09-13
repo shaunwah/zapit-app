@@ -1,6 +1,6 @@
 package com.shaunwah.zapitbackend.service;
 
-import com.shaunwah.zapitbackend.config.ZapitException;
+import com.shaunwah.zapitbackend.exception.ZapitException;
 import com.shaunwah.zapitbackend.model.Merchant;
 import com.shaunwah.zapitbackend.model.User;
 import com.shaunwah.zapitbackend.repository.MerchantRepository;

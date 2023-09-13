@@ -28,8 +28,10 @@ import { ReceivePaymentCardEndComponent } from './card/components/receive-paymen
 import { SendPaymentCardEndComponent } from './card/components/send-payment-card-end/send-payment-card-end.component';
 import { UserAccountSettingsComponent } from './user/components/user-account-settings/user-account-settings.component';
 import { MerchantDetailsSettingsComponent } from './user/components/merchant-details-settings/merchant-details-settings.component';
+import { HealthzComponent } from './shared/components/healthz/healthz.component';
 
 const routes: Routes = [
+  { path: 'healthz', component: HealthzComponent, title: 'Healthz' },
   { path: 'login', component: LoginComponent, title: 'Login' },
   { path: 'logout', component: LogoutComponent, title: 'Logout' },
   { path: 'register', component: RegisterComponent, title: 'Registration' },

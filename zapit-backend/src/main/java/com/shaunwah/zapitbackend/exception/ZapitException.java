@@ -1,4 +1,4 @@
-package com.shaunwah.zapitbackend.config;
+package com.shaunwah.zapitbackend.exception;
 
 public class ZapitException extends Exception {
     public ZapitException() {
