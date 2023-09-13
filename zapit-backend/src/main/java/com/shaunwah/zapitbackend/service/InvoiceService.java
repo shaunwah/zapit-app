@@ -1,5 +1,6 @@
 package com.shaunwah.zapitbackend.service;
 
+import com.shaunwah.zapitbackend.config.ZapitException;
 import com.shaunwah.zapitbackend.model.*;
 import com.shaunwah.zapitbackend.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,39 +65,49 @@ public class InvoiceService {
         return Optional.ofNullable(invoiceRepository.createInvoice(invoice));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ZapitException.class)
     public Boolean claimInvoice(String invoiceId, Long timestamp, LocationData locationData, Long userId) throws Exception {
         try {
+
+            // verifies if the invoice exists
             Optional<Invoice> optInvoice = getInvoiceById(invoiceId, timestamp, userId);
             if (optInvoice.isEmpty()) {
-                throw new Exception("1");
+                throw new ZapitException();
             }
             Invoice invoice = optInvoice.get();
+
+            // verifies if the user has an existing card
             Optional<Card> optCard = cardService.getCardByMerchantId(invoice.getIssuedBy().getId(), userId);
             if (optCard.isEmpty()) {
+
+                // creates a new card if the user does not have an existing one
                 Card newCard = new Card();
                 newCard.setUser(new User(userId));
                 newCard.setBalance(invoice.getEligiblePoints());
                 newCard.setIssuedBy(invoice.getIssuedBy());
                 if (cardService.createCard(newCard, userId, locationData).isEmpty()) {
-                    throw new Exception("2");
+                    throw new ZapitException();
                 }
             } else {
+
+                // adds points to the user's existing card
                 Card card = optCard.get();
                 try {
                     cardService.addToCard(card.getId(), invoice.getEligiblePoints(), userId, locationData);
                 } catch (Exception e) {
-                    throw new Exception("3");
+                    throw new ZapitException();
                 }
             }
+
+            // claims the invoice
             if (!invoiceRepository.claimInvoice(invoiceId, timestamp, userId)) {
-                throw new Exception("4");
+                throw new ZapitException();
             }
             return true;
         }
         catch (Exception e) {
             log.severe(e.getMessage());
-            throw new Exception("5");
+            throw new ZapitException();
         }
     }
 }

@@ -1,19 +1,15 @@
 package com.shaunwah.zapitbackend.repository;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shaunwah.zapitbackend.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +40,7 @@ public class TransactionRepository {
                     transaction.setCard(card);
                     transaction.setAmount(rs.getDouble("amount"));
                     transaction.setStatus(rs.getBoolean("status"));
-                    transaction.setLocation(new LocationData(rs.getBigDecimal("latitude"), rs.getBigDecimal("longitude")));
+                    transaction.setLocation(new LocationData(rs.getDouble("latitude"), rs.getDouble("longitude")));
                     transaction.setCreatedOn(rs.getTimestamp("created_on"));
                     transaction.setUpdatedOn(rs.getTimestamp("updated_on"));
                     transactions.add(transaction);
@@ -73,7 +69,7 @@ public class TransactionRepository {
                     transaction.setCard(card);
                     transaction.setAmount(rs.getDouble("amount"));
                     transaction.setStatus(rs.getBoolean("status"));
-                    transaction.setLocation(new LocationData(rs.getBigDecimal("latitude"), rs.getBigDecimal("longitude")));
+                    transaction.setLocation(new LocationData(rs.getDouble("latitude"), rs.getDouble("longitude")));
                     transaction.setCreatedOn(rs.getTimestamp("created_on"));
                     transaction.setUpdatedOn(rs.getTimestamp("updated_on"));
                     transactions.add(transaction);
@@ -101,7 +97,7 @@ public class TransactionRepository {
                     transaction.setCard(card);
                     transaction.setAmount(rs.getDouble("amount"));
                     transaction.setStatus(rs.getBoolean("status"));
-                    transaction.setLocation(new LocationData(rs.getBigDecimal("latitude"), rs.getBigDecimal("longitude")));
+                    transaction.setLocation(new LocationData(rs.getDouble("latitude"), rs.getDouble("longitude")));
                     transaction.setCreatedOn(rs.getTimestamp("created_on"));
                     transaction.setUpdatedOn(rs.getTimestamp("updated_on"));
                     return transaction;

@@ -95,6 +95,7 @@ export class ReceivePaymentCardComponent implements OnInit, OnDestroy {
             case CardMessageType.REQUEST_REJECTED:
               this.message = `Rejected payment of ${response.amount}.`;
               this.isWaitingForApproval = false;
+              void this.router.navigate(['/']);
               break;
             case CardMessageType.PAYMENT_SUCCEEDED:
               this.message = `Confirmed payment of ${response.amount}.`;

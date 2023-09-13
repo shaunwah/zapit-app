@@ -64,6 +64,7 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
       type: CardMessageType.REQUEST_REJECTED,
       amount: this.amount,
     });
+    return this.router.navigate(['/card', this.cardId]);
   }
 
   deductFromCard(cardId: string, amount: number, locationData?: LocationData) {

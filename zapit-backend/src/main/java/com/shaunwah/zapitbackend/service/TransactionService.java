@@ -1,9 +1,8 @@
 package com.shaunwah.zapitbackend.service;
 
+import com.shaunwah.zapitbackend.config.ZapitException;
 import com.shaunwah.zapitbackend.model.LocationData;
 import com.shaunwah.zapitbackend.model.Transaction;
-import com.shaunwah.zapitbackend.model.User;
-import com.shaunwah.zapitbackend.repository.LocationDataRepository;
 import com.shaunwah.zapitbackend.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -41,7 +40,7 @@ public class TransactionService {
         return total;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ZapitException.class)
     public Optional<Transaction> createTransaction(Transaction transaction) throws Exception {
         try {
             Optional<LocationData> locationData = locationDataService.createLocationData(transaction.getLocation());
@@ -52,13 +51,13 @@ public class TransactionService {
             transaction.setLocation(newLocationData);
             Long transactionId = transactionRepository.createTransaction(transaction);
             if (transactionId == null) {
-                throw new Exception();
+                throw new ZapitException();
             }
             transaction.setId(transactionId);
             return Optional.of(transaction);
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new Exception();
+            throw new ZapitException();
         }
     }
 }

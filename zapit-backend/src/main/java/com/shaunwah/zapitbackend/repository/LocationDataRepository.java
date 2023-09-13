@@ -1,7 +1,6 @@
 package com.shaunwah.zapitbackend.repository;
 
 import com.shaunwah.zapitbackend.model.LocationData;
-import com.shaunwah.zapitbackend.model.Merchant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,8 +20,8 @@ public class LocationDataRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(SQL_CREATE_LOCATION_DATA, Statement.RETURN_GENERATED_KEYS);
-            ps.setBigDecimal(1, locationData.getLatitude());
-            ps.setBigDecimal(2, locationData.getLongitude());
+            ps.setDouble(1, locationData.getLatitude());
+            ps.setDouble(2, locationData.getLongitude());
             return ps;
         }, keyHolder);
 

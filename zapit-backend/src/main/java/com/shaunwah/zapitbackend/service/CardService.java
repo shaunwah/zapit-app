@@ -1,5 +1,6 @@
 package com.shaunwah.zapitbackend.service;
 
+import com.shaunwah.zapitbackend.config.ZapitException;
 import com.shaunwah.zapitbackend.model.*;
 import com.shaunwah.zapitbackend.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,37 +31,43 @@ public class CardService {
         return Optional.ofNullable(cardRepository.getCardByMerchantId(merchantId, userId));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ZapitException.class)
     public Optional<Card> createCard(Card card, Long userId, LocationData locationData) throws Exception {
         try {
+            // temporarily sets card balance to zero to avoid multiple additions
+            final Double cardBalance = card.getBalance();
+            card.setBalance(0.0);
+
+            // creates a new card
             card.setUser(new User(userId));
             card.setId(UUID.randomUUID().toString());
             if (cardRepository.createCard(card) <= 0) {
-                throw new Exception();
+                throw new ZapitException();
             }
             try {
-                addToCard(card.getId(), card.getBalance(), card.getUser().getId(), locationData);
+                // adds points to card
+                addToCard(card.getId(), cardBalance, card.getUser().getId(), locationData);
             } catch (Exception e) {
-                throw new Exception();
+                throw new ZapitException();
             }
             return Optional.of(card);
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new Exception();
+            throw new ZapitException();
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ZapitException.class)
     public Optional<Transaction> addToCard(String cardId, Double amount, Long userId, LocationData locationData) throws Exception {
         try {
             if (amount == 0) {
                 return Optional.empty();
             }
             if (amount < 0) {
-                throw new Exception();
+                throw new ZapitException();
             }
             if (cardRepository.addToCard(cardId, amount, userId) <= 0) {
-                throw new Exception();
+                throw new ZapitException();
             }
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
@@ -70,26 +77,29 @@ public class CardService {
             }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
-                throw new Exception();
+                throw new ZapitException();
             }
             return newTransaction;
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new Exception();
+            throw new ZapitException();
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ZapitException.class)
     public Optional<Transaction> deductFromCard(String cardId, Double amount, Long userId, LocationData locationData) throws Exception {
         try {
             if (amount == 0) {
                 return Optional.empty();
             }
             if (amount < 0) {
-                throw new Exception();
+                throw new ZapitException();
+            }
+            if (cardRepository.getCardById(cardId, userId).getBalance() < amount) {
+                throw new ZapitException();
             }
             if (cardRepository.deductFromCard(cardId, amount, userId) <= 0) {
-                throw new Exception();
+                throw new ZapitException();
             }
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
@@ -99,12 +109,12 @@ public class CardService {
             }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
-                throw new Exception();
+                throw new ZapitException();
             }
             return newTransaction;
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new Exception();
+            throw new ZapitException();
         }
     }
 
