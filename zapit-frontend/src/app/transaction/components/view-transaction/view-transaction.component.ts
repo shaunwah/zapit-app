@@ -34,7 +34,11 @@ export class ViewTransactionComponent implements OnInit {
       .subscribe({
         next: (transaction) => {
           this.transaction = transaction;
-          if (transaction.location) {
+          if (
+            transaction.location &&
+            transaction.location.latitude != 0 &&
+            transaction.location.longitude != 0
+          ) {
             this.renderMapbox(transaction);
           }
         },
