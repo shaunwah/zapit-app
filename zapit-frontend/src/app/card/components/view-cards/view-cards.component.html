@@ -1,5 +1,8 @@
 <div class="container" *ngIf="cards">
-    <h1>Cards</h1>
+  <div class="d-flex align-items-center justify-content-between mb-2" routerLink="/wallet">
+    <h1 class="mb-0">Cards</h1>
+    <button type="button" class="btn-close d-block d-md-none" aria-label="Close"></button>
+  </div>
     <div class="mb-3">
         <s-app-card-list-group [cards]="cards"></s-app-card-list-group>
     </div>

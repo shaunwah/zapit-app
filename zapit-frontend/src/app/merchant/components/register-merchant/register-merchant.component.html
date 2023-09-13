@@ -8,22 +8,41 @@
   <form [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="name" class="form-label">Company Name*</label>
-      <input type="text" class="form-control border border-light-subtle shadow-sm" id="name" formControlName="name">
+      <input type="text" class="form-control border border-light-subtle shadow-sm" id="name" [class.is-invalid]="(name.dirty || name.touched) && name.errors" formControlName="name">
+      <ng-container *ngIf="(name.dirty || name.touched) && name.errors">
+        <div *ngIf="name.getError('required')" class="invalid-feedback">Name required</div>
+        <div *ngIf="name.getError('maxlength')" class="invalid-feedback">Name cannot
+          exceed {{ name.getError('maxlength').requiredLength | number }} characters
+        </div>
+      </ng-container>
     </div>
     <div class="mb-3">
       <label for="website" class="form-label">Website*</label>
-      <input type="url" class="form-control border border-light-subtle shadow-sm" id="website"
+      <input type="url" class="form-control border border-light-subtle shadow-sm" id="website" [class.is-invalid]="(website.dirty || website.touched) && website.errors"
              formControlName="website">
+      <ng-container *ngIf="(website.dirty || website.touched) && website.errors">
+        <div *ngIf="website.getError('required')" class="invalid-feedback">Website required</div>
+        <div *ngIf="website.getError('pattern')" class="invalid-feedback">Website has to be a URL</div>
+      </ng-container>
     </div>
     <div class="mb-3">
       <label for="address" class="form-label">Address*</label>
-      <textarea class="form-control border border-light-subtle shadow-sm" id="address" rows="3"
+      <textarea class="form-control border border-light-subtle shadow-sm" id="address" rows="3" [class.is-invalid]="(address.dirty || address.touched) && address.errors"
                 formControlName="address"></textarea>
+      <ng-container *ngIf="(address.dirty || address.touched) && address.errors">
+        <div *ngIf="address.getError('required')" class="invalid-feedback">Address required</div>
+      </ng-container>
     </div>
     <div class="mb-3">
       <label for="postCode" class="form-label">Postal Code*</label>
-      <input type="text" class="form-control border border-light-subtle shadow-sm" id="postCode"
+      <input type="text" class="form-control border border-light-subtle shadow-sm" id="postCode" [class.is-invalid]="(postCode.dirty || postCode.touched) && postCode.errors"
              formControlName="postCode">
+      <ng-container *ngIf="(postCode.dirty || postCode.touched) && postCode.errors">
+        <div *ngIf="postCode.getError('required')" class="invalid-feedback">Postal Code required</div>
+        <div *ngIf="postCode.getError('maxlength')" class="invalid-feedback">Postal Code cannot
+          exceed {{ postCode.getError('maxlength').requiredLength | number }} characters
+        </div>
+      </ng-container>
     </div>
     <div class="d-grid">
       <button type="submit" class="btn btn-secondary border-0"

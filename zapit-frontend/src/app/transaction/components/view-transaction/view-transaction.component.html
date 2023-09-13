@@ -1,5 +1,8 @@
 <div class="container">
-  <h1>Transaction</h1>
+  <div class="d-flex align-items-center justify-content-between mb-2" routerLink="/transactions">
+    <h1 class="mb-0">Transaction</h1>
+    <button type="button" class="btn-close" aria-label="Close"></button>
+  </div>
   <div *ngIf="transaction">
     <div class="mb-3">
             <span class="d-block fs-2 fw-bold" [class.text-success]="isPositive(transaction.amount)"

@@ -1,6 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MerchantService } from '../../services/merchant.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { first } from 'rxjs';
 import { Router } from '@angular/router';
 import { Merchant } from '../../merchant';
@@ -21,10 +26,21 @@ export class RegisterMerchantComponent implements OnInit {
 
   ngOnInit() {
     this.merchantForm = this.fb.group({
-      name: this.fb.control<string>('', [Validators.required]),
-      website: this.fb.control<string>('', [Validators.required]),
+      name: this.fb.control<string>('', [
+        Validators.required,
+        Validators.maxLength(64),
+      ]),
+      website: this.fb.control<string>('', [
+        Validators.required,
+        Validators.pattern(
+          '[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)',
+        ),
+      ]),
       address: this.fb.control<string>('', [Validators.required]),
-      postCode: this.fb.control<string>('', [Validators.required]),
+      postCode: this.fb.control<string>('', [
+        Validators.required,
+        Validators.maxLength(64),
+      ]),
     });
   }
 
@@ -57,5 +73,21 @@ export class RegisterMerchantComponent implements OnInit {
 
   getDataFromStorage() {
     return this.authService.getDataFromStorage();
+  }
+
+  get name() {
+    return this.merchantForm.get('name') as FormControl;
+  }
+
+  get website() {
+    return this.merchantForm.get('website') as FormControl;
+  }
+
+  get address() {
+    return this.merchantForm.get('address') as FormControl;
+  }
+
+  get postCode() {
+    return this.merchantForm.get('postCode') as FormControl;
   }
 }
