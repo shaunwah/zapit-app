@@ -25,7 +25,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { InvoiceListGroupComponent } from './shared/components/invoice-list-group/invoice-list-group.component';
 import { UserAppearanceSettingsComponent } from './user/components/user-appearance-settings/user-appearance-settings.component';
 import { SettingsHomeComponent } from './user/components/settings-home/settings-home.component';
-import { MerchantSettingsComponent } from './user/components/merchant-settings/merchant-settings.component';
+import { MerchantDetailsSettingsComponent } from './user/components/merchant-details-settings/merchant-details-settings.component';
 import { MerchantHomeComponent } from './merchant/components/merchant-home/merchant-home.component';
 import { MerchantViewInvoicesComponent } from './merchant/components/merchant-view-invoices/merchant-view-invoices.component';
 import { RxStompService } from './shared/services/rx-stomp.service';
@@ -46,6 +46,7 @@ import { CardListGroupComponent } from './shared/components/card-list-group/card
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { SendPaymentCardEndComponent } from './card/components/send-payment-card-end/send-payment-card-end.component';
 import { ReceivePaymentCardEndComponent } from './card/components/receive-payment-card-end/receive-payment-card-end.component';
+import { UserAccountSettingsComponent } from './user/components/user-account-settings/user-account-settings.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -71,7 +72,7 @@ export function tokenGetter() {
     InvoiceListGroupComponent,
     UserAppearanceSettingsComponent,
     SettingsHomeComponent,
-    MerchantSettingsComponent,
+    MerchantDetailsSettingsComponent,
     MerchantHomeComponent,
     MerchantViewInvoicesComponent,
     CardsHomeComponent,
@@ -89,6 +90,7 @@ export function tokenGetter() {
     PaginationComponent,
     SendPaymentCardEndComponent,
     ReceivePaymentCardEndComponent,
+    UserAccountSettingsComponent,
   ],
   imports: [
     BrowserModule,

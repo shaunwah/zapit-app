@@ -16,8 +16,8 @@
   </div>
   <div class="mb-3 text-center">
     <div class="d-grid mb-1">
-      <button type="button" class="btn btn-success border-0" (click)="onSubmit()" [disabled]="!locationData">
-        <ng-container *ngIf="locationData; else noLocationData">
+      <button type="button" class="btn btn-success border-0" (click)="onSubmit()" [disabled]="!locationData && isWaiting">
+        <ng-container *ngIf="locationData || !isWaiting; else noLocationData">
           Claim
         </ng-container>
         <ng-template #noLocationData>
@@ -25,8 +25,5 @@
         </ng-template>
       </button>
     </div>
-    <small class="text-muted">
-      Your location data is kept private.
-    </small>
   </div>
 </div>

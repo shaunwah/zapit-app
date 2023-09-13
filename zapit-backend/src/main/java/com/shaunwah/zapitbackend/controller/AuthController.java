@@ -29,7 +29,6 @@ public class AuthController {
         log.info("Successful login for %s. Generating token...".formatted(auth.getName()));
         String token = securityTokenService.generateToken(auth);
         if (token != null) {
-            log.info("Token generated: %s".formatted(token));
             final User user = ((UserPrincipal) auth.getPrincipal()).getUser();
             return ResponseEntity.ok(new UserAuthData(token, auth.getName(), userService.getAvatarHash(user.getEmail()), user.getRoles()));
         }

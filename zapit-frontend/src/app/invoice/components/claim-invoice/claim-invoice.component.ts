@@ -21,12 +21,14 @@ export class ClaimInvoiceComponent implements OnInit {
   timestamp!: number;
   messageOutPath!: string;
   locationData?: LocationData;
+  isWaiting!: boolean;
 
   ngOnInit() {
     this.invoiceId = String(this.route.snapshot.paramMap.get('invoiceId'));
     this.timestamp = Number(this.route.snapshot.queryParamMap.get('t'));
     this.messageOutPath = `/invoice/${this.invoiceId}-${this.timestamp}/scan`;
     this.getCurrentPosition();
+    this.onDelay(3000);
     this.getInvoiceById(this.invoiceId, this.timestamp);
   }
 
@@ -83,6 +85,13 @@ export class ClaimInvoiceComponent implements OnInit {
         console.info(`Failed to obtain location data`);
       },
     );
+  }
+
+  onDelay(ms: number) {
+    this.isWaiting = true;
+    setTimeout(() => {
+      this.isWaiting = false;
+    }, ms);
   }
 
   publishData(body: string) {

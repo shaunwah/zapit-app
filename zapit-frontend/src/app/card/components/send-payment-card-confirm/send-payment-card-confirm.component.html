@@ -16,8 +16,8 @@
     </div>
     <div class="d-grid w-100">
       <button type="button" class="btn btn-success border-0" (click)="onApprovePayment()"
-              [disabled]="!locationData">
-        <ng-container *ngIf="locationData; else noLocationData">
+              [disabled]="!locationData && isWaiting">
+        <ng-container *ngIf="locationData || !isWaiting; else noLocationData">
           Approve
         </ng-container>
         <ng-template #noLocationData>

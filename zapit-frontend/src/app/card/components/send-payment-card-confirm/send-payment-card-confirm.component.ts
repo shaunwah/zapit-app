@@ -21,6 +21,7 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   card!: Card;
   locationData?: LocationData;
+  isWaiting!: boolean;
   messageInPath!: string;
   messageOutPath!: string;
   cardId!: string;
@@ -33,6 +34,7 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
     this.messageInPath = `/card/${this.cardId}/send`;
     this.messageOutPath = `/card/${this.cardId}/receive`;
     this.getCurrentPosition();
+    this.onDelay(3000);
     this.getCardById(this.cardId);
     this.receiveData();
   }
@@ -108,6 +110,13 @@ export class SendPaymentCardConfirmComponent implements OnInit, OnDestroy {
         console.info(`Failed to obtain location data`);
       },
     );
+  }
+
+  onDelay(ms: number) {
+    this.isWaiting = true;
+    setTimeout(() => {
+      this.isWaiting = false;
+    }, ms);
   }
 
   publishData(body: CardMessage) {

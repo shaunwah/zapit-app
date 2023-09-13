@@ -14,6 +14,7 @@ import java.sql.Statement;
 @RequiredArgsConstructor
 public class LocationDataRepository {
     private final JdbcTemplate jdbcTemplate;
+
     private final String SQL_CREATE_LOCATION_DATA = "insert into location_data (latitude, longitude) values (?, ?)";
 
     public Long createLocationData(LocationData locationData) {

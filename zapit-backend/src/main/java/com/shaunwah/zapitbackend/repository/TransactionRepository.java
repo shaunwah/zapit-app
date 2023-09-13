@@ -18,11 +18,13 @@ import java.util.List;
 @Log
 public class TransactionRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final String SQL_GET_TRANSACTIONS_TOTAL_BY_USER_ID = "select sum(t.amount) from transactions t join cards c on c.id = t.card where c.user = ? and c.is_deleted = false limit 1";
     private final String SQL_GET_TRANSACTIONS_BY_USER_ID = "select t.*, ld.*, m.* from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on ld.id = t.location_data where c.user = ? and c.is_deleted = false order by t.created_on desc limit ? offset ?";
     private final String SQL_GET_TRANSACTIONS_BY_CARD_ID = "select t.*, ld.*, m.* from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on ld.id = t.location_data where t.card = ? and c.user = ? and c.is_deleted = false order by t.created_on desc limit ? offset ?";
+    private final String SQL_GET_TRANSACTIONS_TOTAL_BY_USER_ID = "select sum(t.amount) from transactions t join cards c on c.id = t.card where c.user = ? and c.is_deleted = false limit 1";
     private final String SQL_GET_TRANSACTION_BY_ID = "select * from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on t.location_data = ld.id where t.id = ? and c.user = ? limit 1";
     private final String SQL_CREATE_TRANSACTION = "insert into transactions (card, amount, status, location_data) values (?, ?, ?, ?)";
+    private final String SQL_CREATE_TRANSACTION_WITHOUT_LOCATION_DATA = "insert into transactions (card, amount, status) values (?, ?, ?)";
+
 
     public List<Transaction> getTransactionsByUserId(Long userId, Integer limit, Integer offset) {
         try {
@@ -82,6 +84,10 @@ public class TransactionRepository {
         }
     }
 
+    public Double getTransactionsTotalByUserId(Long userId) {
+        return jdbcTemplate.queryForObject(SQL_GET_TRANSACTIONS_TOTAL_BY_USER_ID, Double.class, userId);
+    }
+
     public Transaction getTransactionById(Long transactionId, Long userId) {
         try {
             return jdbcTemplate.query(SQL_GET_TRANSACTION_BY_ID, (rs) -> {
@@ -110,18 +116,18 @@ public class TransactionRepository {
         }
     }
 
-    public Double getTransactionsTotalByUserId(Long userId) {
-        return jdbcTemplate.queryForObject(SQL_GET_TRANSACTIONS_TOTAL_BY_USER_ID, Double.class, userId);
-    }
-
     public Long createTransaction(Transaction transaction) {
+        final boolean isLocationDataPresent = transaction.getLocation() != null;
+        final String queryToExecute = isLocationDataPresent ? SQL_CREATE_TRANSACTION : SQL_CREATE_TRANSACTION_WITHOUT_LOCATION_DATA;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(SQL_CREATE_TRANSACTION, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(queryToExecute, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, transaction.getCard().getId());
             ps.setDouble(2, transaction.getAmount());
-            ps.setBoolean(3, true); // TODO
-            ps.setLong(4, transaction.getLocation().getId());
+            ps.setBoolean(3, true);
+            if (isLocationDataPresent) {
+                ps.setLong(4, transaction.getLocation().getId());
+            }
             return ps;
         }, keyHolder);
 

@@ -26,6 +26,8 @@ import { ViewTransactionComponent } from './transaction/components/view-transact
 import { ViewTransactionsComponent } from './transaction/components/view-transactions/view-transactions.component';
 import { ReceivePaymentCardEndComponent } from './card/components/receive-payment-card-end/receive-payment-card-end.component';
 import { SendPaymentCardEndComponent } from './card/components/send-payment-card-end/send-payment-card-end.component';
+import { UserAccountSettingsComponent } from './user/components/user-account-settings/user-account-settings.component';
+import { MerchantDetailsSettingsComponent } from './user/components/merchant-details-settings/merchant-details-settings.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -42,6 +44,18 @@ const routes: Routes = [
     component: UserAppearanceSettingsComponent,
     title: 'Appearance Settings',
     canActivate: [authGuard],
+  },
+  {
+    path: 'settings/user/account',
+    component: UserAccountSettingsComponent,
+    title: 'Appearance Settings',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings/merchant/details',
+    component: MerchantDetailsSettingsComponent,
+    title: 'Appearance Settings',
+    canActivate: [authGuard, merchantUserGuard],
   },
   {
     path: 'settings/merchant/enrolment',

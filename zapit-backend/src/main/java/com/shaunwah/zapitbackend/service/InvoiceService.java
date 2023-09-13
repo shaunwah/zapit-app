@@ -22,8 +22,20 @@ public class InvoiceService {
     private final MerchantService merchantService;
     private final CardService cardService;
 
-    public Optional<Invoice> getInvoiceById(String invoiceId, Long timestamp, Long userId) {
-        return Optional.ofNullable(invoiceRepository.getInvoiceById(invoiceId, timestamp, userId));
+    public List<Invoice> getInvoicesByUserId(Long userId, Integer limit, Integer offset) {
+        return invoiceRepository.getInvoicesByUserId(userId, limit, offset);
+    }
+
+    public List<Invoice> getInvoicesByMerchantId(Long userId, Integer limit, Integer offset) {
+        Optional<Merchant> merchant = merchantService.getMerchantByUserId(userId);
+        if (merchant.isPresent()) {
+            return invoiceRepository.getInvoicesByMerchantId(merchant.get().getId(), limit, offset);
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId, Integer limit, Integer offset) {
+        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, excludeInvoiceId, limit, offset);
     }
 
     public Double getInvoicesTotalByUserId(Long userId) {
@@ -40,24 +52,8 @@ public class InvoiceService {
 
     }
 
-    public List<Invoice> getInvoicesByMerchantId(Long userId, Integer limit, Integer offset) {
-        Optional<Merchant> merchant = merchantService.getMerchantByUserId(userId);
-        if (merchant.isPresent()) {
-            return invoiceRepository.getInvoicesByMerchantId(merchant.get().getId(), limit, offset);
-        }
-        return new ArrayList<>();
-    }
-
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, Integer limit, Integer offset) {
-        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, limit, offset);
-    }
-
-    public List<Invoice> getInvoicesByMerchantIdAndUserId(Long merchantId, Long userId, String excludeInvoiceId, Integer limit, Integer offset) {
-        return invoiceRepository.getInvoicesByMerchantIdAndUserId(merchantId, userId, excludeInvoiceId, limit, offset);
-    }
-
-    public List<Invoice> getInvoicesByUserId(Long userId, Integer limit, Integer offset) {
-        return invoiceRepository.getInvoicesByUserId(userId, limit, offset);
+    public Optional<Invoice> getInvoiceById(String invoiceId, Long timestamp, Long userId) {
+        return Optional.ofNullable(invoiceRepository.getInvoiceById(invoiceId, timestamp, userId));
     }
 
     public Optional<Invoice> createInvoice(Invoice invoice) {
@@ -72,7 +68,7 @@ public class InvoiceService {
             // verifies if the invoice exists
             Optional<Invoice> optInvoice = getInvoiceById(invoiceId, timestamp, userId);
             if (optInvoice.isEmpty()) {
-                throw new ZapitException();
+                throw new ZapitException("invoice does not exist");
             }
             Invoice invoice = optInvoice.get();
 
@@ -86,7 +82,7 @@ public class InvoiceService {
                 newCard.setBalance(invoice.getEligiblePoints());
                 newCard.setIssuedBy(invoice.getIssuedBy());
                 if (cardService.createCard(newCard, userId, locationData).isEmpty()) {
-                    throw new ZapitException();
+                    throw new ZapitException("card cannot be created");
                 }
             } else {
 
@@ -95,19 +91,19 @@ public class InvoiceService {
                 try {
                     cardService.addToCard(card.getId(), invoice.getEligiblePoints(), userId, locationData);
                 } catch (Exception e) {
-                    throw new ZapitException();
+                    throw new ZapitException(e.getMessage());
                 }
             }
 
             // claims the invoice
             if (!invoiceRepository.claimInvoice(invoiceId, timestamp, userId)) {
-                throw new ZapitException();
+                throw new ZapitException("invoice cannot be claimed");
             }
             return true;
         }
         catch (Exception e) {
             log.severe(e.getMessage());
-            throw new ZapitException();
+            throw new ZapitException(e.getMessage());
         }
     }
 }

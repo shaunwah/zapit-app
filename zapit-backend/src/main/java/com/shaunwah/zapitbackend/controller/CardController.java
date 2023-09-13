@@ -42,7 +42,7 @@ public class CardController {
                     .body(Utilities.returnMessageInJson("successfully generated card").toString());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Utilities.returnMessageInJson("an issue occured while creating a card").toString());
+                .body(Utilities.returnMessageInJson("an issue occurred while creating a card").toString());
     }
 
     @PostMapping("/card/{cardId}/add")

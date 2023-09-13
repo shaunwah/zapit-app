@@ -42,18 +42,18 @@ public class CardService {
             card.setUser(new User(userId));
             card.setId(UUID.randomUUID().toString());
             if (cardRepository.createCard(card) <= 0) {
-                throw new ZapitException();
+                throw new ZapitException("card cannot be created");
             }
             try {
                 // adds points to card
                 addToCard(card.getId(), cardBalance, card.getUser().getId(), locationData);
             } catch (Exception e) {
-                throw new ZapitException();
+                throw new ZapitException(e.getMessage());
             }
             return Optional.of(card);
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new ZapitException();
+            throw new ZapitException(e.getMessage());
         }
     }
 
@@ -64,10 +64,10 @@ public class CardService {
                 return Optional.empty();
             }
             if (amount < 0) {
-                throw new ZapitException();
+                throw new ZapitException("points is less than zero");
             }
             if (cardRepository.addToCard(cardId, amount, userId) <= 0) {
-                throw new ZapitException();
+                throw new ZapitException("points cannot be added to card");
             }
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
@@ -77,12 +77,12 @@ public class CardService {
             }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
-                throw new ZapitException();
+                throw new ZapitException("transaction cannot be created");
             }
             return newTransaction;
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new ZapitException();
+            throw new ZapitException(e.getMessage());
         }
     }
 
@@ -93,13 +93,13 @@ public class CardService {
                 return Optional.empty();
             }
             if (amount < 0) {
-                throw new ZapitException();
+                throw new ZapitException("points is less than zero");
             }
             if (cardRepository.getCardById(cardId, userId).getBalance() < amount) {
-                throw new ZapitException();
+                throw new ZapitException("points cannot be verified");
             }
             if (cardRepository.deductFromCard(cardId, amount, userId) <= 0) {
-                throw new ZapitException();
+                throw new ZapitException("points cannot be deduced from card");
             }
             Transaction transaction = new Transaction();
             transaction.setCard(new Card(cardId));
@@ -109,12 +109,12 @@ public class CardService {
             }
             Optional<Transaction> newTransaction = transactionService.createTransaction(transaction);
             if (newTransaction.isEmpty()) {
-                throw new ZapitException();
+                throw new ZapitException("transaction cannot be created");
             }
             return newTransaction;
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new ZapitException();
+            throw new ZapitException(e.getMessage());
         }
     }
 

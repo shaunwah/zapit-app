@@ -19,22 +19,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public String getAvatarHash(String email) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(email.getBytes());
-            BigInteger bigInteger = new BigInteger(1, bytes);
-            String str = bigInteger.toString(16);
-            while (str.length() < 32) {
-                str = "0%s".formatted(str);
-            }
-            return str;
-        } catch (NoSuchAlgorithmException e) {
-            log.severe(e.getMessage());
-            return null;
-        }
-    }
-
     public Optional<User> getUserById(Long userId) {
         return Optional.ofNullable(userRepository.getUserById(userId));
     }
@@ -61,8 +45,23 @@ public class UserService {
         return userRepository.updateUserRolesById(roles, userId) > 0;
     }
 
-
     public Boolean deleteUser(Long userId) {
         return userRepository.deleteUser(userId) > 0;
+    }
+
+    public String getAvatarHash(String email) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] bytes = md.digest(email.getBytes());
+            BigInteger bigInteger = new BigInteger(1, bytes);
+            String str = bigInteger.toString(16);
+            while (str.length() < 32) {
+                str = "0%s".formatted(str);
+            }
+            return str;
+        } catch (NoSuchAlgorithmException e) {
+            log.severe(e.getMessage());
+            return null;
+        }
     }
 }

@@ -22,18 +22,6 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
     private final JwtDecoder jwtDecoder;
 
-    @GetMapping("/invoice/{invoiceId}")
-    public ResponseEntity<Invoice> getInvoiceById(@PathVariable String invoiceId, @RequestParam(required = false, name = "t") Long timestamp, HttpServletRequest request) {
-        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.of(invoiceService.getInvoiceById(invoiceId, timestamp, JWT_USER_ID));
-    }
-
-    @GetMapping("/invoices/total")
-    public ResponseEntity<Double> getInvoicesTotalByUserId(HttpServletRequest request) {
-        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.ofNullable(invoiceService.getInvoicesTotalByUserId(JWT_USER_ID));
-    }
-
     @GetMapping("/invoices")
     public ResponseEntity<List<Invoice>> getInvoicesByUserId(@RequestParam(defaultValue = "5") Integer limit, @RequestParam(defaultValue = "0") Integer offset, HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
@@ -48,11 +36,23 @@ public class InvoiceController {
 
     @GetMapping("/merchant/{merchantId}/invoices")
     public ResponseEntity<List<Invoice>> getInvoicesByMerchantIdAndUserId(@PathVariable Long merchantId, @RequestParam(required = false) String exclude, @RequestParam(defaultValue = "5") Integer limit, @RequestParam(defaultValue = "0") Integer offset, HttpServletRequest request) {
-        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder); // TODO fix this as the same as above
+        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
         return ResponseEntity.ok(invoiceService.getInvoicesByMerchantIdAndUserId(merchantId, JWT_USER_ID, exclude, limit, offset));
     }
 
-    @PostMapping("/invoices") // TODO check if all created has httpstatus created
+    @GetMapping("/invoices/total")
+    public ResponseEntity<Double> getInvoicesTotalByUserId(HttpServletRequest request) {
+        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
+        return ResponseEntity.ofNullable(invoiceService.getInvoicesTotalByUserId(JWT_USER_ID));
+    }
+
+    @GetMapping("/invoice/{invoiceId}")
+    public ResponseEntity<Invoice> getInvoiceById(@PathVariable String invoiceId, @RequestParam(required = false, name = "t") Long timestamp, HttpServletRequest request) {
+        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
+        return ResponseEntity.of(invoiceService.getInvoiceById(invoiceId, timestamp, JWT_USER_ID));
+    }
+
+    @PostMapping("/invoices")
     public ResponseEntity<String> createInvoice(@RequestBody Invoice invoice) {
         Optional<Invoice> createdInvoice = invoiceService.createInvoice(invoice);
         if (createdInvoice.isPresent()) {
@@ -60,13 +60,12 @@ public class InvoiceController {
                     .body(Utilities.returnGeneratedInvoiceInJson("successfully generated invoice", createdInvoice.get()).toString());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Utilities.returnMessageInJson("an issue occured while creating an invoice").toString());
+                .body(Utilities.returnMessageInJson("an issue occurred while creating an invoice").toString());
     }
 
     @PostMapping("/invoice/{invoiceId}")
     public ResponseEntity<String> claimInvoice(@PathVariable String invoiceId, @RequestParam(name = "t") Long timestamp, @RequestBody(required = false) LocationData locationData, HttpServletRequest request) throws Exception {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        System.out.println("cont" + locationData);
         Boolean result = invoiceService.claimInvoice(invoiceId, timestamp, locationData, JWT_USER_ID);
         if (result) {
             return ResponseEntity.ok(Utilities.returnClaimInvoiceMessageInJson("successfully claimed %s".formatted(invoiceId), JWT_USER_ID).toString());

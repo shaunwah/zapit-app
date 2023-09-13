@@ -1,6 +1,7 @@
 <div class="container">
-  <div>
-    <h1>Appearance</h1>
+  <div class="d-flex align-items-center justify-content-between mb-2" routerLink="/settings">
+    <h1 class="mb-0">Appearance</h1>
+    <button type="button" class="btn-close" aria-label="Close"></button>
   </div>
   <form [formGroup]="userSettingsForm" (ngSubmit)="onSubmit()">
     <div class="form-check form-switch mb-3">

@@ -34,13 +34,13 @@ public class MerchantService {
             if (merchantId != null) {
                 merchant.setId(merchantId);
                 if (!userService.updateUserRolesById("ROLE_MERCHANT", userId)) {
-                    throw new ZapitException();
+                    throw new ZapitException("user roles cannot be updated");
                 }
                 return Optional.of(merchant);
             }
         } catch (Exception e) {
             log.severe(e.getMessage());
-            throw new ZapitException();
+            throw new ZapitException(e.getMessage());
         }
         return Optional.empty();
     }

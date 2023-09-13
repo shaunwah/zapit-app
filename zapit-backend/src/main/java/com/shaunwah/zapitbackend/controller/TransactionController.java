@@ -31,21 +31,15 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsByCardId(cardId, JWT_USER_ID, limit, offset));
     }
 
-    @GetMapping("/transaction/{transactionId}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionId, HttpServletRequest request) {
-        final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.of(transactionService.getTransactionById(transactionId, JWT_USER_ID));
-    }
-
     @GetMapping("/transactions/total")
     public ResponseEntity<Double> getTransactionsTotalByUserId(HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
         return ResponseEntity.ofNullable(transactionService.getTransactionsTotalByUserId(JWT_USER_ID));
     }
 
-    @PostMapping("/transactions")
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, HttpServletRequest request) throws Exception {
+    @GetMapping("/transaction/{transactionId}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionId, HttpServletRequest request) {
         final Long JWT_USER_ID = Utilities.returnUserIdFromJwt(request, jwtDecoder);
-        return ResponseEntity.of(transactionService.createTransaction(transaction));
+        return ResponseEntity.of(transactionService.getTransactionById(transactionId, JWT_USER_ID));
     }
 }

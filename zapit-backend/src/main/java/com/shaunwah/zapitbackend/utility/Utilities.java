@@ -18,15 +18,6 @@ public final class Utilities {
         return null;
     }
 
-    public static JsonObject returnTokenMessageInJson(String message, String token, String displayName) {
-        return Json.createObjectBuilder()
-                .add("message", message)
-                .add("token", token)
-                .add("displayName", displayName)
-                .add("timestamp", new Date().getTime())
-                .build();
-    }
-
     public static JsonObject returnClaimInvoiceMessageInJson(String message, Long userId) {
         return Json.createObjectBuilder()
                 .add("message", message)
@@ -50,5 +41,4 @@ public final class Utilities {
                 .add("timestamp", new Date().getTime())
                 .build();
     }
-
 }
