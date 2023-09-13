@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Invoice } from '../invoice';
 import { LocationData } from '../../shared/interfaces/location-data';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceService {
   private http = inject(HttpClient);
-  private readonly apiUrl = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   getInvoiceById(invoiceId: string, timestamp?: number): Observable<Invoice> {
     return this.http.get<Invoice>(`${this.apiUrl}/invoice/${invoiceId}`, {

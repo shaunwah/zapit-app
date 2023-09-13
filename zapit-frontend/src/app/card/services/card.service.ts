@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Card } from '../card';
 import { LocationData } from '../../shared/interfaces/location-data';
 import { Transaction } from '../../transaction/transaction';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardService {
   private http = inject(HttpClient);
-  readonly apiUrl = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   getCardsByUserId(limit: number, offset?: number): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/cards`, {

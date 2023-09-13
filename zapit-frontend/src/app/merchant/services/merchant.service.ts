@@ -2,13 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Merchant } from '../merchant';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MerchantService {
   private http = inject(HttpClient);
-  readonly apiUrl = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   getMerchantByUserId(): Observable<Merchant> {
     return this.http.get<Merchant>(`${this.apiUrl}/merchant`);

@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../user/user';
 import { Observable } from 'rxjs';
 import { UserAuthData } from '../../shared/interfaces/user-auth-data';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private readonly apiUrl = '/api/auth';
+  private readonly apiUrl = environment.apiUrl;
 
   login(user: User): Observable<User> {
     const authData = btoa(`${user.email}:${user.password}`);

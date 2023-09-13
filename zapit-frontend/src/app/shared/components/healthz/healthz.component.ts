@@ -14,19 +14,6 @@ export class HealthzComponent {
     this.healthzService
       .getHealthz()
       .pipe(first())
-      .subscribe({
-        next: (value) => alert(value),
-        error: (err) => alert(err.message),
-      });
-  }
-
-  onClickApiHealthz() {
-    this.healthzService
-      .getApiHealthz()
-      .pipe(first())
-      .subscribe({
-        next: (value) => alert(value),
-        error: (err) => alert(err.message),
-      });
+      .subscribe((data) => console.log(data));
   }
 }
