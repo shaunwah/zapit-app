@@ -38,8 +38,10 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/api/healthz").permitAll()
+                        .requestMatchers("/healthz").permitAll()
                         .requestMatchers("/websocket/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
