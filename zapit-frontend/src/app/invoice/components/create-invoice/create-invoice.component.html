@@ -6,50 +6,96 @@
       <form class="mb-3" [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label for="identifier" class="form-label">Identifier*</label>
-          <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier"
+          <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier" [class.is-invalid]="(identifier.dirty || identifier.touched) && identifier.errors"
                  formControlName="identifier">
+          <ng-container *ngIf="(identifier.dirty || identifier.touched) && identifier.errors">
+            <div *ngIf="identifier.getError('required')" class="invalid-feedback">Identifier required</div>
+            <div *ngIf="identifier.getError('maxlength')" class="invalid-feedback">Identifier cannot
+              exceed {{ identifier.getError('maxlength').requiredLength | number }} characters
+            </div>
+          </ng-container>
         </div>
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="salesTax" class="form-label">Sales Tax*</label>
-            <input type="number" class="form-control border border-light-subtle shadow-sm" id="salesTax"
+            <label for="salesTax" class="form-label">Sales Tax (%)*</label>
+            <input type="number" class="form-control border border-light-subtle shadow-sm" id="salesTax" [class.is-invalid]="(salesTax.dirty || salesTax.touched) && salesTax.errors"
                    formControlName="salesTax">
+            <ng-container *ngIf="(salesTax.dirty || salesTax.touched) && salesTax.errors">
+              <div *ngIf="salesTax.getError('required')" class="invalid-feedback">Sales Tax required</div>
+              <div *ngIf="salesTax.getError('min')" class="invalid-feedback">Identifier cannot be
+                under {{ salesTax.getError('min').min | number }}%</div>
+              <div *ngIf="salesTax.getError('max')" class="invalid-feedback">Identifier cannot
+                exceed {{ salesTax.getError('max').max | number }}%
+              </div>
+            </ng-container>
           </div>
           <div class="col-md-6 mb-3">
             <label for="additionalCharges" class="form-label">Additional Charges</label>
-            <input type="number" class="form-control border border-light-subtle shadow-sm" id="additionalCharges"
+            <input type="number" class="form-control border border-light-subtle shadow-sm" id="additionalCharges" [class.is-invalid]="(additionalCharges.dirty || additionalCharges.touched) && additionalCharges.errors"
                    formControlName="additionalCharges">
+            <ng-container *ngIf="(additionalCharges.dirty || additionalCharges.touched) && additionalCharges.errors">
+              <div *ngIf="additionalCharges.getError('min')" class="invalid-feedback">Additional Charges cannot be
+                under {{ additionalCharges.getError('min').min | currency }}</div>
+            </ng-container>
           </div>
         </div>
         <div class="mb-3">
           <label for="eligiblePoints" class="form-label">Eligible Points*</label>
-          <input type="number" class="form-control border border-light-subtle shadow-sm" id="eligiblePoints"
+          <input type="number" class="form-control border border-light-subtle shadow-sm" id="eligiblePoints" [class.is-invalid]="(eligiblePoints.dirty || eligiblePoints.touched) && eligiblePoints.errors"
                  formControlName="eligiblePoints">
+          <ng-container *ngIf="(eligiblePoints.dirty || eligiblePoints.touched) && eligiblePoints.errors">
+            <div *ngIf="eligiblePoints.getError('required')" class="invalid-feedback">Eligible Points required</div>
+            <div *ngIf="eligiblePoints.getError('min')" class="invalid-feedback">Eligible Points cannot be
+              under {{ eligiblePoints.getError('min').min | number }} pts</div>
+          </ng-container>
         </div>
         <div class="vstack" formArrayName="invoiceItems">
           <ng-container *ngFor="let item of invoiceItems.controls; let i = index">
             <ng-container [formGroupName]="i">
               <h3 [class.mt-2]="i > 0">{{ item.value.name ?? "Item " + (i + 1) }}</h3>
               <div class="mb-3">
-                <label for="identifier-{{ i }}" class="form-label">Identifier*</label>
-                <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier-{{ i }}"
+                <label for="identifier-{{ i }}" class="form-label">Identifier</label>
+                <input type="text" class="form-control border border-light-subtle shadow-sm" id="identifier-{{ i }}" [class.is-invalid]="(item.get('identifier')!.dirty || item.get('identifier')!.touched) && item.get('identifier')!.errors"
                        formControlName="identifier">
+                <ng-container *ngIf="(item.get('identifier')!.dirty || item.get('identifier')!.touched) && item.get('identifier')!.errors">
+                  <div *ngIf="item.get('identifier')!.getError('maxlength')" class="invalid-feedback">Identifier cannot
+                    exceed {{ item.get('identifier')!.getError('maxlength').requiredLength | number }} characters
+                  </div>
+                </ng-container>
               </div>
               <div class="mb-3">
                 <label for="name-{{ i }}" class="form-label">Name*</label>
-                <input type="text" class="form-control border border-light-subtle shadow-sm" id="name-{{ i }}"
+                <input type="text" class="form-control border border-light-subtle shadow-sm" id="name-{{ i }}" [class.is-invalid]="(item.get('name')!.dirty || item.get('name')!.touched) && item.get('name')!.errors"
                        formControlName="name">
+                <ng-container *ngIf="(item.get('name')!.dirty || item.get('name')!.touched) && item.get('name')!.errors">
+                  <div *ngIf="item.get('name')!.getError('required')" class="invalid-feedback">Name required</div>
+                  <div *ngIf="item.get('name')!.getError('maxlength')" class="invalid-feedback">Name cannot
+                    exceed {{ item.get('name')!.getError('maxlength').requiredLength | number }} characters
+                  </div>
+                </ng-container>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="quantity-{{ i }}" class="form-label">Quantity*</label>
-                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="quantity-{{ i }}"
+                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="quantity-{{ i }}" [class.is-invalid]="(item.get('quantity')!.dirty || item.get('quantity')!.touched) && item.get('quantity')!.errors"
                          formControlName="quantity">
+                  <ng-container *ngIf="(item.get('quantity')!.dirty || item.get('quantity')!.touched) && item.get('quantity')!.errors">
+                    <div *ngIf="item.get('quantity')!.getError('required')" class="invalid-feedback">Quantity required</div>
+                    <div *ngIf="item.get('quantity')!.getError('min')" class="invalid-feedback">Quantity cannot
+                      be under {{ item.get('quantity')!.getError('min').min | number }}
+                    </div>
+                  </ng-container>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="unitPrice-{{ i }}" class="form-label">Unit Price*</label>
-                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="unitPrice-{{ i }}"
+                  <label for="unitPrice-{{ i }}" class="form-label">Unit Price ($)*</label>
+                  <input type="number" class="form-control border border-light-subtle shadow-sm" id="unitPrice-{{ i }}" [class.is-invalid]="(item.get('unitPrice')!.dirty || item.get('unitPrice')!.touched) && item.get('unitPrice')!.errors"
                          formControlName="unitPrice">
+                  <ng-container *ngIf="(item.get('unitPrice')!.dirty || item.get('unitPrice')!.touched) && item.get('unitPrice')!.errors">
+                    <div *ngIf="item.get('unitPrice')!.getError('required')" class="invalid-feedback">Unit Price required</div>
+                    <div *ngIf="item.get('unitPrice')!.getError('min')" class="invalid-feedback">Unit Price cannot
+                      be under {{ item.get('unitPrice')!.getError('min').min | currency }}
+                    </div>
+                  </ng-container>
                 </div>
               </div>
               <div class="d-grid mb-1" *ngIf="invoiceItems.controls.length > 1">

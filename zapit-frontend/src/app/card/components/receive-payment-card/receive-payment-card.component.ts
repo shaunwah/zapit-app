@@ -1,7 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CardService } from '../../services/card.service';
 import { RxStompService } from '../../../shared/services/rx-stomp.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { IMessage } from '@stomp/rx-stomp';
 import { first, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -105,6 +110,6 @@ export class ReceivePaymentCardComponent implements OnInit, OnDestroy {
   }
 
   get amount() {
-    return this.cardForm.get('amount')!;
+    return this.cardForm.get('amount') as FormControl;
   }
 }

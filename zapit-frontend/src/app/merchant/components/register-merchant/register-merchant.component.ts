@@ -22,7 +22,7 @@ export class RegisterMerchantComponent implements OnInit {
   ngOnInit() {
     this.merchantForm = this.fb.group({
       name: this.fb.control<string>('', [Validators.required]),
-      website: this.fb.control<string>(''),
+      website: this.fb.control<string>('', [Validators.required]),
       address: this.fb.control<string>('', [Validators.required]),
       postCode: this.fb.control<string>('', [Validators.required]),
     });

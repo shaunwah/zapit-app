@@ -19,10 +19,10 @@
       <ng-container *ngIf="(amount.dirty || amount.touched) && amount.errors">
         <div *ngIf="amount.getError('required')" class="invalid-feedback">Amount required</div>
         <div *ngIf="amount.getError('min')" class="invalid-feedback">Amount cannot be
-          under {{ amount.getError('min').required | number }} pts
+          under {{ amount.getError('min').min | number }} pts
         </div>
         <div *ngIf="amount.getError('max')" class="invalid-feedback">Amount cannot
-          exceed {{ amount.getError('max').required | number }} pts
+          exceed {{ amount.getError('max').max | number }} pts
         </div>
       </ng-container>
     </div>

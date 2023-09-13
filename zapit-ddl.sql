@@ -14,8 +14,8 @@ create table users
 (
     id           integer auto_increment,
     email        varchar(128) not null unique,
-    display_name varchar(32) not null unique,
-    password     varchar(72) not null,
+    display_name varchar(32)  not null unique,
+    password     varchar(72)  not null,
     first_name   varchar(32),
     last_name    varchar(32),
     roles        varchar(255) not null default 'ROLE_USER',
@@ -25,15 +25,13 @@ create table users
     primary key (id)
 );
 
-# user settings tbc
-
 create table merchants
 (
     id         integer auto_increment,
-    name       varchar(64) not null unique,
-    website    varchar(64) not null,
+    name       varchar(64)  not null unique,
+    website    varchar(64)  not null,
     address    varchar(128) not null,
-    post_code  varchar(32) not null,
+    post_code  varchar(32)  not null,
     is_deleted boolean      not null default false,
     created_by integer      not null unique,
     created_on timestamp    not null default current_timestamp,
@@ -59,7 +57,7 @@ create table cards
 create table transactions
 (
     id            integer auto_increment,
-    card          varchar(36)   not null,
+    card          varchar(36)    not null,
     amount        decimal(13, 4) not null,
     status        boolean        not null default false,
     location_data integer,
