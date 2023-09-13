@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
         ]),
         displayName: this.fb.control<string>('', [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(3),
           Validators.maxLength(32),
         ]),
         password: this.fb.control<string>('', [
