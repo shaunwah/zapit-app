@@ -7,7 +7,7 @@ COPY /zapit-frontend .
 
 RUN npm ci
 RUN npm i -g @angular/cli
-RUN ng build --prod
+RUN ng build
 
 FROM eclipse-temurin:17 AS builder2
 

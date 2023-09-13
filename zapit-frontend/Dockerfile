@@ -7,7 +7,7 @@ COPY . .
 
 RUN npm ci
 RUN npm i -g @angular/cli
-RUN ng build --prod
+RUN ng build
 
 FROM caddy:2-alpine
 
