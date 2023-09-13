@@ -1,0 +1,10 @@
+Dockerfile
+
+.idea/
+target/
+.gitignore
+HELP.md
+mvnw.cmd
+README.md
+src/main/resources/application.properties
+src/main/resources/application.properties.example

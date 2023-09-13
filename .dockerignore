@@ -1,5 +1,6 @@
 Dockerfile
 
+zapit-frontend/Dockerfile
 zapit-frontend/.angular/
 zapit-frontend/.idea/
 zapit-frontend/.vscode/
@@ -7,8 +8,8 @@ zapit-frontend/dist/
 zapit-frontend/node_modules/
 zapit-frontend/README.md
 
+zapit-backend/Dockerfile
 zapit-backend/.idea/
-zapit-backend/src/main/resources/certs/
 zapit-backend/target/
 zapit-backend/.gitignore
 zapit-backend/HELP.md

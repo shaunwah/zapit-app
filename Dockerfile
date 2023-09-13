@@ -20,10 +20,12 @@ RUN ./mvnw install -DskipTests
 
 FROM eclipse-temurin:17
 
-COPY --from=builder2 /app/target/*.jar zapit/app.jar
+WORKDIR /app
 
-ENV PORT=80
+COPY --from=builder2 /app/target/*.jar app.jar
+
+ENV PORT=8080
 
 EXPOSE ${PORT}
 
-ENTRYPOINT SERVER_PORT=${PORT} java -jar /zapit/app.jar -Dserver.port=${PORT}
+ENTRYPOINT SERVER_PORT=${PORT} java -jar /app/app.jar -Dserver.port=${PORT}
