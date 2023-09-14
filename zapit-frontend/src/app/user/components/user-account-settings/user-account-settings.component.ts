@@ -69,7 +69,6 @@ export class UserAccountSettingsComponent implements OnInit {
         next: (user) => {
           this.user = user;
           this.userForm.patchValue(user);
-          return this.router.navigate(['/settings']);
         },
         error: (err) => console.error(err.message),
       });
@@ -84,6 +83,7 @@ export class UserAccountSettingsComponent implements OnInit {
           let userAuthData = this.authService.getDataFromStorage();
           userAuthData.displayName = this.displayName.value;
           this.authService.setDataInStorage(userAuthData); // TODO update name in sidebar
+          return this.router.navigate(['/settings']);
         },
         error: (err) => console.error(err.message),
       });
