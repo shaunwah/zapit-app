@@ -12,9 +12,12 @@ export class InvoiceService {
   private http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
 
-  getInvoiceById(invoiceId: string, timestamp?: number): Observable<Invoice> {
+  getInvoiceById(
+    invoiceId: string,
+    timestamp: number = 0,
+  ): Observable<Invoice> {
     return this.http.get<Invoice>(`${this.apiUrl}/invoice/${invoiceId}`, {
-      params: { t: timestamp! },
+      params: { t: timestamp },
     });
   }
 
