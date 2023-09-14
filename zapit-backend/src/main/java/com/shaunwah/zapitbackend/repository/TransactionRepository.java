@@ -21,7 +21,7 @@ public class TransactionRepository {
     private final String SQL_GET_TRANSACTIONS_BY_USER_ID = "select t.*, ld.*, m.* from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on ld.id = t.location_data where c.user = ? and c.is_deleted = false order by t.created_on desc limit ? offset ?";
     private final String SQL_GET_TRANSACTIONS_BY_CARD_ID = "select t.*, ld.*, m.* from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on ld.id = t.location_data where t.card = ? and c.user = ? and c.is_deleted = false order by t.created_on desc limit ? offset ?";
     private final String SQL_GET_TRANSACTIONS_TOTAL_BY_USER_ID = "select sum(t.amount) from transactions t join cards c on c.id = t.card where c.user = ? and c.is_deleted = false limit 1";
-    private final String SQL_GET_TRANSACTION_BY_ID = "select * from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on t.location_data = ld.id where t.id = ? and c.user = ? limit 1";
+    private final String SQL_GET_TRANSACTION_BY_ID = "select * from transactions t join cards c on c.id = t.card join merchants m on m.id = c.issued_by left join location_data ld on t.location_data = ld.id where t.id = ? and (c.user = ? or m.created_by = ?) limit 1";
     private final String SQL_CREATE_TRANSACTION = "insert into transactions (card, amount, status, location_data) values (?, ?, ?, ?)";
     private final String SQL_CREATE_TRANSACTION_WITHOUT_LOCATION_DATA = "insert into transactions (card, amount, status) values (?, ?, ?)";
 
@@ -109,7 +109,7 @@ public class TransactionRepository {
                     return transaction;
                 }
                 return null;
-            }, transactionId, userId);
+            }, transactionId, userId, userId);
         } catch (Exception e) {
             log.severe(e.getMessage());
             return null;
