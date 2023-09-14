@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-between align-items-center w-100">
         <div>
           <h5 class="mb-1">{{ card.issuedBy.name }}</h5>
-          <span class="d-block"><strong>{{ card.balance | number }} pts</strong></span>
+          <span class="d-block fw-bold">{{ card.balance | number }} pts</span>
           <small class="text-body-secondary mono">{{ card.id!.substring(0, 8) }}</small>
         </div>
         <div class="rounded-1" style="height: 35px; width: 56px" [style.background-color]="stringToColour(card.id!)"

@@ -1,7 +1,7 @@
 <div class="card mb-3 mono text-bg-light border-0" *ngIf="invoice">
   <div class="card-body">
     <div class="text-center">
-      <span class="d-block"><strong>{{ invoice.issuedBy?.name || "MERCHANT NAME" | uppercase }}</strong></span>
+      <span class="d-block fw-bold">{{ invoice.issuedBy?.name || "MERCHANT NAME" | uppercase }}</span>
       <span class="d-block">{{ invoice.issuedBy?.address || "Address" }}</span>
       <span class="d-block">{{ invoice.issuedBy?.postCode || "Post Code" }}</span> <!-- TODO REPLACE ALL ||s -->
     </div>

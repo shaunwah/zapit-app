@@ -13,15 +13,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class User {
     private Long id;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String email;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String firstName;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String lastName;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String roles;

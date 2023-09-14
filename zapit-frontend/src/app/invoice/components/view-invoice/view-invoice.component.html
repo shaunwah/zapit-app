@@ -20,7 +20,7 @@
         Website
       </div>
       <a class="link-underline link-underline-opacity-0"
-         [href]="invoice.issuedBy!.website">{{ invoice.issuedBy!.website }}</a>
+         [href]="'//' + invoice.issuedBy!.website" target="_blank">{{ invoice.issuedBy!.website }}</a>
     </li>
     <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
       <div class="me-auto text-muted">

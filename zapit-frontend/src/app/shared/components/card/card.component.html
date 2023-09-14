@@ -5,11 +5,11 @@
        [style.color]="stringToOppositeColour(card.id!)" [routerLink]="['/card', card.id ]">
       <div class="d-flex justify-content-between">
         <i class="bi-lightning-charge fs-3"></i>
-        <span class="d-block fs-4"><strong>{{ card.balance | number }}</strong></span>
+        <span class="d-block fs-4 fw-bold">{{ card.balance | number }}</span>
       </div>
       <div
         class="mt-auto mb-2 flex-end overflow-hidden">
-        <span class="d-block"><strong>{{ card.issuedBy.name }}</strong></span>
+        <span class="d-block fw-bold">{{ card.issuedBy.name }}</span>
         <span class="d-block mono">{{ card.id!.substring(0, 8) }}</span>
       </div>
     </a>
@@ -22,11 +22,11 @@
           [style.color]="stringToOppositeColour(card.id!)">
         <div class="d-flex justify-content-between">
           <i class="bi-lightning-charge fs-3"></i>
-          <span class="d-block fs-4"><strong>{{ card.balance | number }}</strong></span>
+          <span class="d-block fs-4 fw-bold">{{ card.balance | number }}</span>
         </div>
         <div
           class="mt-auto mb-2 flex-end overflow-hidden">
-          <span class="d-block"><strong>{{ card.issuedBy.name }}</strong></span>
+          <span class="d-block fw-bold">{{ card.issuedBy.name }}</span>
           <span class="d-block mono">{{ card.id!.substring(0, 8) }}</span>
         </div>
       </li>

@@ -20,8 +20,8 @@ public class UserRepository {
     private final String SQL_GET_USER_BY_EMAIL = "select * from users where email = ? and is_deleted = false";
     private final String SQL_CREATE_USER = "insert into users (email, display_name, password, first_name, last_name) values (?, ?, ?, ?, ?)";
     private final String SQL_UPDATE_USER = "update users set email = ?, display_name = ?, password = ?, first_name = ?, last_name = ? where id = ? and is_deleted = false";
+    private final String SQL_UPDATE_USER_WITHOUT_PASSWORD = "update users set email = ?, display_name = ?, first_name = ?, last_name = ? where id = ? and is_deleted = false";
     private final String SQL_UPDATE_USER_ROLES = "update users set roles = ? where id = ? and is_deleted = false";
-
     private final String SQL_DELETE_USER = "update users set is_deleted = true where id = ? and is_deleted = false";
 
     public User getUserById(Long userId) {
@@ -48,7 +48,11 @@ public class UserRepository {
     }
 
     public Integer updateUser(User user) {
-        return jdbcTemplate.update(SQL_UPDATE_USER, user.getEmail(), user.getDisplayName(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getId());
+        final boolean isPasswordPresent = user.getPassword() != null && !user.getPassword().isEmpty();
+        return isPasswordPresent ?
+                jdbcTemplate.update(SQL_UPDATE_USER, user.getEmail(), user.getDisplayName(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getId()) :
+                jdbcTemplate.update(SQL_UPDATE_USER_WITHOUT_PASSWORD, user.getEmail(), user.getDisplayName(), user.getFirstName(), user.getLastName(), user.getId());
+
     }
 
     public Integer updateUserRolesById(String roles, Long userId) {

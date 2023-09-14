@@ -40,13 +40,12 @@
         <ng-container
           *ngIf="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && registerForm.hasError('passwordsDoNotMatch'))); else passwordLabel">
           <label for="password" *ngIf="password.getError('required')">Password required</label>
-          <label for="passwordConfirm"
+          <label for="password"
                  *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && registerForm.getError('passwordsDoNotMatch')">Passwords
-            do not match</label> <label for="email" *ngIf="email.getError('maxlength')">Email cannot
-          exceed {{ email.getError('maxlength').requiredLength }} characters</label>
-          <label for="email" *ngIf="password.getError('minlength')">Password requires at
+            do not match</label>
+          <label for="password" *ngIf="password.getError('minlength')">Password requires at
             least {{ password.getError('minlength').requiredLength }} characters</label>
-          <label for="email" *ngIf="password.getError('maxlength')">Password cannot
+          <label for="password" *ngIf="password.getError('maxlength')">Password cannot
             exceed {{ password.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #passwordLabel>
@@ -63,13 +62,13 @@
           <label for="passwordConfirm" *ngIf="passwordConfirm.getError('required')">Password required</label>
           <label for="passwordConfirm" *ngIf="registerForm.getError('passwordsDoNotMatch')">Passwords do not
             match</label>
-          <label for="email" *ngIf="passwordConfirm.getError('minlength')">Password requires at
+          <label for="passwordConfirm" *ngIf="passwordConfirm.getError('minlength')">Password requires at
             least {{ passwordConfirm.getError('minlength').requiredLength }} characters</label>
-          <label for="email" *ngIf="passwordConfirm.getError('maxlength')">Password cannot
+          <label for="passwordConfirm" *ngIf="passwordConfirm.getError('maxlength')">Password cannot
             exceed {{ email.getError('maxlength').requiredLength }} characters</label>
         </ng-container>
         <ng-template #passwordConfirmLabel>
-          <label for="passwordConfirm">Password confirm</label>
+          <label for="passwordConfirm">Password Confirm</label>
         </ng-template>
       </div>
       <div class="d-grid mb-3">

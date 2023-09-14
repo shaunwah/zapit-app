@@ -38,6 +38,10 @@ public class UserService {
     }
 
     public Boolean updateUser(User user) {
+        final boolean isPasswordPresent = user.getPassword() != null && !user.getPassword().isEmpty();
+        if (isPasswordPresent) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userRepository.updateUser(user) > 0;
     }
 

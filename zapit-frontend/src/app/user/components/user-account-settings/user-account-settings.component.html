@@ -1,1 +1,113 @@
-<p>user-account-settings works!</p>
+<div class="container" *ngIf="user">
+  <div>
+    <div class="d-flex align-items-center justify-content-between mb-2" routerLink="/settings">
+      <h1 class="mb-0">Account</h1>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  </div>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Details</h2>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email*</label>
+          <input type="email" class="form-control border border-light-subtle shadow-sm" id="email"
+                 [class.is-invalid]="(email.dirty || email.touched) && email.errors" formControlName="email">
+          <ng-container *ngIf="(email.dirty || email.touched) && email.errors">
+            <div *ngIf="email.getError('required')" class="invalid-feedback">Email required</div>
+            <div *ngIf="email.getError('email')" class="invalid-feedback">Email has to be an email address
+            </div>
+            <div *ngIf="email.getError('maxlength')" class="invalid-feedback">Email cannot
+              exceed {{ email.getError('maxlength').requiredLength | number }} characters
+            </div>
+          </ng-container>
+        </div>
+        <div class="mb-3">
+          <label for="displayName" class="form-label">Display Name*</label>
+          <input type="text" class="form-control border border-light-subtle shadow-sm" id="displayName"
+                 [class.is-invalid]="(displayName.dirty || displayName.touched) && displayName.errors"
+                 formControlName="displayName">
+          <ng-container *ngIf="(displayName.dirty || displayName.touched) && displayName.errors">
+            <div *ngIf="displayName.getError('required')" class="invalid-feedback">Display Name required</div>
+            <div *ngIf="displayName.getError('minlength')" class="invalid-feedback">Display Name cannot
+              be under {{ displayName.getError('minlength').requiredLength | number }} characters
+            </div>
+            <div *ngIf="displayName.getError('maxlength')" class="invalid-feedback">Display Name cannot
+              exceed {{ displayName.getError('maxlength').requiredLength | number }} characters
+            </div>
+          </ng-container>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control border border-light-subtle shadow-sm" id="firstName"
+                   [class.is-invalid]="(firstName.dirty || firstName.touched) && firstName.errors"
+                   formControlName="firstName">
+            <ng-container *ngIf="(firstName.dirty || firstName.touched) && firstName.errors">
+              <div *ngIf="firstName.getError('maxlength')" class="invalid-feedback">First Name cannot
+                exceed {{ firstName.getError('maxlength').requiredLength | number }} characters
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control border border-light-subtle shadow-sm" id="lastName"
+                   [class.is-invalid]="(lastName.dirty || lastName.touched) && lastName.errors"
+                   formControlName="lastName">
+            <ng-container *ngIf="(displayName.dirty || displayName.touched) && displayName.errors">
+              <div *ngIf="lastName.getError('maxlength')" class="invalid-feedback">Last Name cannot
+                exceed {{ lastName.getError('maxlength').requiredLength | number }} characters
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h2>Security</h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="password" class="form-label">New Password</label>
+            <input type="password" class="form-control border border-light-subtle shadow-sm" id="password"
+                   [class.is-invalid]="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && userForm.hasError('passwordsDoNotMatch')))"
+                   formControlName="password">
+            <ng-container *ngIf="(password.dirty || password.touched) && (password.errors || ((passwordConfirm.dirty || passwordConfirm.touched) && userForm.hasError('passwordsDoNotMatch')))">
+              <div *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && userForm.getError('passwordsDoNotMatch')" class="invalid-feedback">
+                Passwords do not match
+              </div>
+              <div *ngIf="password.getError('minlength')" class="invalid-feedback">Password cannot
+                be under {{ password.getError('minlength').requiredLength | number }} characters
+              </div>
+              <div *ngIf="password.getError('maxlength')" class="invalid-feedback">Password cannot
+                exceed {{ password.getError('maxlength').requiredLength | number }} characters
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="passwordConfirm" class="form-label">New Password Confirm</label>
+            <input type="password" class="form-control border border-light-subtle shadow-sm" id="passwordConfirm"
+                   [class.is-invalid]="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || userForm.hasError('passwordsDoNotMatch'))"
+                   formControlName="passwordConfirm">
+            <ng-container *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && (passwordConfirm.errors || userForm.hasError('passwordsDoNotMatch'))">
+              <div *ngIf="userForm.getError('passwordsDoNotMatch')" class="invalid-feedback">
+                Passwords do not match
+              </div>
+              <div *ngIf="passwordConfirm.getError('minlength')" class="invalid-feedback">Password cannot
+                be under {{ passwordConfirm.getError('minlength').requiredLength | number }} characters
+              </div>
+              <div *ngIf="passwordConfirm.getError('maxlength')" class="invalid-feedback">Password cannot
+                exceed {{ passwordConfirm.getError('maxlength').requiredLength | number }} characters
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-secondary border-0"
+              style="--bs-btn-bg: var(--bs-black); --bs-btn-color: var(--bs-gray-100);"
+              [disabled]="userForm.invalid">Update
+      </button>
+    </div>
+  </form>
+</div>

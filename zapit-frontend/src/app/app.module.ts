@@ -48,6 +48,7 @@ import { SendPaymentCardEndComponent } from './card/components/send-payment-card
 import { ReceivePaymentCardEndComponent } from './card/components/receive-payment-card-end/receive-payment-card-end.component';
 import { UserAccountSettingsComponent } from './user/components/user-account-settings/user-account-settings.component';
 import { HealthzComponent } from './shared/components/healthz/healthz.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -110,6 +111,7 @@ export function tokenGetter() {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    NgxSkeletonLoaderModule,
     QRCodeModule,
   ],
   providers: [

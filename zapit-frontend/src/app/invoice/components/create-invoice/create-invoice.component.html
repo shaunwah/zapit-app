@@ -27,7 +27,7 @@
                    formControlName="salesTax">
             <ng-container *ngIf="(salesTax.dirty || salesTax.touched) && salesTax.errors">
               <div *ngIf="salesTax.getError('required')" class="invalid-feedback">Sales Tax required</div>
-              <div *ngIf="salesTax.getError('min')" class="invalid-feedback">Identifier cannot be
+              <div *ngIf="salesTax.getError('min')" class="invalid-feedback">Sales Tax cannot be
                 under {{ salesTax.getError('min').min | number }}%
               </div>
               <div *ngIf="salesTax.getError('max')" class="invalid-feedback">Identifier cannot

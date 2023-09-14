@@ -50,13 +50,13 @@ const routes: Routes = [
   {
     path: 'settings/user/account',
     component: UserAccountSettingsComponent,
-    title: 'Appearance Settings',
+    title: 'Account Settings',
     canActivate: [authGuard],
   },
   {
     path: 'settings/merchant/details',
     component: MerchantDetailsSettingsComponent,
-    title: 'Appearance Settings',
+    title: 'Details Settings',
     canActivate: [authGuard, merchantUserGuard],
   },
   {

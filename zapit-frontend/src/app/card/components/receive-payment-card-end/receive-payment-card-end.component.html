@@ -24,7 +24,7 @@
           <ng-container *ngIf="isPositive(transaction.amount); else notPositive">Paid from</ng-container>
           <ng-template #notPositive>Paid to</ng-template>
         </div>
-        <span><i>Private</i></span>
+        <span class="fst-italic">Private</span>
       </li>
       <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
         <div class="me-auto text-muted">

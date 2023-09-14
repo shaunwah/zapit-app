@@ -1,1 +1,41 @@
-<p>merchant-settings works!</p>
+<div class="container" *ngIf="merchant">
+  <div>
+    <div class="d-flex align-items-center justify-content-between mb-2" routerLink="/settings">
+      <h1 class="mb-0">Details</h1>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  </div>
+  <div>
+    <ul class="list-group border-0 mb-3">
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="me-auto text-muted">
+          Name
+        </div>
+        <span>{{ merchant.name }}</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="me-auto text-muted">
+          Website
+        </div>
+        <a class="link-underline link-underline-opacity-0" [href]="'//' + merchant.website"
+           target="_blank">{{ merchant.website }}</a>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+        <div class="me-auto text-muted">
+          Address
+        </div>
+        <span>{{ merchant.address }} {{ merchant.postCode }}</span>
+      </li>
+    </ul>
+    <div>
+      <ul class="list-group border-0 mb-3">
+        <li class="list-group-item list-group-item-secondary d-flex border-0 justify-content-between">
+          <div class="me-auto text-muted">
+            Enrolment Date
+          </div>
+          <span>{{ merchant.createdOn | date: 'mediumDate' }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
