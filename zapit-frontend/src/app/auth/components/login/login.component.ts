@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit, AfterContentChecked {
     const route = decodeURIComponent(next).split('/');
     const queryParams: any = {}; // TODO to optimise
     console.log(route[route.length - 1]);
-    if (route[route.length - 1]) {
+    if (route[route.length - 1].match(regex)?.length! > 0) {
       route[route.length - 1]
         .match(regex)![0]
         .substring(1)
