@@ -67,7 +67,7 @@ export class RegisterMerchantComponent implements OnInit {
     this.authService.setDataInStorage(data);
     localStorage.setItem('access_token', data.accessToken);
     localStorage.setItem('display_name', data.displayName);
-    localStorage.setItem('avatarHash', data.avatarHash);
+    localStorage.setItem('avatar_hash', data.avatarHash);
     localStorage.setItem('roles', 'ROLE_MERCHANT');
   }
 
