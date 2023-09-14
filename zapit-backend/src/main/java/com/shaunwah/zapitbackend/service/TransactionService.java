@@ -57,8 +57,6 @@ public class TransactionService {
                 return Optional.of(transaction);
             }
 
-
-            System.out.println("kek");
             // if there is location data, create a record in the location data table
             Optional<LocationData> newLocationData = locationDataService.createLocationData(locationData.get());
             if (newLocationData.isEmpty()) {
