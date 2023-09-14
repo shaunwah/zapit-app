@@ -5,7 +5,6 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,7 +21,7 @@ public class MailService {
     @Value("${mailgun.sender.email}")
     private String senderEmail;
 
-    public ResponseEntity<String> sendWelcomeEmail(User user) {
+    public void sendWelcomeEmail(User user) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("from", senderEmail);
         body.add("to", user.getEmail());
@@ -40,10 +39,14 @@ public class MailService {
         );
 
         log.info("welcome email sent to %s".formatted(user.getEmail()));
-        return restTemplate.exchange(request, String.class);
+        try {
+            restTemplate.exchange(request, String.class);
+        } catch (Exception e) {
+            log.severe("an error occurred while sending a welcome email to %s: %s".formatted(user.getDisplayName(), e.getMessage()));
+        }
     }
 
-    public ResponseEntity<String> sendAccountUpdatedEmail(User user) {
+    public void sendAccountUpdatedEmail(User user) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("from", senderEmail);
         body.add("to", user.getEmail());
@@ -61,6 +64,10 @@ public class MailService {
         );
 
         log.info("account updated email sent to %s".formatted(user.getEmail()));
-        return restTemplate.exchange(request, String.class);
+        try {
+            restTemplate.exchange(request, String.class);
+        } catch (Exception e) {
+            log.severe("an error occurred while sending an account updated email to %s: %s".formatted(user.getDisplayName(), e.getMessage()));
+        }
     }
 }
