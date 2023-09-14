@@ -17,6 +17,7 @@ import java.util.Optional;
 @Log
 public class UserService {
     private final UserRepository userRepository;
+    private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
     public Optional<User> getUserById(Long userId) {
@@ -32,6 +33,7 @@ public class UserService {
         Long userId = userRepository.createUser(user);
         if (userId != null) {
             user.setId(userId);
+            mailService.sendWelcomeEmail(user);
             return Optional.of(user);
         }
         return Optional.empty();
@@ -42,7 +44,11 @@ public class UserService {
         if (isPasswordPresent) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        return userRepository.updateUser(user) > 0;
+        if (userRepository.updateUser(user) > 0) {
+            mailService.sendAccountUpdatedEmail(user);
+            return true;
+        }
+        return false;
     }
 
     public Boolean updateUserRolesById(String roles, Long userId) {

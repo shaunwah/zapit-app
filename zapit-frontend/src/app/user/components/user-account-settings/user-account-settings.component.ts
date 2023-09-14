@@ -67,8 +67,9 @@ export class UserAccountSettingsComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (user) => {
-          console.log(user);
+          this.user = user;
           this.userForm.patchValue(user);
+          return this.router.navigate(['/settings']);
         },
         error: (err) => console.error(err.message),
       });
