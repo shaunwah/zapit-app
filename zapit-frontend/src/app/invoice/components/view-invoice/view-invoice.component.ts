@@ -23,7 +23,7 @@ export class ViewInvoiceComponent implements OnInit {
 
   checkForUpdates() {
     this.route.paramMap.subscribe((paramMap) => {
-      const invoiceId = paramMap.get('invoiceId')!;
+      const invoiceId = String(paramMap.get('invoiceId'));
       this.getInvoiceById(invoiceId);
     });
   }

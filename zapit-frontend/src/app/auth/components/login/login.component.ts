@@ -6,7 +6,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { first } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
@@ -98,10 +103,10 @@ export class LoginComponent implements OnInit, AfterContentChecked {
   }
 
   get email() {
-    return this.loginForm.get('email')!;
+    return this.loginForm.get('email') as FormControl;
   }
 
   get password() {
-    return this.loginForm.get('password')!;
+    return this.loginForm.get('password') as FormControl;
   }
 }

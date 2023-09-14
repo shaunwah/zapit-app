@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   ValidationErrors,
   Validators,
@@ -83,18 +84,18 @@ export class RegisterComponent implements OnInit {
   }
 
   get email() {
-    return this.registerForm.get('email')!;
+    return this.registerForm.get('email') as FormControl;
   }
 
   get displayName() {
-    return this.registerForm.get('displayName')!;
+    return this.registerForm.get('displayName') as FormControl;
   }
 
   get password() {
-    return this.registerForm.get('password')!;
+    return this.registerForm.get('password') as FormControl;
   }
 
   get passwordConfirm() {
-    return this.registerForm.get('passwordConfirm')!;
+    return this.registerForm.get('passwordConfirm') as FormControl;
   }
 }
