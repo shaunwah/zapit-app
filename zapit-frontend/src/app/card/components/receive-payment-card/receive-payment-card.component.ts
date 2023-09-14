@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Card } from '../../card';
 import { CardMessage } from '../../../shared/interfaces/card-message';
 import { CardMessageType } from '../../../shared/interfaces/card-message-type';
+import { formatNumber } from '@angular/common';
 
 @Component({
   selector: 'app-receive-payment-card',
@@ -89,16 +90,25 @@ export class ReceivePaymentCardComponent implements OnInit, OnDestroy {
           const response: CardMessage = JSON.parse(message.body);
           switch (response.type) {
             case CardMessageType.REQUEST_APPROVED:
-              this.message = `Approved payment of ${response.amount}.`;
+              this.message = `Approved payment of ${formatNumber(
+                response.amount,
+                'en-US',
+              )} pts.`;
               this.isWaitingForApproval = false;
               break;
             case CardMessageType.REQUEST_REJECTED:
-              this.message = `Rejected payment of ${response.amount}.`;
+              this.message = `Rejected payment of ${formatNumber(
+                response.amount,
+                'en-US',
+              )} pts.`;
               this.isWaitingForApproval = false;
               void this.router.navigate(['/']);
               break;
             case CardMessageType.PAYMENT_SUCCEEDED:
-              this.message = `Confirmed payment of ${response.amount}.`;
+              this.message = `Confirmed payment of ${formatNumber(
+                response.amount,
+                'en-US',
+              )} pts.`;
               this.isWaitingForApproval = false;
               void this.router.navigate(
                 ['/card', this.cardId, 'receive', 'complete'],

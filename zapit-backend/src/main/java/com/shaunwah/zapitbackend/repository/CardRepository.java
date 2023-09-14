@@ -17,7 +17,7 @@ import java.util.List;
 public class CardRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    private final String SQL_GET_CARDS_BY_USER_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.user = ? and c.is_deleted = false and m.is_deleted = false limit ? offset ?";
+    private final String SQL_GET_CARDS_BY_USER_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.user = ? and c.is_deleted = false and m.is_deleted = false order by c.created_on limit ? offset ?";
     private final String SQL_GET_CARD_BY_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.id = ? and (c.user = ? or c.issued_by = (select id from merchants m2 where m2.created_by = ? limit 1)) and c.is_deleted = false and m.is_deleted = false limit 1";
     private final String SQL_GET_CARD_BY_MERCHANT_ID = "select * from cards c join merchants m on m.id = c.issued_by where c.issued_by = ? and c.user = ? and c.is_deleted = false and m.is_deleted = false";
     private final String SQL_CREATE_CARD = "insert into cards (id, user, balance, issued_by) values (?, ?, ?, ?)";
