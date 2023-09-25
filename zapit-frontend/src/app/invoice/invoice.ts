@@ -13,6 +13,7 @@ export interface Invoice {
   status?: string;
   issuedBy?: Merchant;
   claimedBy?: User;
-  createdOn?: string;
-  updatedOn?: string;
+  claimedOn?: number;
+  createdOn?: number;
+  updatedOn?: number;
 }
