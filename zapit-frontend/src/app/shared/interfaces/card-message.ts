@@ -1,5 +1,7 @@
+import { CardMessageType } from './card-message-type';
+
 export interface CardMessage {
-  type: string;
+  type: CardMessageType;
   amount: number;
   transaction?: number;
 }

@@ -21,6 +21,7 @@ public class Invoice {
     private String status;
     private Merchant issuedBy;
     private User claimedBy;
+    private Long claimedOn;
     private Long createdOn;
     private Long updatedOn;
 }

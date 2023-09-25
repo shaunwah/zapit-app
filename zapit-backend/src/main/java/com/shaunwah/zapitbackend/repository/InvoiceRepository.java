@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,7 +24,7 @@ public class InvoiceRepository {
 
     public List<Invoice> getInvoicesByUserId(Long userId, Integer limit, Integer offset) {
         return mongoTemplate.find(
-                new Query(Criteria.where("claimedBy._id").is(userId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "createdOn"))
+                new Query(Criteria.where("claimedBy._id").is(userId)).limit(limit).skip(offset).with(Sort.by(Sort.Direction.DESC, "claimedOn"))
                 , Invoice.class, "invoices");
     }
 
@@ -57,6 +58,7 @@ public class InvoiceRepository {
     public Boolean claimInvoice(String invoiceId, Long timestamp, Long userId) {
         Update update = new Update();
         update.set("claimedBy", new User(userId));
+        update.set("claimedOn", new Date().getTime());
         return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(invoiceId).and("createdOn").is(timestamp)), update, Invoice.class, "invoices").wasAcknowledged();
     }
 }
